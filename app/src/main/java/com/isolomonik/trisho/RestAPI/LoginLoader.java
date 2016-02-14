@@ -19,6 +19,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
@@ -47,21 +49,23 @@ public class LoginLoader extends AsyncTaskLoader<String> {
       public String loadInBackground() {
         Log.d(GlobalVar.MY_LOG, hashCode() + " loadInBackground start");
         //  todo restapi
-
+        JSONObject jsonobj = new JSONObject();
+        try {
+            jsonobj.put("telephone", "0636994493");
+            jsonobj.put("password", "123456");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GlobalVar.URL_API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        LoginRetrofit responseToken = retrofit.create(LoginRetrofit.class);
-
-        JSONObject jsonobj = new JSONObject();
+        LoginRetrofit loginRetrofit = retrofit.create(LoginRetrofit.class);
+        Call <String> call=loginRetrofit.responseToken(jsonobj);
 try {
-    jsonobj.put("telephone", "0636994493");
-    jsonobj.put("password", "123456");
-}catch (JSONException e){
-    e.printStackTrace();
-}
+    String apiToken = call.execute().body();
+}catch (Exception r){r.printStackTrace();}
 
         // end // TODO: 14.02.16
 
@@ -111,8 +115,8 @@ try {
     }
 
      interface LoginRetrofit {
-        @POST("/api/Login")
-        String responseToken(@Body LoginModel loginModel);
+        @POST("api/Login")
+        Call<String> responseToken(@Body JSONObject loginModel);
     }
 
 }

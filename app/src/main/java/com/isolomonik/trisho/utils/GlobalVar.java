@@ -18,7 +18,7 @@ public class GlobalVar {
 public static String API_TOKEN="";
 public static String API_TELEPHONE="";
 public static String API_PASSWORD="";
-public static String URL_API="http://solomon-001-site1.btempurl.com";
+public static String URL_API="http://solomon-001-site1.btempurl.com/";
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_TOKEN = "";
 
