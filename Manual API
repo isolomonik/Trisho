@@ -1,0 +1,168 @@
+Manual to API
+Shlomo Rodion Solomonik edited this page on 5 Dec 2015 · 4 revisions
+ Pages 2
+Home
+Manual to API
+ Add a custom sidebar
+Clone this wiki locally
+
+
+https://github.com/HelenaEksler/trisho-app.wiki.git
+
+1. URL
+solomon-001-site1.btempurl.com Post requests with Content-Type: application/json
+
+2. Entities
+All entities are represented in JSON format. All entities with PUT request does not have to set Guid or CreatedDateTime properties, it’s by server side generation
+
+2.1. LoginModel
+
+{ 
+    "Telephone": "+972584404570",
+    "Password": "123"
+}
+2.2. RegisterModel
+
+{ 
+    "Name": "Ivan", 
+    "Telephone": "+972584404570", 
+    "Email": "0584404570", 
+    "Password": "123" 
+}
+2.3. PurchaseModel
+
+{ 
+    "Guid": "FB91E7B9-F766-48F9-ADCF-0A2CE8C879EE",
+    "Name": "Weekly shopping", 
+    "CreatedDateTime": "2015-11-27 08:24:15", 
+    "IsOwn": true 
+}
+2.4. PurchaseItemModel
+
+{ 
+    "ProductGuid": "8270D393-01B5-4FE3-BBB8-2B0E680B8298",
+    "ProductName": "Cucumbers", 
+    "Description": "only fresh",
+    "Count": 2.5, 
+    "Status": "Done" 
+}
+2.5. NewPurchaseItemsModel
+
+{ 
+    "PurchaseGuid": "FB91E7B9-F766-48F9-ADCF-0A2CE8C879EE",
+
+    "CustomProducts": [
+        { "ProductName": "Whiskey", "Count": 0.5 },
+        { "ProductName": "'Chocolate", "Count": 3.0 }
+    ], 
+
+    "RecommendedProducts": [
+        { "ProductGuid": "8270D393-01B5-4FE3-BBB8-2B0E680B8298", "Count": 2.0 },
+        { "ProductGuid": "92875655-6B44-4F05-8758-CA2EA7E730EC", "Count": 3.5 }
+    ]
+}
+2.6. RecommendedProductModel
+
+{ 
+    "ProductGuid": "8270D393-01B5-4FE3-BBB8-2B0E680B8298",
+    "ProductName": "Cucumbers", 
+    "IsFeaturedProducts": true,
+    "Matches": 1966, 
+    "Count": 2.5 
+}
+IsFeaturedProducts – false if the product is own product from previous purchases, true – famous product from other users
+
+3. API Requests
+API requests are invoked by standard HTTP protocol with methods: GET, POST, PUT and DELETE. All API requests, except the Login and Register, must be in the URL parameters contain the ‘token’ of current user. Response and body of Http requests use standard JSON format.
+
+3.1. Logins
+
+3.1.1. Login
+
+Url: /api/Login
+Method: POST
+Body: LoginModel
+Response: string (token)
+3.1.2. Logout
+
+Url: /api/Login?token={0}
+Method: DELETE
+Response: string (token)
+3.2. Register
+
+3.2.1. Register new account
+
+Url: /api/Register
+Method: POST
+Body: RegisterModel
+Response: string (guid of new account)
+3.3. Purchases
+
+3.3.1. Get list of purchases for the user
+
+Url: /api/Purchase?take={0}&skip={1}&token={2}
+Method: GET
+Response: PurchaseModel
+3.3.2. Add new purchase
+
+Url: /api/Purchase?token={0}
+Method: PUT
+Body: PurchaseModel
+Response: string (guid of new purchase)
+3.3.3. Update exists purchase
+
+Url: /api/Purchase?token={0}
+Method: POST
+Body: PurchaseModel
+Response: bool (true if success)
+3.3.4. Delete purchase
+
+Url: /api/Purchase?purchaseGuid={0}&token={1}
+Method: DELETE
+Response: bool (true if success)
+3.4. Purchase Items
+
+3.4.1. Get list of items of the purchase
+
+Url: /api/PurchaseItem?purchaseGuid={0}&take={1}&skip={2}token={3}
+Method: GET
+Response: PurchaseItemModel
+3.4.2. Add new items to the purchase
+
+Url: /api/PurchaseItem?token={0}
+Method: PUT
+Body: NewPurchaseItemsModel
+Response: bool (true if success)
+3.4.3. Update exists item
+
+Url: /api/PurchaseItem?purchaseGuid={0}&token={1}
+Method: POST
+Body: PurchaseItemModel
+Response: bool (true if success)
+3.4.4. Delete item
+
+Url: /api/PurchaseItem?token={0}&purchaseGuid={1}&productGuid={2}
+Method: DELETE
+Response: bool (true if success)
+3.5. Purchase Names
+
+3.5.1. Get list of names of exists purchases that are similar to the entered name
+
+Url: /api/PurchaseNames?token={0}&name={1}&skip={2}&take={3}
+Method: GET
+Response: string
+3.6. Product Names
+
+3.6.1. Get list of names of exists products that are similar to the entered name
+
+Url: /api/ProductNames?token={0}&name={1}&skip={2}&take={3}
+Method: GET
+Response: string
+3.7. Recommended Products
+
+3.7.1. Get list of recommended products for the purchase
+
+Url: /api/ RecommendedProducts?token={0}& purchaseGuid={1}&skip={2}&take={3}
+Method: GET
+Response: RecommendedProductModel
+
