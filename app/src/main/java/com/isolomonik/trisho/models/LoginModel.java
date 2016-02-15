@@ -7,10 +7,10 @@ public class LoginModel {
     public LoginModel() {
     }
 
-    @SerializedName("telephone")
+    @SerializedName("Telephone")
     private   String telephone="";
 
-    @SerializedName("password")
+    @SerializedName("Password")
     private String passw="";
 
 

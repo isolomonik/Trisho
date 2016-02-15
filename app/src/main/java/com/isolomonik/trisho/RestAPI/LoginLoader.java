@@ -19,8 +19,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
@@ -48,24 +50,28 @@ public class LoginLoader extends AsyncTaskLoader<String> {
     @Override
       public String loadInBackground() {
         Log.d(GlobalVar.MY_LOG, hashCode() + " loadInBackground start");
+
         //  todo restapi
-        JSONObject jsonobj = new JSONObject();
-        try {
-            jsonobj.put("telephone", "0636994493");
-            jsonobj.put("password", "123456");
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
+        LoginModel loginModel = new LoginModel();
+                  loginModel.setTelephone("0636994493");
+            loginModel.setPassw("123456");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GlobalVar.URL_API)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(new OkHttpClient())
                 .build();
+        RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
+        Call<String> call=rest.loginToken();
+       try {
+           Response<String> response = call.execute();
+           Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
+       }catch (IOException e){
+           e.printStackTrace();
+           Log.v(GlobalVar.MY_LOG, "не получилось");
+       }
 
-        LoginRetrofit loginRetrofit = retrofit.create(LoginRetrofit.class);
-        Call <String> call=loginRetrofit.responseToken(jsonobj);
-try {
-    String apiToken = call.execute().body();
-}catch (Exception r){r.printStackTrace();}
+
+
 
         // end // TODO: 14.02.16
 
@@ -114,9 +120,6 @@ try {
        token="";
     }
 
-     interface LoginRetrofit {
-        @POST("api/Login")
-        Call<String> responseToken(@Body JSONObject loginModel);
-    }
+
 
 }
