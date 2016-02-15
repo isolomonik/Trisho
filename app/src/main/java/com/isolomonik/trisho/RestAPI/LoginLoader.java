@@ -65,18 +65,16 @@ public class LoginLoader extends AsyncTaskLoader<String> {
        try {
            Response<String> response = call.execute();
            Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
+           token=response.body().toString();
        }catch (IOException e){
            e.printStackTrace();
            Log.v(GlobalVar.MY_LOG, "не получилось");
        }
 
+       // end // TODO: 14.02.16
 
 
 
-        // end // TODO: 14.02.16
-
-
-        token=telephone+passw;
         return token;
     }
 

@@ -47,7 +47,7 @@ private CallBackInterface callBackInterface;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callBackInterface = (CallBackInterface) getActivity();
+        callBackInterface = (CallBackInterface) context;
     }
 
     @Override
@@ -97,14 +97,11 @@ private CallBackInterface callBackInterface;
 //                progressDialog.setMessage(getResources().getString(R.string.waiting));
 //                progressDialog.setIndeterminate(true);
 //                progressDialog.show();
-                callBackInterface = (CallBackInterface) getActivity();
-                callBackInterface.loginSubmit();
+
+ //               callBackInterface.loginSubmit();
                 break;
         }
     }
 
-    void submit(){
-        callBackInterface = (CallBackInterface) getActivity();
-        callBackInterface.loginSubmit();
-    }
+
 }
