@@ -25,12 +25,16 @@ import com.isolomonik.trisho.RestAPI.LoginLoader;
 import com.isolomonik.trisho.utils.CallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import java.util.List;
 
-public class LoginFragment extends Fragment implements View.OnClickListener, LoaderManager.LoaderCallbacks<String> {
+import retrofit2.Call;
 
-private     EditText telephone;
-  private   EditText password;
-private CallBackInterface callBackInterface;
+
+public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
+
+    private EditText telephone;
+    private EditText password;
+    private CallBackInterface callBackInterface;
 
     static final int LOADER_LOGIN_ID = 1;
     private AsyncTaskLoader<String> loginLoader;
@@ -39,8 +43,8 @@ private CallBackInterface callBackInterface;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        callBackInterface = (CallBackInterface) getActivity();
-       // getLoaderManager().initLoader(LOADER_LOGIN_ID, null, this);
+        //   callBackInterface = (CallBackInterface) getActivity();
+        // getLoaderManager().initLoader(LOADER_LOGIN_ID, null, this);
 
     }
 
@@ -56,24 +60,38 @@ private CallBackInterface callBackInterface;
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
 
-        telephone=(EditText)v.findViewById(R.id.telephoneEdit);
-        password=(EditText)v.findViewById(R.id.passwordEdit);
-        v.findViewById(R.id.singinBtn).setOnClickListener(this);
+        telephone = (EditText) v.findViewById(R.id.telephoneEdit);
+        password = (EditText) v.findViewById(R.id.passwordEdit);
+        v.findViewById(R.id.singinBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("Telephone", telephone.getText().toString());
+                GlobalVar.API_TELEPHONE = telephone.getText().toString();
+                bundle.putString("Password", password.getText().toString());
+                GlobalVar.API_PASSWORD = password.getText().toString();
+                Log.v(GlobalVar.MY_LOG, bundle.toString());
+                getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
+            }
+        });
+
+
+
         return v;
 
     }
 
     public AsyncTaskLoader<String> onCreateLoader(int id, Bundle args) {
 
-         loginLoader = new LoginLoader(getActivity(), args);
+        loginLoader = new LoginLoader(getActivity(), args);
         return loginLoader;
     }
 
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(GlobalVar.MY_LOG, data);
-         GlobalVar.API_TOKEN=data;
-      //  callBackInterface.loginSubmit();
-       //  getActivity().recreate();
+        GlobalVar.API_TOKEN = data;
+        //  callBackInterface.loginSubmit();
+        //  getActivity().recreate();
 //submit();
 
     }
@@ -82,26 +100,7 @@ private CallBackInterface callBackInterface;
         Log.d(GlobalVar.MY_LOG, "onLoaderReset");
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.singinBtn:
-                Bundle bundle = new Bundle();
-                bundle.putString("telephone",telephone.getText().toString());
-                GlobalVar.API_TELEPHONE=telephone.getText().toString();
-                bundle.putString("password", password.getText().toString());
-                GlobalVar.API_PASSWORD=password.getText().toString();
-                Log.v(GlobalVar.MY_LOG, bundle.toString());
-                getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
-//                ProgressDialog progressDialog = new ProgressDialog(v.getContext());
-//                progressDialog.setMessage(getResources().getString(R.string.waiting));
-//                progressDialog.setIndeterminate(true);
-//                progressDialog.show();
 
- //               callBackInterface.loginSubmit();
-                break;
-        }
-    }
 
 
 }
