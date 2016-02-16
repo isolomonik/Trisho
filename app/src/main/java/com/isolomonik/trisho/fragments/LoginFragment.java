@@ -1,10 +1,7 @@
 package com.isolomonik.trisho.fragments;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 //import android.support.v4.app.Fragment;
@@ -17,17 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
+import com.isolomonik.trisho.Loaders.RegisterLoader;
 import com.isolomonik.trisho.R;
-import com.isolomonik.trisho.RestAPI.LoginLoader;
+import com.isolomonik.trisho.Loaders.LoginLoader;
 import com.isolomonik.trisho.utils.CallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
-import java.util.List;
+import org.json.JSONObject;
 
-import retrofit2.Call;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
@@ -38,6 +37,9 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
 
     static final int LOADER_LOGIN_ID = 1;
     private AsyncTaskLoader<String> loginLoader;
+
+    static final int LOADER_REGISTER_ID = 2;
+    private AsyncTaskLoader<String>  registerLoader;
 
 
     @Override
@@ -65,13 +67,8 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         v.findViewById(R.id.singinBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("Telephone", telephone.getText().toString());
-                GlobalVar.API_TELEPHONE = telephone.getText().toString();
-                bundle.putString("Password", password.getText().toString());
-                GlobalVar.API_PASSWORD = password.getText().toString();
-                Log.v(GlobalVar.MY_LOG, bundle.toString());
-                getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
+            //    testHTTP();
+            startLoginLoader();
             }
         });
 
@@ -81,10 +78,26 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
 
     }
 
+    private void startLoginLoader() {
+        Bundle bundle = new Bundle();
+        bundle.putString("Telephone", telephone.getText().toString());
+        bundle.putString("Password", password.getText().toString());
+        Log.v(GlobalVar.MY_LOG, bundle.toString());
+      //  getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
+        getLoaderManager().initLoader(LOADER_REGISTER_ID, bundle, LoginFragment.this);
+    }
+
+
+    //----to implement Loaders
+
     public AsyncTaskLoader<String> onCreateLoader(int id, Bundle args) {
 
-        loginLoader = new LoginLoader(getActivity(), args);
-        return loginLoader;
+      // loginLoader = new LoginLoader(getActivity(), args);
+
+  registerLoader=new RegisterLoader(this.getContext(), args);
+        return registerLoader;
+
+
     }
 
     public void onLoadFinished(Loader<String> loader, String data) {
@@ -101,6 +114,34 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
 
+void testHTTP (){
+    try {
+      String   query = GlobalVar.URL_API+"api/Login";
+     // String query ="http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
+        URL searchURL = new URL(query);
 
+        HttpURLConnection httpURLConnection = (HttpURLConnection) searchURL.openConnection();
+        httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setDoInput(true);
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestProperty("Content-Type", "application/json");
+        httpURLConnection.connect();
+
+        JSONObject login= new JSONObject();
+        login.put("Telephone", "0636994493");
+        login.put("Password", "123456");
+
+      //  if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+            wr.write(login.toString());
+            wr.flush();
+            String HttpResult=httpURLConnection.getResponseMessage();
+     //   }
+
+
+    } catch (Exception e) {
+    e.printStackTrace();
+    }
+}
 
 }

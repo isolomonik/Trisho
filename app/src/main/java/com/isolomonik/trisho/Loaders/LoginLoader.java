@@ -1,4 +1,4 @@
-package com.isolomonik.trisho.RestAPI;
+package com.isolomonik.trisho.Loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
+import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
 import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
