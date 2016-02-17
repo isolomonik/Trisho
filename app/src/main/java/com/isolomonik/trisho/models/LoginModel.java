@@ -9,26 +9,11 @@ public class LoginModel {
         this.password=passw;
     }
 
-  //  @SerializedName("telephone")
+  @SerializedName("Telephone")
     String telephone="";
 
- //   @SerializedName("password")
+  @SerializedName("Password")
     String password="";
 
 
-//    public String getTelephone() {
-//        return telephone;
-//    }
-//
-//    public void setTelephone(String telephone) {
-//        this.telephone = telephone;
-//    }
-//
-//    public String getPassw() {
-//        return passw;
-//    }
-//
-//    public void setPassw(String passw) {
-//        this.passw = passw;
-//    }
 }

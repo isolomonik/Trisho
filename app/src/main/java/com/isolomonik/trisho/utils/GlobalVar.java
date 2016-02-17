@@ -18,11 +18,16 @@ public class GlobalVar {
 public static String API_TOKEN="";
 public static String API_TELEPHONE="";
 public static String API_PASSWORD="";
+
 public static String URL_API="http://solomon-001-site1.btempurl.com/";
+
+
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_TOKEN = "";
 
 
+    public static final int LOADER_LOGIN_ID = 1;
+    public static final int LOADER_REGISTER_ID = 2;
 
     public static int STATUS_ADD=1;
     public static int STATUS_DONE=2;

@@ -9,16 +9,16 @@ public class RegisterModel {
     }
 
     @SerializedName("Name")
-    private   String name="";
+    private String name = "";
 
     @SerializedName("Telephone")
-    private   String telephone="";
+    private String telephone = "";
 
     @SerializedName("Email")
-    private String email="";
+    private String email = "";
 
     @SerializedName("Password")
-    private String password="";
+    private String password = "";
 
     public String getName() {
         return name;
@@ -44,15 +44,11 @@ public class RegisterModel {
         this.email = email;
     }
 
-    public String getTelephone() {
-
-        return telephone;
-    }
+    public String getTelephone() { return telephone; }
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-
 
 
 }

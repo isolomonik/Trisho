@@ -7,6 +7,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
 import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.GlobalVar;
@@ -60,12 +61,14 @@ public class LoginLoader extends AsyncTaskLoader<String> {
                 .client(new OkHttpClient())
                 .build();
         RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
+        Gson gson = new Gson();
+        String json = gson.toJson(loginModel);
+        System.out.println(json);
         Call<String> call=rest.loginToken(loginModel);
        //Log.v("my_log", "REQUEST:   " + loginModel.toJson());
-       try {
-          // Response<String> response =
-           call.execute();
-           //Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
+        try {
+            Response<String> response = call.execute();
+           Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
            //token=response.body().toString();
        }catch (IOException e){
            e.printStackTrace();

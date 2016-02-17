@@ -1,13 +1,10 @@
 package com.isolomonik.trisho.fragments;
 
 //import android.content.AsyncTaskLoader;
+
 import android.content.Context;
 import android.os.Bundle;
-//import android.app.Fragment;
 import android.support.v4.app.Fragment;
-//import android.app.LoaderManager;
-//import android.content.Loader;
-//import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -17,39 +14,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.isolomonik.trisho.Loaders.RegisterLoader;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.Loaders.LoginLoader;
+import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
+import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.CallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
+
+public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
+//, Callback<String>
+
+{
 
     private EditText telephone;
     private EditText password;
     private CallBackInterface callBackInterface;
 
-    static final int LOADER_LOGIN_ID = 1;
-    private AsyncTaskLoader<String> loginLoader;
 
-    static final int LOADER_REGISTER_ID = 2;
-    private AsyncTaskLoader<String>  registerLoader;
+    private AsyncTaskLoader<String> loginLoader;
+    private AsyncTaskLoader<String> registerLoader;
 
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //   callBackInterface = (CallBackInterface) getActivity();
-        // getLoaderManager().initLoader(LOADER_LOGIN_ID, null, this);
-
-    }
+         }
 
     @Override
     public void onAttach(Context context) {
@@ -68,13 +74,16 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         v.findViewById(R.id.singinBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    testHTTP();
-            startLoginLoader();
+                startLoginLoader();
             }
         });
 
-
-
+        v.findViewById(R.id.btnNewUser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+callBackInterface.newUserSubmit();
+            }
+        });
         return v;
 
     }
@@ -84,29 +93,32 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         bundle.putString("Telephone", telephone.getText().toString());
         bundle.putString("Password", password.getText().toString());
         Log.v(GlobalVar.MY_LOG, bundle.toString());
-        getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
-      //  getLoaderManager().initLoader(LOADER_REGISTER_ID, bundle, LoginFragment.this);
+        getLoaderManager().restartLoader(GlobalVar.LOADER_LOGIN_ID, bundle, LoginFragment.this);
+      //   getLoaderManager().restartLoader(GlobalVar.LOADER_REGISTER_ID, bundle, LoginFragment.this);
     }
 
 
     //----to implement Loaders
 
     public AsyncTaskLoader<String> onCreateLoader(int id, Bundle args) {
+        AsyncTaskLoader<String> loader=null;
+        switch (id) {
+            case GlobalVar.LOADER_LOGIN_ID:
+                loginLoader = new LoginLoader(getActivity(), args);
+                loader = loginLoader;
+                break;
+            case GlobalVar.LOADER_REGISTER_ID:
+                registerLoader = new RegisterLoader(getActivity(), args);
+                loader = registerLoader;
+                break;
 
-    loginLoader = new LoginLoader(getActivity(), args);
-
- // registerLoader=new RegisterLoader(this.getContext(), args);
-        return loginLoader;
-
+        } return loader;
 
     }
 
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(GlobalVar.MY_LOG, data);
         GlobalVar.API_TOKEN = data;
-        //  callBackInterface.loginSubmit();
-        //  getActivity().recreate();
-//submit();
 
     }
 
@@ -115,34 +127,34 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     }
 
 
-void testHTTP (){
-    try {
-      String   query = GlobalVar.URL_API+"api/Login";
-     // String query ="http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
-        URL searchURL = new URL(query);
+    void testHTTP() {
+        try {
+            String query = GlobalVar.URL_API + "api/Login";
+            // String query ="http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
+            URL searchURL = new URL(query);
 
-        HttpURLConnection httpURLConnection = (HttpURLConnection) searchURL.openConnection();
-        httpURLConnection.setRequestMethod("POST");
-        httpURLConnection.setDoInput(true);
-        httpURLConnection.setDoOutput(true);
-        httpURLConnection.setRequestProperty("Content-Type", "application/json");
-        httpURLConnection.connect();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) searchURL.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            httpURLConnection.connect();
 
-        JSONObject login= new JSONObject();
-        login.put("Telephone", "0636994493");
-        login.put("Password", "123456");
+            JSONObject login = new JSONObject();
+            login.put("Telephone", "0636994493");
+            login.put("Password", "123456");
 
-      //  if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            //  if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
             wr.write(login.toString());
             wr.flush();
-            String HttpResult=httpURLConnection.getResponseMessage();
-     //   }
+            String HttpResult = httpURLConnection.getResponseMessage();
+            //   }
 
 
-    } catch (Exception e) {
-    e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-}
 
 }

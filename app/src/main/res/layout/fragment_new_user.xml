@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.isolomonik.trisho.fragments.NewUserFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="@string/tvName"
+            android:id="@+id/tvName" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextName"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Telephone:"
+            android:id="@+id/tvTelephoneNewUser" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTelephoneNewUser" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Email:"
+            android:id="@+id/tvEmail" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/editTextEmail" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Password:"
+            android:id="@+id/textViewPassw" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextPassw" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REGISTER"
+            android:id="@+id/btnRegister"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+</FrameLayout>

@@ -30,7 +30,7 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
 
     public RegisterLoader(Context context, Bundle args ) {
         super(context);
-        Log.d(GlobalVar.MY_LOG, hashCode() + " create LoginAsyncLoader");
+        Log.d(GlobalVar.MY_LOG, hashCode() + " create RegisterAsyncLoader");
         if (args != null) {
             name=args.getString("Name");
             email=args.getString("Email");
@@ -56,7 +56,7 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
                 .client(new OkHttpClient())
                 .build();
         RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
-        Call<String> call=rest.register();
+        Call<String> call=rest.register(registerModel);
         try {
             Response<String> response = call.execute();
             Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());

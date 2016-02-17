@@ -48,6 +48,13 @@
             android:id="@+id/singinBtn"
             android:layout_gravity="center_horizontal" />
 
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/btnNewUser"
+            android:id="@+id/btnNewUser"
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 
 </FrameLayout>
