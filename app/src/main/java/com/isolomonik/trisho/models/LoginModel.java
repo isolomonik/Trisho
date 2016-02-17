@@ -4,29 +4,31 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class LoginModel {
-    public LoginModel() {
+    public LoginModel(String telephone, String passw) {
+        this.telephone=telephone;
+        this.password=passw;
     }
 
-    @SerializedName("Telephone")
-    private   String telephone="";
+  //  @SerializedName("telephone")
+    String telephone="";
 
-    @SerializedName("Password")
-    private String passw="";
+ //   @SerializedName("password")
+    String password="";
 
 
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getPassw() {
-        return passw;
-    }
-
-    public void setPassw(String passw) {
-        this.passw = passw;
-    }
+//    public String getTelephone() {
+//        return telephone;
+//    }
+//
+//    public void setTelephone(String telephone) {
+//        this.telephone = telephone;
+//    }
+//
+//    public String getPassw() {
+//        return passw;
+//    }
+//
+//    public void setPassw(String passw) {
+//        this.passw = passw;
+//    }
 }

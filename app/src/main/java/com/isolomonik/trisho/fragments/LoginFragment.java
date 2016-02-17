@@ -1,15 +1,16 @@
 package com.isolomonik.trisho.fragments;
 
-import android.content.AsyncTaskLoader;
+//import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
-//import android.support.v4.app.Fragment;
-import android.app.LoaderManager;
-import android.content.Loader;
+//import android.app.Fragment;
+import android.support.v4.app.Fragment;
+//import android.app.LoaderManager;
+//import android.content.Loader;
 //import android.support.v4.app.LoaderManager;
-//import android.support.v4.content.AsyncTaskLoader;
-//import android.support.v4.content.Loader;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,8 +84,8 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         bundle.putString("Telephone", telephone.getText().toString());
         bundle.putString("Password", password.getText().toString());
         Log.v(GlobalVar.MY_LOG, bundle.toString());
-      //  getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
-        getLoaderManager().initLoader(LOADER_REGISTER_ID, bundle, LoginFragment.this);
+        getLoaderManager().restartLoader(LOADER_LOGIN_ID, bundle, LoginFragment.this);
+      //  getLoaderManager().initLoader(LOADER_REGISTER_ID, bundle, LoginFragment.this);
     }
 
 
@@ -92,10 +93,10 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
 
     public AsyncTaskLoader<String> onCreateLoader(int id, Bundle args) {
 
-      // loginLoader = new LoginLoader(getActivity(), args);
+    loginLoader = new LoginLoader(getActivity(), args);
 
-  registerLoader=new RegisterLoader(this.getContext(), args);
-        return registerLoader;
+ // registerLoader=new RegisterLoader(this.getContext(), args);
+        return loginLoader;
 
 
     }

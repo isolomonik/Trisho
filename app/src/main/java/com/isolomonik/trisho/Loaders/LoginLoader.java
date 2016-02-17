@@ -1,9 +1,9 @@
 package com.isolomonik.trisho.Loaders;
 
-import android.content.AsyncTaskLoader;
+//import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
-//import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
@@ -42,8 +42,8 @@ public class LoginLoader extends AsyncTaskLoader<String> {
         super(context);
         Log.d(GlobalVar.MY_LOG, hashCode() + " create LoginAsyncLoader");
         if (args != null) {
-            telephone = args.getString("telephone");
-            passw=args.getString("password");
+            telephone = args.getString("Telephone");
+            passw=args.getString("Password");
         }
 
     }
@@ -53,20 +53,20 @@ public class LoginLoader extends AsyncTaskLoader<String> {
         Log.d(GlobalVar.MY_LOG, hashCode() + " loadInBackground start");
 
         //  todo restapi
-        LoginModel loginModel = new LoginModel();
-                  loginModel.setTelephone("0636994493");
-            loginModel.setPassw("123456");
+        LoginModel loginModel = new LoginModel("0636994493","123456");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GlobalVar.URL_API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient())
                 .build();
         RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
-        Call<String> call=rest.loginToken();
+        Call<String> call=rest.loginToken(loginModel);
+       //Log.v("my_log", "REQUEST:   " + loginModel.toJson());
        try {
-           Response<String> response = call.execute();
-           Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
-           token=response.body().toString();
+          // Response<String> response =
+           call.execute();
+           //Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
+           //token=response.body().toString();
        }catch (IOException e){
            e.printStackTrace();
            Log.v(GlobalVar.MY_LOG, "не получилось");
