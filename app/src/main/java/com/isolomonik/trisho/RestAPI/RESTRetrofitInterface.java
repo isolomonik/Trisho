@@ -1,7 +1,6 @@
 package com.isolomonik.trisho.RestAPI;
 
 import com.isolomonik.trisho.models.LoginModel;
-import com.isolomonik.trisho.models.RegisterModel;
 
 import java.util.List;
 
@@ -14,7 +13,8 @@ import retrofit2.http.PUT;
 
 public interface RESTRetrofitInterface {
 
-    @Headers("Content-Type: application/json; charset=UTF-8")
+    @Headers({ "Accept: application/json",
+               "Content-Type: application/json"})
     @POST("api/Login")
     Call<String> loginToken(@Body LoginModel loginModel);
 

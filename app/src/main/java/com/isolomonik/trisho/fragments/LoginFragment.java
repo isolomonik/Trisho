@@ -36,7 +36,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
+
+public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
 
 public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
 //, Callback<String>
@@ -51,11 +58,16 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     private AsyncTaskLoader<String> loginLoader;
     private AsyncTaskLoader<String> registerLoader;
 
+    static final int LOADER_REGISTER_ID = 2;
+    private AsyncTaskLoader<String>  registerLoader;
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
          }
+
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -74,7 +86,9 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         v.findViewById(R.id.singinBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startLoginLoader();
+            //    testHTTP();
+            //    testOKHttp();
+            startLoginLoader();
             }
         });
 

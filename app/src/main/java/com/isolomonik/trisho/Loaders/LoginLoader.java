@@ -7,7 +7,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
 import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.GlobalVar;
@@ -53,32 +52,30 @@ public class LoginLoader extends AsyncTaskLoader<String> {
       public String loadInBackground() {
         Log.d(GlobalVar.MY_LOG, hashCode() + " loadInBackground start");
 
-        //  todo restapi
-        LoginModel loginModel = new LoginModel("0636994493","123456");
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GlobalVar.URL_API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(new OkHttpClient())
-                .build();
-        RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
-        Gson gson = new Gson();
-        String json = gson.toJson(loginModel);
-        System.out.println(json);
-        Call<String> call=rest.loginToken(loginModel);
-       //Log.v("my_log", "REQUEST:   " + loginModel.toJson());
-        try {
-            Response<String> response = call.execute();
-           Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
-           //token=response.body().toString();
-       }catch (IOException e){
-           e.printStackTrace();
-           Log.v(GlobalVar.MY_LOG, "не получилось");
-       }
+//        //  todo restapi
+//        LoginModel loginModel = new LoginModel("0636994493","123456");
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(GlobalVar.URL_API)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .client(new OkHttpClient())
+//                .build();
+//        RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
+//        Call<String> call=rest.loginToken(loginModel);
+//       //Log.v("my_log", "REQUEST:   " + loginModel.toJson());
+//       try {
+//          // Response<String> response =
+//           call.execute();
+//           //Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
+//           //token=response.body().toString();
+//       }catch (IOException e){
+//           e.printStackTrace();
+//           Log.v(GlobalVar.MY_LOG, "не получилось");
+//       }
+//
+//       // end // TODO: 14.02.16
+//
 
-       // end // TODO: 14.02.16
-
-
-
+testOKHttp();
         return token;
     }
 
@@ -122,6 +119,27 @@ public class LoginLoader extends AsyncTaskLoader<String> {
        token="";
     }
 
+    void testOKHttp(){
+        MediaType JSON
+                = MediaType.parse("application/json; charset=utf-8");
+        try {
 
+            JSONObject login = new JSONObject();
+            login.put("Telephone", "0636994493");
+            login.put("Password", "123456");
+
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = RequestBody.create(JSON, login.toString());
+            Request request = new Request.Builder()
+                    .url("http://solomon-001-site1.btempurl.com/api/Login")
+                    .post(body)
+                    .build();
+            okhttp3.Response response = client.newCall(request).execute();
+        token=  response.body().string();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 }
