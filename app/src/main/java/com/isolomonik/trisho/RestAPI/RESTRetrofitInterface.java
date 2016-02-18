@@ -13,7 +13,8 @@ import retrofit2.http.PUT;
 
 public interface RESTRetrofitInterface {
 
-    @Headers("Content-Type: application/json")
+    @Headers({ "Accept: application/json",
+               "Content-Type: application/json"})
     @POST("api/Login")
     Call<String> loginToken(@Body LoginModel loginmodel);
 

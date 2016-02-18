@@ -25,9 +25,16 @@ import com.isolomonik.trisho.utils.GlobalVar;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
@@ -69,6 +76,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
             @Override
             public void onClick(View v) {
             //    testHTTP();
+            //    testOKHttp();
             startLoginLoader();
             }
         });
@@ -144,5 +152,8 @@ void testHTTP (){
     e.printStackTrace();
     }
 }
+
+
+
 
 }
