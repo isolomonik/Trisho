@@ -24,8 +24,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+
+
+    compile ('com.squareup.retrofit2:retrofit:2.0.0-beta4'){
+            // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
+            exclude module: 'okhttp'
+    }
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
 
+    // For Realm.io
+    compile 'io.realm:realm-android:0.87.3'
 }

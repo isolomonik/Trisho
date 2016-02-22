@@ -5,8 +5,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
 
-import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
-import com.isolomonik.trisho.models.LoginModel;
+import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
 import com.isolomonik.trisho.models.RegisterModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
@@ -55,7 +54,7 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient())
                 .build();
-        RESTRetrofitInterface rest = retrofit.create(RESTRetrofitInterface.class);
+        RetrofitAPIInterface rest = retrofit.create(RetrofitAPIInterface.class);
         Call<String> call=rest.register(registerModel);
         try {
             Response<String> response = call.execute();

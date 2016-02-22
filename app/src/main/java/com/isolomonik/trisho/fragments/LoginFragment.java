@@ -14,36 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
 import com.isolomonik.trisho.Loaders.RegisterLoader;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.Loaders.LoginLoader;
-import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
-import com.isolomonik.trisho.models.LoginModel;
-import com.isolomonik.trisho.utils.CallBackInterface;
+import com.isolomonik.trisho.utils.FragmentCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+//import retrofit2.Response;
 
-
-public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
 
 public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
 //, Callback<String>
@@ -52,14 +36,12 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
 
     private EditText telephone;
     private EditText password;
-    private CallBackInterface callBackInterface;
+    private FragmentCallBackInterface fragmentCallBackInterface;
 
 
     private AsyncTaskLoader<String> loginLoader;
     private AsyncTaskLoader<String> registerLoader;
 
-    static final int LOADER_REGISTER_ID = 2;
-    private AsyncTaskLoader<String>  registerLoader;
 
 
     @Override
@@ -67,12 +49,12 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         super.onActivityCreated(savedInstanceState);
          }
 
-    }
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        callBackInterface = (CallBackInterface) context;
+        fragmentCallBackInterface = (FragmentCallBackInterface) context;
     }
 
     @Override
@@ -95,7 +77,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         v.findViewById(R.id.btnNewUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-callBackInterface.newUserSubmit();
+fragmentCallBackInterface.newUserSubmit();
             }
         });
         return v;
@@ -132,7 +114,7 @@ callBackInterface.newUserSubmit();
 
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(GlobalVar.MY_LOG, data);
-        GlobalVar.API_TOKEN = data;
+    //    GlobalVar.API_TOKEN = data;
 
     }
 

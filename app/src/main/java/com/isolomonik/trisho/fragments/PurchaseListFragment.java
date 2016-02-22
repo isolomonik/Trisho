@@ -26,7 +26,7 @@ public class PurchaseListFragment extends Fragment implements  LoaderManager.Loa
 
 
     public PurchaseListFragment() {
-        // Required empty public constructor
+
     }
 
     @Override public void onActivityCreated(Bundle savedInstanceState) {

@@ -4,31 +4,16 @@ package com.isolomonik.trisho.Loaders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 
-import com.isolomonik.trisho.RestAPI.RESTRetrofitInterface;
-import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
 
 
 public class LoginLoader extends AsyncTaskLoader<String> {
@@ -51,7 +36,7 @@ public class LoginLoader extends AsyncTaskLoader<String> {
     @Override
       public String loadInBackground() {
         Log.d(GlobalVar.MY_LOG, hashCode() + " loadInBackground start");
-
+//
 //        //  todo restapi
 //        LoginModel loginModel = new LoginModel("0636994493","123456");
 //        Retrofit retrofit = new Retrofit.Builder()
@@ -63,8 +48,7 @@ public class LoginLoader extends AsyncTaskLoader<String> {
 //        Call<String> call=rest.loginToken(loginModel);
 //       //Log.v("my_log", "REQUEST:   " + loginModel.toJson());
 //       try {
-//          // Response<String> response =
-//           call.execute();
+//           Response<String> response = call.execute();
 //           //Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
 //           //token=response.body().toString();
 //       }catch (IOException e){
@@ -72,10 +56,10 @@ public class LoginLoader extends AsyncTaskLoader<String> {
 //           Log.v(GlobalVar.MY_LOG, "не получилось");
 //       }
 //
-//       // end // TODO: 14.02.16
-//
+//       // end //
 
-testOKHttp();
+
+OKHttp();
         return token;
     }
 
@@ -119,7 +103,7 @@ testOKHttp();
        token="";
     }
 
-    void testOKHttp(){
+    void OKHttp(){
         MediaType JSON
                 = MediaType.parse("application/json; charset=utf-8");
         try {
@@ -135,7 +119,8 @@ testOKHttp();
                     .url("http://solomon-001-site1.btempurl.com/api/Login")
                     .post(body)
                     .build();
-            okhttp3.Response response = client.newCall(request).execute();
+            okhttp3.Response response = client.newCall(request)
+                    .execute();
         token=  response.body().string();
         }catch (Exception e){
             e.printStackTrace();

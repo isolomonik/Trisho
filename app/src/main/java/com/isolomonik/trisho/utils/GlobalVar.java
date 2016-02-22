@@ -23,7 +23,7 @@ public static String URL_API="http://solomon-001-site1.btempurl.com/";
 
 
     public static final String APP_PREFERENCES = "mysettings";
-    public static final String APP_PREFERENCES_TOKEN = "";
+    public static final String APP_PREFERENCES_TOKEN = "10a708bf-0c72-4b13-be81-3a4088973593";
 
 
     public static final int LOADER_LOGIN_ID = 1;

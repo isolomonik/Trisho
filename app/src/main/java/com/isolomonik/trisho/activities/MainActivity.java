@@ -14,17 +14,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.fragments.LoginFragment;
-import com.isolomonik.trisho.fragments.NewUserFragment;
 import com.isolomonik.trisho.fragments.PurchaseListFragment;
-import com.isolomonik.trisho.utils.CallBackInterface;
+import com.isolomonik.trisho.utils.FragmentCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
-public class MainActivity extends AppCompatActivity implements CallBackInterface {
+public class MainActivity extends AppCompatActivity implements FragmentCallBackInterface {
     FragmentManager fm = this.getSupportFragmentManager();
     FragmentTransaction fragmentTransaction;
     LoginFragment loginFragment;
