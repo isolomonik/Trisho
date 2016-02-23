@@ -3,10 +3,12 @@ package com.isolomonik.trisho.models;
 import com.google.gson.annotations.SerializedName;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 
 public class LoginModel
-        // extends Realm
+        extends RealmObject
 {
 
     @SerializedName("Password")
@@ -21,6 +23,19 @@ public class LoginModel
 
     public void setPassword(String password) {
         this.password = password;
+
+    }
+
+    @SerializedName("Token")
+    @PrimaryKey
+    private String token = "";
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getTelephone() {

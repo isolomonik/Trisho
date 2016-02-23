@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 
 public class TrishoApp extends Application {
 
@@ -13,6 +16,8 @@ public class TrishoApp extends Application {
     public void onCreate() {
         super.onCreate();
         GlobalVar gv=new GlobalVar();
+        RealmConfiguration config = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(config);
     }
 
 }

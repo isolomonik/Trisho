@@ -9,9 +9,14 @@ import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
 import com.isolomonik.trisho.models.RegisterModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -24,49 +29,52 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
     private String telephone;
     private String email;
     private String password;
+    private String token;
 
 
-
-    public RegisterLoader(Context context, Bundle args ) {
+    public RegisterLoader(Context context, Bundle args) {
         super(context);
         Log.d(GlobalVar.MY_LOG, hashCode() + " create RegisterAsyncLoader");
         if (args != null) {
-            name=args.getString("Name");
-            email=args.getString("Email");
+            name = args.getString("Name");
+            email = args.getString("Email");
             telephone = args.getString("Telephone");
-            password=args.getString("Password");
+            password = args.getString("Password");
         }
     }
 
     @Override
     public String loadInBackground() {
 
-        Log.d(GlobalVar.MY_LOG, hashCode() + " loadInBackground start");
+        Log.d(GlobalVar.MY_LOG, hashCode() + " register load start");
 
-        //  todo restapi
-        RegisterModel registerModel = new RegisterModel();
-        registerModel.setTelephone("0636994483");
-        registerModel.setName("Lexon");
-        registerModel.setEmail("alex-pp@ukr.net");
-        registerModel.setPassword("123456");
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GlobalVar.URL_API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(new OkHttpClient())
-                .build();
-        RetrofitAPIInterface rest = retrofit.create(RetrofitAPIInterface.class);
-        Call<String> call=rest.register(registerModel);
+
+        MediaType mt = MediaType.parse("application/json; charset=utf-8");
         try {
-            Response<String> response = call.execute();
-            Log.v(GlobalVar.MY_LOG, "получилось"+response.body().toString());
-            String responseBody=response.body().toString();
-        }catch (IOException e){
+            JSONObject json = new JSONObject();
+            json.put("Telephone", telephone);
+            json.put("Password", password);
+            json.put("name", name);
+            json.put("email", email);
+
+
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = RequestBody.create(mt, json.toString());
+            Request request = new Request.Builder()
+                    .url(GlobalVar.URL_API + "api/Register")
+                    .post(body)
+                    .build();
+            okhttp3.Response response = client.newCall(request)
+                    .execute();
+
+            String resp = response.body().string();
+            token = resp.replaceAll("\"", "");
+
+
+        } catch (Exception e) {
             e.printStackTrace();
-            Log.v(GlobalVar.MY_LOG, "не получилось");
         }
-
-        // end // TODO: 14.02.16
-
-        return null;
+        return token;
     }
 }

@@ -19,8 +19,16 @@ import android.widget.Toast;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.fragments.LoginFragment;
 import com.isolomonik.trisho.fragments.PurchaseListFragment;
+import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.FragmentCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.exceptions.RealmMigrationNeededException;
 
 public class MainActivity extends AppCompatActivity implements FragmentCallBackInterface {
     FragmentManager fm = this.getSupportFragmentManager();
@@ -28,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
     LoginFragment loginFragment;
     PurchaseListFragment purchaseListFragment;
   //  NewUserFragment newUserFragment;
+
+    Realm realm;
+
 
     @Override
     public void newUserSubmit() {
@@ -48,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
     @Override
    public void loginSubmit() {
         purchaseListFragment = new PurchaseListFragment();
-        Log.v(GlobalVar.MY_LOG,GlobalVar.API_TOKEN);
+        Log.v(GlobalVar.MY_LOG, GlobalVar.API_TOKEN);
 
         Intent intent = new Intent(this, PurchaseListActivity.class);
         startActivity(intent);
@@ -68,6 +79,28 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
 
         if (savedInstanceState == null) {
             if (GlobalVar.IS_NetworkAvailable(this)) {
+
+
+                try {
+                    realm = Realm.getInstance(this.getApplicationContext());
+
+                if (realm.allObjects(LoginModel.class).size() != 0) {
+                    realm.beginTransaction();
+                    RealmResults<LoginModel> result = realm.where(LoginModel.class).findAll();
+
+                    if (result.size()>0) {
+                       LoginModel loginModel=result.get(0);
+                        GlobalVar.API_TOKEN=loginModel.getToken();
+                        GlobalVar.API_TELEPHONE=loginModel.getTelephone();
+                        GlobalVar.API_PASSWORD=loginModel.getPassword();
+                    }
+                    realm.commitTransaction();
+
+                } else {
+                }
+                } catch (RealmMigrationNeededException ex) {
+                    ex.printStackTrace();
+                }
 
                 initFragments();
             } else {

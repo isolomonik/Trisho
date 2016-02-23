@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.isolomonik.trisho.Loaders.RegisterLoader;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.Loaders.LoginLoader;
+import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.FragmentCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import io.realm.Realm;
 
 //import retrofit2.Response;
 
@@ -42,6 +45,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     private AsyncTaskLoader<String> loginLoader;
     private AsyncTaskLoader<String> registerLoader;
 
+    Realm realm;
 
 
     @Override
@@ -62,14 +66,21 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-
+        realm = Realm.getInstance(this.getContext());
         telephone = (EditText) v.findViewById(R.id.telephoneEdit);
         password = (EditText) v.findViewById(R.id.passwordEdit);
+
+        telephone.setText(GlobalVar.API_TELEPHONE);
+        password.setText(GlobalVar.API_PASSWORD);
         v.findViewById(R.id.singinBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             //    testHTTP();
             //    testOKHttp();
+
+
+
+
             startLoginLoader();
             }
         });
@@ -97,30 +108,36 @@ fragmentCallBackInterface.newUserSubmit();
     //----to implement Loaders
 
     public AsyncTaskLoader<String> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader<String> loader=null;
-        switch (id) {
-            case GlobalVar.LOADER_LOGIN_ID:
-                loginLoader = new LoginLoader(getActivity(), args);
-                loader = loginLoader;
-                break;
-            case GlobalVar.LOADER_REGISTER_ID:
-                registerLoader = new RegisterLoader(getActivity(), args);
-                loader = registerLoader;
-                break;
 
-        } return loader;
-
+return new LoginLoader(getActivity(), args);
     }
 
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(GlobalVar.MY_LOG, data);
+        // TODO: 24.02.16    token=null
         GlobalVar.API_TOKEN = data;
-fragmentCallBackInterface.loginSubmit();
+
+      LoginModel  loginModel = new LoginModel();
+        loginModel.setTelephone(telephone.getText().toString());
+        loginModel.setPassword(password.getText().toString());
+        loginModel.setToken(data);
+
+
+        realm.beginTransaction();
+        realm.clear(LoginModel.class);
+        realm.copyToRealmOrUpdate(loginModel);
+        realm.commitTransaction();
+        Log.v(GlobalVar.MY_LOG, "loginModel saved in realm");
+
+
+        fragmentCallBackInterface.loginSubmit();
 
     }
 
     public void onLoaderReset(Loader<String> loader) {
+
         Log.d(GlobalVar.MY_LOG, "onLoaderReset");
+        GlobalVar.API_TOKEN="";
     }
 
 
