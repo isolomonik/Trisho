@@ -91,8 +91,7 @@ public class PurchaseListFragment extends Fragment implements  LoaderManager.Loa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_purchase_list, container, false);
-        tvTest= (TextView)v.findViewById(R.id.testTV);
-        tvTest.setText(GlobalVar.API_TOKEN);
+
         return v;
     }
 

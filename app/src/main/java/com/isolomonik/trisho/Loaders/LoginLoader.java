@@ -109,19 +109,22 @@ OKHttp();
         try {
 
             JSONObject login = new JSONObject();
-            login.put("Telephone", "0636994493");
-            login.put("Password", "123456");
+            login.put("Telephone", telephone);
+            login.put("Password", passw);
 
             OkHttpClient client = new OkHttpClient();
 
             RequestBody body = RequestBody.create(JSON, login.toString());
             Request request = new Request.Builder()
-                    .url("http://solomon-001-site1.btempurl.com/api/Login")
+                    .url(GlobalVar.URL_API+"api/Login")
                     .post(body)
                     .build();
             okhttp3.Response response = client.newCall(request)
                     .execute();
-        token=  response.body().string();
+
+       String resp =  response.body().string();
+            token =resp.replaceAll("\"", "");
+
         }catch (Exception e){
             e.printStackTrace();
         }

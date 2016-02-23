@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
    public void loginSubmit() {
         purchaseListFragment = new PurchaseListFragment();
         Log.v(GlobalVar.MY_LOG,GlobalVar.API_TOKEN);
-       // fragmentTransaction.detach(loginFragment);
-        fm.beginTransaction().replace(R.id.maincont, purchaseListFragment)
-                            .commit();
+
+        Intent intent = new Intent(this, PurchaseListActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
             fragmentTransaction.commit();
 
         } else {
-            PurchaseListFragment purchaseListFragment = new PurchaseListFragment();
-            fragmentTransaction.add(R.id.maincont, purchaseListFragment).commit();
+            Intent intent = new Intent(this, PurchaseListActivity.class);
+            startActivity(intent);
         }
 
     }

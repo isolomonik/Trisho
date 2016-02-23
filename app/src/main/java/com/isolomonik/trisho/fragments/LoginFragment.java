@@ -114,7 +114,8 @@ fragmentCallBackInterface.newUserSubmit();
 
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.d(GlobalVar.MY_LOG, data);
-    //    GlobalVar.API_TOKEN = data;
+        GlobalVar.API_TOKEN = data;
+fragmentCallBackInterface.loginSubmit();
 
     }
 
@@ -123,34 +124,5 @@ fragmentCallBackInterface.newUserSubmit();
     }
 
 
-    void testHTTP() {
-        try {
-            String query = GlobalVar.URL_API + "api/Login";
-            // String query ="http://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
-            URL searchURL = new URL(query);
-
-            HttpURLConnection httpURLConnection = (HttpURLConnection) searchURL.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoInput(true);
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpURLConnection.connect();
-
-            JSONObject login = new JSONObject();
-            login.put("Telephone", "0636994493");
-            login.put("Password", "123456");
-
-            //  if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-            wr.write(login.toString());
-            wr.flush();
-            String HttpResult = httpURLConnection.getResponseMessage();
-            //   }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

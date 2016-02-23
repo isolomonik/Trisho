@@ -2,18 +2,34 @@ package com.isolomonik.trisho.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.Realm;
 
-public class LoginModel {
-    public LoginModel(String telephone, String passw) {
-        this.telephone=telephone;
-        this.password=passw;
+
+public class LoginModel
+        // extends Realm
+{
+
+    @SerializedName("Password")
+    private String password = "";
+
+    @SerializedName("Telephone")
+    private String telephone = "";
+
+    public String getPassword() {
+        return password;
     }
 
-  @SerializedName("Telephone")
-    String telephone="";
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  @SerializedName("Password")
-    String password="";
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
 
 }
