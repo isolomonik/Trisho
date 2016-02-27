@@ -1,14 +1,27 @@
 package com.isolomonik.trisho.models;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class PurchaseItemModel  extends RealmObject {
 
+ @SerializedName("ProductGuid")
+@PrimaryKey
 private String productGuid="";
+
+    @SerializedName("ProductName")
     private String productName="";
+
+    @SerializedName("Description")
     private String description="";
+
+    @SerializedName("Count")
     private double count;
+
+    @SerializedName("Status")
     private String status="";
 
     public String getProductGuid() {

@@ -43,7 +43,7 @@ public class PurchaseListFragment extends Fragment implements
 
     private RecyclerView recyclerView;
     private PurchaseListAdapter adapter;
-    private ArrayList<PurchaseModel> purchaseList = new ArrayList<>();
+ //   private ArrayList<PurchaseModel> purchaseList = new ArrayList<>();
 
 
     public PurchaseListFragment() {
@@ -78,12 +78,7 @@ public class PurchaseListFragment extends Fragment implements
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         realm = Realm.getInstance(getContext());
-        realm.beginTransaction();
-        RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
-        realm.commitTransaction();
-        adapter = new PurchaseListAdapter(this, result);
-        recyclerView.setAdapter(adapter);
-     //   purchaseList.addAll(result);
+     //  initAdapter();
 
     }
 
@@ -106,6 +101,12 @@ public class PurchaseListFragment extends Fragment implements
         realm.copyToRealmOrUpdate(data);
         realm.commitTransaction();
         Log.v(GlobalVar.MY_LOG, "to realm inserted" + realm.allObjects(PurchaseModel.class).size());
+        realm.beginTransaction();
+        RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
+        realm.commitTransaction();
+        adapter = new PurchaseListAdapter(this, result);
+        recyclerView.setAdapter(adapter);
+        //   purchaseList.addAll(result);
     }
 
     @Override
@@ -133,9 +134,16 @@ public class PurchaseListFragment extends Fragment implements
     public void showItems(String guid) {
        // String guid= purchaseList.get(position).getGuid();
         Intent intent = new Intent(getContext(), PurchaseItemsActivity.class);
-        intent.putExtra("guid",guid);
+        intent.putExtra("guid", guid);
         startActivity(intent);
     }
 
-
+void initAdapter(){
+    realm.beginTransaction();
+    RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
+    realm.commitTransaction();
+    adapter = new PurchaseListAdapter(this, result);
+    recyclerView.setAdapter(adapter);
+    //   purchaseList.addAll(result);
+}
 }

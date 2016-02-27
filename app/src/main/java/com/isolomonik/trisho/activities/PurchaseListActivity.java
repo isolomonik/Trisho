@@ -9,6 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.fragments.PurchaseListFragment;
@@ -44,9 +47,29 @@ public class PurchaseListActivity extends AppCompatActivity
    // @Override
     public void showItems(String guid) {
         Intent intent = new Intent(this, PurchaseItemsActivity.class);
-
-      //  intent.putExtra("guid", purchaseList.get(position).getGuid());
         intent.putExtra("guid", guid);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.logout:
+//                GlobalVar.API_TOKEN="";
+//                Intent intent = new Intent(this, MainActivity.class);
+//                startActivity(intent);
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

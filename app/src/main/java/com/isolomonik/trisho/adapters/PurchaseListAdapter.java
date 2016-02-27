@@ -58,7 +58,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
         if (purchase != null) {
 
            holder.purchaseName.setText(purchase.getName());
-            holder.createdDateTime.setText(purchase.getCreatedDateTime());
+            holder.createdDateTime.setText(purchase.getCreatedDateTime().substring(0,10));
 
         }
     }

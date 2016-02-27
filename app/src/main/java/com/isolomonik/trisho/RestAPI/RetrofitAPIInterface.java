@@ -1,6 +1,7 @@
 package com.isolomonik.trisho.RestAPI;
 
 import com.isolomonik.trisho.models.LoginModel;
+import com.isolomonik.trisho.models.PurchaseItemModel;
 import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.models.RegisterModel;
 
@@ -34,4 +35,8 @@ public interface RetrofitAPIInterface {
     @Headers("Content-Type: application/json")
     @GET("api/Purchase")
     Call<List<PurchaseModel>> purchaseList(@QueryMap Map<String, String> parameters);
+
+    @Headers("Content-Type: application/json")
+    @GET("api/PurchaseItem")
+    Call<List<PurchaseItemModel>> purchaseItems(@QueryMap Map<String, String> parameters);
 }

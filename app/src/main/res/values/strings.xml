@@ -30,4 +30,5 @@
     <string name="addPurchase">add new</string>
     <string name="labelPurchase">PURCHASE</string>
     <string name="shown" >Shown </string>
+    <string name="labelProducts">PRODUCTS</string>
 </resources>

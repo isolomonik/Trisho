@@ -63,7 +63,7 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
             RequestBody body = RequestBody.create(mt, json.toString());
             Request request = new Request.Builder()
                     .url(GlobalVar.URL_API + "api/Register")
-                    .post(body)
+                    .put(body)
                     .build();
             okhttp3.Response response = client.newCall(request)
                     .execute();
@@ -76,5 +76,28 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
             e.printStackTrace();
         }
         return token;
+    }
+
+
+    @Override
+    protected void onStartLoading() {
+
+            forceLoad();
+
+    }
+
+    @Override
+    protected void onStopLoading() {
+        cancelLoad();
+    }
+
+
+    @Override
+    protected void onReset() {
+        super.onReset();
+
+        onStopLoading();
+
+
     }
 }

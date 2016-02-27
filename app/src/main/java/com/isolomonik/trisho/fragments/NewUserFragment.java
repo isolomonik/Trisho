@@ -65,6 +65,11 @@ Realm realm;
         // Inflate the layout for this fragment
         realm = Realm.getInstance(this.getContext());
         View v = inflater.inflate(R.layout.fragment_new_user, container, false);
+        name=(EditText) v.findViewById(R.id.editTextName);
+        email=(EditText) v.findViewById(R.id.editTextEmail);
+        telephone=(EditText) v.findViewById(R.id.editTextTelephoneNewUser);
+        password=(EditText) v.findViewById(R.id.editTextPassw);
+
         v.findViewById(R.id.btnRegister).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
