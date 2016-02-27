@@ -22,7 +22,7 @@ private String productGuid="";
     private double count;
 
     @SerializedName("Status")
-    private String status="";
+    private int status;
 
     public String getProductGuid() {
         return productGuid;
@@ -56,11 +56,11 @@ private String productGuid="";
         this.count = count;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

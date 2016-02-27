@@ -60,8 +60,8 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
             holder.productName.setText(product.getProductName());
             holder.count.setText(String.valueOf(product.getCount()));
-            holder.isDone.setText(product.getStatus());
-            holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
+            holder.isDone.setText(String.valueOf(product.getStatus()));
+          //  holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
 
         }
     }
