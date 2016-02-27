@@ -1,9 +1,15 @@
 package com.isolomonik.trisho.models;
 
 
-public class PurchaseItem {
+import io.realm.RealmObject;
+
+public class PurchaseItemModel  extends RealmObject {
 
 private String productGuid="";
+    private String productName="";
+    private String description="";
+    private double count;
+    private String status="";
 
     public String getProductGuid() {
         return productGuid;
@@ -37,17 +43,14 @@ private String productGuid="";
         this.count = count;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    private String productName="";
-    private String description="";
-    private double count;
-    private int status=1;
+
 
 }

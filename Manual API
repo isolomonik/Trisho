@@ -103,12 +103,16 @@ Response: string (guid of new account)
 Url: /api/Purchase?take={0}&skip={1}&token={2}
 Method: GET
 Response: PurchaseModel
+
+
 3.3.2. Add new purchase
 
 Url: /api/Purchase?token={0}
 Method: PUT
 Body: PurchaseModel
 Response: string (guid of new purchase)
+
+
 3.3.3. Update exists purchase
 
 Url: /api/Purchase?token={0}

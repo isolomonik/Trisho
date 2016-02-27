@@ -27,4 +27,7 @@
     <string name="btnNewUser">New user</string>
     <string name="tvName">Name:</string>
     <string name="title_activity_purchase_list">PurchaseListActivity</string>
+    <string name="addPurchase">add new</string>
+    <string name="labelPurchase">PURCHASE</string>
+    <string name="shown" >Shown </string>
 </resources>

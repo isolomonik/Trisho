@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.MainActivity"
-            android:screenOrientation="reversePortrait" >
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,6 +29,8 @@
         <activity android:name=".activities.NewUserActivity" >
         </activity>
         <activity android:name=".activities.PurchaseListActivity" >
+        </activity>
+        <activity android:name=".activities.PurchaseItemsActivity" >
         </activity>
     </application>
 

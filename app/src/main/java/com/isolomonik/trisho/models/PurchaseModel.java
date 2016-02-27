@@ -1,12 +1,23 @@
 package com.isolomonik.trisho.models;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class PurchaseModel extends RealmObject {
+    @SerializedName("Guid")
+    @PrimaryKey
     private String guid = "";
+
+    @SerializedName("Name")
     private String name = "";
+
+    @SerializedName("CreatedDateTime")
     private String createdDateTime = "";
+
+    @SerializedName("isOwn")
     private boolean isOwn = true;
 
     public String getGuid() {return guid;}
