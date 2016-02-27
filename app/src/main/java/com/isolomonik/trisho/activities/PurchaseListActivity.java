@@ -32,7 +32,7 @@ public class PurchaseListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         //  toolbar.setLogo(R.drawable.ic_10d);
 
-        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setTitle(R.string.labelPurchase);
 
         purchaseListFragment=new PurchaseListFragment();
         if (savedInstanceState == null) {

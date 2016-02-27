@@ -26,7 +26,7 @@ public class PurchaseItemsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //  toolbar.setLogo(R.drawable.ic_10d);
 
-        getSupportActionBar().setTitle(R.string.app_name);
+        getSupportActionBar().setTitle(R.string.labelProducts);
 
         productFragment=new ProductsFragment();
         if (savedInstanceState == null) {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.R;
@@ -14,9 +15,6 @@ import com.isolomonik.trisho.utils.GlobalVar;
 
 import io.realm.RealmResults;
 
-/**
- * Created by ira on 27.02.16.
- */
 public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdapter.ItemHolder> {
 
 
@@ -25,10 +23,12 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView productName;
+        EditText count;
         CheckBox isDone;
         public ItemHolder(View itemView) {
             super(itemView);
             this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
+            this.count = (EditText) itemView.findViewById(R.id.etCount);
             this.isDone = (CheckBox) itemView.findViewById(R.id.chbDone);
         }
     }
@@ -59,6 +59,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         if (product != null) {
 
             holder.productName.setText(product.getProductName());
+            holder.count.setText(String.valueOf(product.getCount()));
             holder.isDone.setText(product.getStatus());
             holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
 

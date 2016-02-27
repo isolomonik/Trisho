@@ -27,9 +27,9 @@ public static String URL_API="http://solomon-001-site1.btempurl.com/";
     public static final int LOADER_PURCHASE_ITEMS_ID = 4;
 
 
-    public static int STATUS_ADD=1;
+    public static int STATUS_ADD=0;
     public static int STATUS_DONE=2;
-    public static int STATUS_IGNOR=3;
+    public static int STATUS_IGNOR=1;
 
 }
 
