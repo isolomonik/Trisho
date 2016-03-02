@@ -73,7 +73,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        realm = Realm.getDefaultInstance();
         Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_main);
         //       GlobalVar gv=new GlobalVar();
 
@@ -88,9 +91,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
 
 
                 try {
-                    realm = Realm.getInstance(this.getApplicationContext());
-
-                if (realm.allObjects(LoginModel.class).size() != 0) {
+                    if (realm.allObjects(LoginModel.class).size() != 0) {
                     realm.beginTransaction();
                     RealmResults<LoginModel> result = realm.where(LoginModel.class).findAll();
 
@@ -148,6 +149,10 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
 
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
 
 }

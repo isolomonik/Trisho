@@ -16,8 +16,12 @@ public class TrishoApp extends Application {
     public void onCreate() {
         super.onCreate();
         GlobalVar gv=new GlobalVar();
+//        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+//        Realm.setDefaultConfiguration(realmConfiguration);
+
+
         RealmConfiguration config = new RealmConfiguration.Builder(this)
-                .deleteRealmIfMigrationNeeded()
+        //        .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
     }
