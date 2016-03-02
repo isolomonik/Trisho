@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.fragments.LoginFragment;
 import com.isolomonik.trisho.fragments.PurchaseListFragment;
@@ -23,6 +24,7 @@ import com.isolomonik.trisho.models.LoginModel;
 import com.isolomonik.trisho.utils.FragmentCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,14 +62,18 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
    public void loginSubmit() {
         purchaseListFragment = new PurchaseListFragment();
         Log.v(GlobalVar.MY_LOG, GlobalVar.API_TOKEN);
-
+//fragmentTransaction.
+ //       fragmentTransaction.remove(loginFragment);
+ //       fragmentTransaction.commit();
         Intent intent = new Intent(this, PurchaseListActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         //       GlobalVar gv=new GlobalVar();
 
@@ -93,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
                         GlobalVar.API_TOKEN=loginModel.getToken();
                         GlobalVar.API_TELEPHONE=loginModel.getTelephone();
                         GlobalVar.API_PASSWORD=loginModel.getPassword();
+                        GlobalVar.API_USERNAME=loginModel.getUserName();
+
                     }
                     realm.commitTransaction();
 
@@ -119,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
         } else {
             Intent intent = new Intent(this, PurchaseListActivity.class);
             startActivity(intent);
+            finish();
         }
 
     }

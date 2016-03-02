@@ -27,6 +27,8 @@ public class PurchaseItemsActivity extends AppCompatActivity {
         //  toolbar.setLogo(R.drawable.ic_10d);
 
         getSupportActionBar().setTitle(R.string.labelProducts);
+       // getSupportActionBar().setHomeButtonEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         productFragment=new ProductsFragment();
         if (savedInstanceState == null) {

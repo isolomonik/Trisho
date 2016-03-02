@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface AdapterCallBackInterface {
 
-    void showItems(String guid);
+    void showItems(String guid, String name);
   //  ArrayList<PurchaseModel> getPurchaseList();
 }

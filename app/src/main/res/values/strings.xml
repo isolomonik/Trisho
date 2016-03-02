@@ -21,6 +21,7 @@
     <string name="singin">Sing in</string>
     <string name="telephoneTV">telephone</string>
     <string name="password">password</string>
+    <string name="user"></string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,7 +29,7 @@
     <string name="tvName">Name:</string>
     <string name="title_activity_purchase_list">PurchaseListActivity</string>
     <string name="addPurchase">add new</string>
-    <string name="labelPurchase">PURCHASE</string>
+    <string name="labelPurchase">PURCHASES</string>
     <string name="shown" >Shown </string>
     <string name="labelProducts">PRODUCTS</string>
 </resources>

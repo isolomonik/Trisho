@@ -47,7 +47,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
             public void onClick(View v) {
 
                 AdapterCallBackInterface myInterface = (AdapterCallBackInterface) context;
-                myInterface.showItems(purchases.get(purchaseHolder.getAdapterPosition()).getGuid());
+                myInterface.showItems(purchases.get(purchaseHolder.getAdapterPosition()).getGuid(), purchases.get(purchaseHolder.getAdapterPosition()).getName());
             }
         });
         return purchaseHolder;

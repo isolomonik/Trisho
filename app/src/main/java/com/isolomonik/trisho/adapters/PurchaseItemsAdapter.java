@@ -1,5 +1,6 @@
 package com.isolomonik.trisho.adapters;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
     public PurchaseItemsAdapter(Fragment context, RealmResults<PurchaseItemModel> items) {
         this.context = context;
         this.items = items;
+        this.items.sort("status");
     }
 
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,8 +62,11 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
             holder.productName.setText(product.getProductName());
             holder.count.setText(String.valueOf(product.getCount()));
-            holder.isDone.setText(String.valueOf(product.getStatus()));
-          //  holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
+          //  holder.isDone.setText(String.valueOf(product.getStatus()));
+            holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
+            if(product.getStatus().equals("Ignored")){
+                holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
+            }
 
         }
     }

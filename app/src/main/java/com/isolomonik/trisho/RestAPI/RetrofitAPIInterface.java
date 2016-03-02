@@ -12,6 +12,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -25,7 +26,7 @@ public interface RetrofitAPIInterface {
     @Headers({ "Accept: application/json",
                "Content-Type: application/json; charset=utf-8"})
     @POST("api/Login")
-    Call<String> loginToken(@Body LoginModel loginModel);
+    Call<LoginModel> loginToken(@Body LoginModel loginModel);
 
 
     @Headers("Content-Type: application/json")
@@ -39,4 +40,8 @@ public interface RetrofitAPIInterface {
     @Headers("Content-Type: application/json")
     @GET("api/PurchaseItem")
     Call<List<PurchaseItemModel>> purchaseItems(@QueryMap Map<String, String> parameters);
+
+
+    @DELETE("api/Login")
+    Call<String> logout (@Query ("token") String token);
 }

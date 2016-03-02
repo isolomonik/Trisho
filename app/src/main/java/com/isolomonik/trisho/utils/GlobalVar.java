@@ -18,6 +18,7 @@ public class GlobalVar {
 public static String API_TOKEN="";
 public static String API_TELEPHONE="";
 public static String API_PASSWORD="";
+public static String API_USERNAME="";
 
 public static String URL_API="http://solomon-001-site1.btempurl.com/";
 
@@ -28,7 +29,7 @@ public static String URL_API="http://solomon-001-site1.btempurl.com/";
 
 
     public static int STATUS_ADD=0;
-    public static int STATUS_DONE=2;
+    public static String STATUS_DONE="Done";
     public static int STATUS_IGNOR=1;
 
 }

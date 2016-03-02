@@ -6,4 +6,9 @@
         android:title="Logout"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/user"
+        android:title="@string/user"
+        app:showAsAction="always" />
 </menu>

@@ -32,7 +32,7 @@ import io.realm.Realm;
 //import retrofit2.Response;
 
 
-public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>
+public class LoginFragment extends Fragment implements LoaderManager.LoaderCallbacks<LoginModel>
 //, Callback<String>
 
 {
@@ -42,7 +42,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     private FragmentCallBackInterface fragmentCallBackInterface;
 
 
-    private AsyncTaskLoader<String> loginLoader;
+    private AsyncTaskLoader<LoginModel> loginLoader;
     private AsyncTaskLoader<String> registerLoader;
 
     Realm realm;
@@ -107,20 +107,22 @@ fragmentCallBackInterface.newUserSubmit();
 
     //----to implement Loaders
 
-    public AsyncTaskLoader<String> onCreateLoader(int id, Bundle args) {
+    public AsyncTaskLoader<LoginModel> onCreateLoader(int id, Bundle args) {
 
 return new LoginLoader(getActivity(), args);
     }
 
-    public void onLoadFinished(Loader<String> loader, String data) {
-        Log.d(GlobalVar.MY_LOG, data);
+    public void onLoadFinished(Loader<LoginModel> loader, LoginModel data) {
+        Log.d(GlobalVar.MY_LOG, data.getToken());
         // TODO: 24.02.16    token=null
-        GlobalVar.API_TOKEN = data;
+        GlobalVar.API_TOKEN = data.getToken();
 
       LoginModel  loginModel = new LoginModel();
         loginModel.setTelephone(telephone.getText().toString());
         loginModel.setPassword(password.getText().toString());
-        loginModel.setToken(data);
+        loginModel.setUserName(data.getUserName());
+        loginModel.setToken(data.getToken());
+        loginModel.setUserGuid(data.getUserGuid());
 
 
         realm.beginTransaction();
@@ -129,12 +131,12 @@ return new LoginLoader(getActivity(), args);
         realm.commitTransaction();
         Log.v(GlobalVar.MY_LOG, "loginModel saved in realm");
 
-
+getActivity().finish();
         fragmentCallBackInterface.loginSubmit();
 
     }
 
-    public void onLoaderReset(Loader<String> loader) {
+    public void onLoaderReset(Loader<LoginModel> loader) {
 
         Log.d(GlobalVar.MY_LOG, "onLoaderReset");
         GlobalVar.API_TOKEN="";

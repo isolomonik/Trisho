@@ -20,6 +20,17 @@ public class PurchaseModel extends RealmObject {
     @SerializedName("isOwn")
     private boolean isOwn = true;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @SerializedName("Status")
+    private String status ;
+
     public String getGuid() {return guid;}
 
     public void setGuid(String guid) {this.guid = guid; }

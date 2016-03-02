@@ -7,23 +7,30 @@ import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import com.isolomonik.trisho.RestAPI.APIFactory;
+import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
 import com.isolomonik.trisho.models.LoginModel;
+import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
 
 import io.realm.Realm;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import retrofit2.Call;
 
 
-public class LoginLoader extends AsyncTaskLoader<String> {
+public class LoginLoader extends AsyncTaskLoader<LoginModel> {
     private String telephone;
     private String passw;
     private String token = "";
-  //  private LoginModel loginModel;
+    private LoginModel user;
 
 
     public LoginLoader(Context context, Bundle args) {
@@ -37,32 +44,44 @@ public class LoginLoader extends AsyncTaskLoader<String> {
     }
 
     @Override
-    public String loadInBackground() {
+    public LoginModel loadInBackground() {
         Log.d(GlobalVar.MY_LOG, hashCode() + " login loading start");
 
-        OKHttp();
-        return token;
+        try{
+        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
+        LoginModel login = new LoginModel();
+        login.setTelephone( telephone);
+        login.setPassword(passw);
+        Call<LoginModel> call = rest.loginToken(login);
+
+          user = call.execute().body();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Log.v("my_log", "loaded token" + user.getToken());
+        return user;
+
+       // OKHttp();
+       // return token;
     }
 
-    @Override
-    public void deliverResult(String data) {
-        if (isReset()) {
-            token = "";
-            return;
-        }
-        if (isStarted()) {
-            super.deliverResult(data);
-        }
-    }
+//    @Override
+//    public void deliverResult(String data) {
+//        if (isReset()) {
+//            token = "";
+//            return;
+//        }
+//        if (isStarted()) {
+//            super.deliverResult(data);
+//        }
+//    }
 
     @Override
     protected void onStartLoading() {
-        if (!token.equals("")) {
-            deliverResult(token);
-        }
-        if (takeContentChanged() || token.equals("")) {
+
             forceLoad();
-        }
+
     }
 
     @Override
@@ -71,7 +90,7 @@ public class LoginLoader extends AsyncTaskLoader<String> {
     }
 
     @Override
-    public void onCanceled(String data) {
+    public void onCanceled(LoginModel data) {
         token = "";
     }
 

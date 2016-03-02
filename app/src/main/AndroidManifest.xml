@@ -32,6 +32,9 @@
         </activity>
         <activity android:name=".activities.PurchaseItemsActivity" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="45fd2be1f773506e85dc4ae20d7b88ce5bf8e4b4" />
     </application>
 
 </manifest>

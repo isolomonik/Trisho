@@ -84,8 +84,8 @@ public class PurchaseListFragment extends Fragment implements
 
     @Override
     public AsyncTaskLoader<List<PurchaseModel>> onCreateLoader(int id, Bundle args) {
-        AsyncTaskLoader<List<PurchaseModel>> nbuLoader = new PurchaseListLoader(getActivity(), args);
-        return nbuLoader;
+        AsyncTaskLoader<List<PurchaseModel>> listLoader = new PurchaseListLoader(getActivity(), args);
+        return listLoader;
     }
 
     @Override
@@ -131,19 +131,20 @@ public class PurchaseListFragment extends Fragment implements
     }
 
     @Override
-    public void showItems(String guid) {
+    public void showItems(String guid, String name) {
        // String guid= purchaseList.get(position).getGuid();
         Intent intent = new Intent(getContext(), PurchaseItemsActivity.class);
         intent.putExtra("guid", guid);
+        intent.putExtra("purchaseName", name);
         startActivity(intent);
     }
 
-void initAdapter(){
-    realm.beginTransaction();
-    RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
-    realm.commitTransaction();
-    adapter = new PurchaseListAdapter(this, result);
-    recyclerView.setAdapter(adapter);
-    //   purchaseList.addAll(result);
-}
+//void initAdapter(){
+//    realm.beginTransaction();
+//    RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
+//    realm.commitTransaction();
+//    adapter = new PurchaseListAdapter(this, result);
+//    recyclerView.setAdapter(adapter);
+//    //   purchaseList.addAll(result);
+//}
 }

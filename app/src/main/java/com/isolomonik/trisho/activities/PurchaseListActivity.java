@@ -65,6 +65,10 @@ public class PurchaseListActivity extends AppCompatActivity
                 return true;
             case R.id.logout:
 //                GlobalVar.API_TOKEN="";
+//                final FragmentManager fragmentManager = getSupportFragmentManager();
+//                while (fragmentManager.getBackStackEntryCount() != 0) {
+//                    fragmentManager.popBackStackImmediate();
+//                }
 //                Intent intent = new Intent(this, MainActivity.class);
 //                startActivity(intent);
             default:

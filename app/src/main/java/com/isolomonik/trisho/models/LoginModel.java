@@ -30,6 +30,28 @@ public class LoginModel
     @PrimaryKey
     private String token = "";
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserGuid() {
+        return userGuid;
+    }
+
+    public void setUserGuid(String userGuid) {
+        this.userGuid = userGuid;
+    }
+
+    @SerializedName("UserName")
+    private String userName = "";
+
+    @SerializedName("UserGuid")
+    private String userGuid = "";
+
     public String getToken() {
         return token;
     }

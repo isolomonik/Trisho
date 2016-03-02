@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.isolomonik.trisho.Loaders.PurchaseItemsLoader;
 import com.isolomonik.trisho.Loaders.PurchaseListLoader;
@@ -35,6 +36,7 @@ public class ProductsFragment extends Fragment implements
 {
     Realm realm;
     String guid;
+    String purchaseName;
     private RecyclerView recyclerView;
     private PurchaseItemsAdapter adapter;
 
@@ -46,11 +48,15 @@ public class ProductsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
       View v =inflater.inflate(R.layout.fragment_products, container, false);
-        if(getArguments() != null)
+        if(getArguments() != null){
             guid = getArguments().getString("guid");
+            purchaseName = getArguments().getString("purchaseName");}
+        ((TextView) v.findViewById(R.id.tvPurchaseName)).setText(purchaseName);
 
         return v;
     }
+
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
