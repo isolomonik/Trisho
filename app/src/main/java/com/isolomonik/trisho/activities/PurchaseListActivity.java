@@ -4,6 +4,7 @@ package com.isolomonik.trisho.activities;
 //import android.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,7 @@ import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 public class PurchaseListActivity extends AppCompatActivity
-//implements AdapterCallBackInterface
+        implements AdapterCallBackInterface
 {
     PurchaseListFragment  purchaseListFragment;
 
@@ -44,11 +45,19 @@ public class PurchaseListActivity extends AppCompatActivity
 
     }
 
-   // @Override
-    public void showItems(String guid) {
+    @Override
+    public void showItems(String guid, String name) {
+        // String guid= purchaseList.get(position).getGuid();
         Intent intent = new Intent(this, PurchaseItemsActivity.class);
         intent.putExtra("guid", guid);
+        intent.putExtra("purchaseName", name);
         startActivity(intent);
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+
     }
 
     @Override

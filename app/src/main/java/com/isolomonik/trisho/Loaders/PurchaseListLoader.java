@@ -38,7 +38,7 @@ public class PurchaseListLoader  extends AsyncTaskLoader<List<PurchaseModel>> {
 
         RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("take", "15");
+        parameters.put("take", "50");
         parameters.put("skip", "0");
         parameters.put("token", GlobalVar.API_TOKEN);
         Call<List<PurchaseModel>> call = rest.purchaseList(parameters);
