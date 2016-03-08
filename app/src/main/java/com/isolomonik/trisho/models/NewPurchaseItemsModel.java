@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 
 
 public class NewPurchaseItemsModel
-//        extends RealmObject
+        //extends RealmObject
 {
     private String purchaseGuid="";
     private CustomProducts[] customProductses;

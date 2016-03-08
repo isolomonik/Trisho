@@ -18,7 +18,7 @@ public class PurchaseModel extends RealmObject {
     private String createdDateTime = "";
 
     @SerializedName("isOwn")
-    private boolean isOwn = true;
+    private boolean isOwn ;
 
     public String getStatus() {
         return status;

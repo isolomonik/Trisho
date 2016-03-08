@@ -6,16 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.Loaders.PurchaseListLoader;
@@ -44,10 +47,16 @@ public class PurchaseListFragment extends Fragment implements
     private RecyclerView recyclerView;
     private PurchaseListAdapter adapter;
  //   private ArrayList<PurchaseModel> purchaseList = new ArrayList<>();
-
+ private Button btnAddPurchase;
 
     public PurchaseListFragment() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_LIST_ID, null, this);
     }
 
     @Override
@@ -56,7 +65,7 @@ public class PurchaseListFragment extends Fragment implements
 
         setHasOptionsMenu(true);
 
-        getLoaderManager().initLoader(GlobalVar.LOADER_PURCHASE_LIST_ID, null, this);
+   //     getLoaderManager().initLoader(GlobalVar.LOADER_PURCHASE_LIST_ID, null, this);
     }
 
     @Override
@@ -64,7 +73,14 @@ public class PurchaseListFragment extends Fragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_purchase_list, container, false);
-
+        btnAddPurchase =(Button) v.findViewById(R.id.btnAddPurchase);
+        btnAddPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dlgNewPurchase=new DialogNewPurchaseFragment();
+                dlgNewPurchase.show(getFragmentManager(), "insert new purchase");
+            }
+        });
         return v;
     }
 
@@ -72,10 +88,19 @@ public class PurchaseListFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        final SwipeRefreshLayout sLay=(SwipeRefreshLayout)view.findViewById(R.id.swipePurchase);
+//        sLay.setColorScheme(R.color.cardview_light_background);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        sLay.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                // Refresh items
+                Log.v(GlobalVar.MY_LOG, "PurchaseList is updated");
+            }
+        });
         recyclerView.setLayoutManager(layoutManager);
         realm = Realm.getInstance(getContext());
      //  initAdapter();
@@ -84,6 +109,7 @@ public class PurchaseListFragment extends Fragment implements
 
     @Override
     public AsyncTaskLoader<List<PurchaseModel>> onCreateLoader(int id, Bundle args) {
+
         AsyncTaskLoader<List<PurchaseModel>> listLoader = new PurchaseListLoader(getActivity(), args);
         return listLoader;
     }

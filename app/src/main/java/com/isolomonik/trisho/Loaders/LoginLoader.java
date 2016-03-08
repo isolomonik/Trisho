@@ -66,16 +66,6 @@ public class LoginLoader extends AsyncTaskLoader<LoginModel> {
        // return token;
     }
 
-//    @Override
-//    public void deliverResult(String data) {
-//        if (isReset()) {
-//            token = "";
-//            return;
-//        }
-//        if (isStarted()) {
-//            super.deliverResult(data);
-//        }
-//    }
 
     @Override
     protected void onStartLoading() {

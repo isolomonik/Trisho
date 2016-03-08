@@ -41,6 +41,13 @@ public interface RetrofitAPIInterface {
     @GET("api/PurchaseItem")
     Call<List<PurchaseItemModel>> purchaseItems(@QueryMap Map<String, String> parameters);
 
+    @Headers("Content-Type: application/json")
+    @GET("api/PurchaseNames")
+    Call<String[]> purchaseNames(@QueryMap Map<String, String> parameters);
+
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @PUT("api/Purchase")
+    Call<String[]> newPurchase(@Body PurchaseModel purchaseModel, @Query ("token") String token);
 
     @DELETE("api/Login")
     Call<String> logout (@Query ("token") String token);

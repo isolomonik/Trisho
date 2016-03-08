@@ -32,4 +32,7 @@
     <string name="labelPurchase">PURCHASES</string>
     <string name="shown" >Shown </string>
     <string name="labelProducts">PRODUCTS</string>
+    <string name="labelDialogNewItem">Add product</string>
+    <string name="etNewItemHint">Other product</string>
+    <string name="btnOKNewItem">Add to purchase</string>
 </resources>

@@ -1,13 +1,27 @@
 package com.isolomonik.trisho.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 
 public class RecomendedProductModel extends RealmObject {
-private String productGuid;
+    @SerializedName("ProductGuid")
+    @PrimaryKey
+    private String productGuid;
+
+    @SerializedName("ProductName")
     private String productName;
+
+
+    @SerializedName("IsFeaturedProducts")
     private boolean isFeaturedProducts;
+
+    @SerializedName("Matches")
     private int matches;
+
+    @SerializedName("Count")
     private double count;
 
     public String getProductGuid() {
@@ -26,9 +40,7 @@ private String productGuid;
         this.productName = productName;
     }
 
-    public boolean isFeaturedProducts() {
-        return isFeaturedProducts;
-    }
+    public boolean getIsFeaturedProducts() {return isFeaturedProducts; }
 
     public void setIsFeaturedProducts(boolean isFeaturedProducts) {
         this.isFeaturedProducts = isFeaturedProducts;

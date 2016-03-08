@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:text="OK"
+        android:id="@+id/btnDialogOK"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:text="Cancel"
+        android:id="@+id/btnDialogCancel"
+        android:layout_marginLeft="20dp" />
+</LinearLayout>
