@@ -23,7 +23,7 @@
     <string name="password">password</string>
     <string name="user"></string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btnNewUser">New user</string>
     <string name="tvName">Name:</string>
@@ -35,4 +35,6 @@
     <string name="labelDialogNewItem">Add product</string>
     <string name="etNewItemHint">Other product</string>
     <string name="btnOKNewItem">Add to purchase</string>
+    <string name="addItem">Add products</string>
+    <string name="btnSavePurchase">SAVE</string>
 </resources>

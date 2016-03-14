@@ -1,5 +1,6 @@
 package com.isolomonik.trisho.adapters;
 
+
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -7,57 +8,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.R;
-import com.isolomonik.trisho.models.PurchaseItemModel;
+import com.isolomonik.trisho.models.RecomendedProductModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import io.realm.RealmResults;
 
-public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdapter.ItemHolder> {
+public class RecommendedProductsAdapter extends RecyclerView.Adapter<RecommendedProductsAdapter.ItemHolder> {
 
 
     private Fragment context;
-    private RealmResults<PurchaseItemModel> items;
+    private RealmResults<RecomendedProductModel> items;
 
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView productName;
-        EditText count;
-        CheckBox isDone;
+        CheckBox add;
         public ItemHolder(View itemView) {
             super(itemView);
-            this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
-            this.count = (EditText) itemView.findViewById(R.id.etCount);
-            this.isDone = (CheckBox) itemView.findViewById(R.id.chbDone);
+            this.productName = (TextView) itemView.findViewById(R.id.tvRecommendedProduct);
+            this.add = (CheckBox) itemView.findViewById(R.id.cbAddRecommended);
         }
     }
 
-    public PurchaseItemsAdapter(Fragment context, RealmResults<PurchaseItemModel> items) {
+    public RecommendedProductsAdapter(Fragment context, RealmResults<RecomendedProductModel> items) {
         this.context = context;
         this.items = items;
-        this.items.sort("status");
+        this.items.sort("isFeaturedProducts");
     }
 
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View rowView = inflater.inflate(R.layout.row_items, parent, false);
+        View rowView = inflater.inflate(R.layout.row_recommended_product, parent, false);
 
         final ItemHolder purchaseHolder = new ItemHolder(rowView);
         return purchaseHolder;
     }
 
     public void onBindViewHolder(ItemHolder holder, int position) {
-        PurchaseItemModel product = items.get(position);
+        RecomendedProductModel product = items.get(position);
         if (product != null) {
 
             holder.productName.setText(product.getProductName());
-            holder.count.setText(String.valueOf(product.getCount()));
-          //  holder.isDone.setText(String.valueOf(product.getStatus()));
-            holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
-            if(product.getStatus().equals("Ignored")){
-                holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
+            if(product.getIsFeaturedProducts()){
+                holder.productName.setBackgroundColor(Color.YELLOW);
             }
 
         }

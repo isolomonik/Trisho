@@ -1,23 +1,23 @@
 package com.isolomonik.trisho.activities;
 
-
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.isolomonik.trisho.R;
-import com.isolomonik.trisho.fragments.ItemsListFragment;
+import com.isolomonik.trisho.fragments.NewItemsFragment;
 
-public class PurchaseItemsActivity extends AppCompatActivity {
-    private ItemsListFragment productFragment;
+public class NewItemActivity extends AppCompatActivity {
     private String purchaseGuid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_purchase_items);
+        setContentView(R.layout.activity_new_item);
 
         Intent intent = getIntent();
         purchaseGuid = intent.getStringExtra("guid");
@@ -27,18 +27,20 @@ public class PurchaseItemsActivity extends AppCompatActivity {
         //  toolbar.setLogo(R.drawable.ic_10d);
 
         getSupportActionBar().setTitle(R.string.labelProducts);
-       // getSupportActionBar().setHomeButtonEnabled(true);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setHomeButtonEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        productFragment=new ItemsListFragment();
+        NewItemsFragment newItemsFragment=new NewItemsFragment();
         if (savedInstanceState == null) {
 
-            productFragment.setArguments(getIntent().getExtras());
+            newItemsFragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.itemsfragmentcont, productFragment)
+                    .add(R.id.newitemsfragmentcont, newItemsFragment)
                     .commit();
         }
+
+
 
     }
     @Override

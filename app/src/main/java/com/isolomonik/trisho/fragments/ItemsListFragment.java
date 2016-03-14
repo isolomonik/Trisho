@@ -1,6 +1,7 @@
 package com.isolomonik.trisho.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 //import android.app.Fragment;
 import android.support.v4.app.Fragment;
@@ -13,15 +14,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.Loaders.PurchaseItemsLoader;
-import com.isolomonik.trisho.Loaders.PurchaseListLoader;
 import com.isolomonik.trisho.R;
+import com.isolomonik.trisho.activities.NewItemActivity;
 import com.isolomonik.trisho.adapters.PurchaseItemsAdapter;
 import com.isolomonik.trisho.models.PurchaseItemModel;
-import com.isolomonik.trisho.models.PurchaseModel;
-import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import java.util.List;
@@ -30,7 +30,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class ProductsFragment extends Fragment implements
+public class ItemsListFragment extends Fragment implements
      //   AdapterCallBackInterface,
         LoaderManager.LoaderCallbacks<List<PurchaseItemModel>>
 {
@@ -40,18 +40,28 @@ public class ProductsFragment extends Fragment implements
     private RecyclerView recyclerView;
     private PurchaseItemsAdapter adapter;
 
-    public ProductsFragment() {
+    public ItemsListFragment() {
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-      View v =inflater.inflate(R.layout.fragment_products, container, false);
+      View v =inflater.inflate(R.layout.fragment_items, container, false);
         if(getArguments() != null){
             guid = getArguments().getString("guid");
             purchaseName = getArguments().getString("purchaseName");}
         ((TextView) v.findViewById(R.id.tvPurchaseName)).setText(purchaseName);
+        Button btnAdd= (Button) v.findViewById(R.id.btnAddItem);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ItemsListFragment.this.getContext(), NewItemActivity.class);
+                intent.putExtra("guid", guid);
+             //   intent.putExtra("purchaseName", name);
+                startActivity(intent);
+            }
+        });
 
         return v;
     }

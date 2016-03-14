@@ -12,8 +12,8 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:allowBackup="true"
         android:name=".TrishoApp"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -33,9 +33,13 @@
         </activity>
         <activity android:name=".activities.PurchaseItemsActivity" >
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="45fd2be1f773506e85dc4ae20d7b88ce5bf8e4b4" />
+
+        <activity android:name=".activities.NewItemActivity" >
+        </activity>
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ public class PurchaseItemModel  extends RealmObject {
 
  @SerializedName("ProductGuid")
 @PrimaryKey
-private String productGuid="";
+private String productGuid;
 
     @SerializedName("ProductName")
     private String productName="";
