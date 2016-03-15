@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.R;
@@ -24,11 +25,13 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView productName;
+        TextView productDescription;
         EditText count;
         CheckBox isDone;
         public ItemHolder(View itemView) {
             super(itemView);
             this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
+            this.productDescription = (TextView) itemView.findViewById(R.id.tvItemDescription);
             this.count = (EditText) itemView.findViewById(R.id.etCount);
             this.isDone = (CheckBox) itemView.findViewById(R.id.chbDone);
         }
@@ -53,8 +56,9 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         if (product != null) {
 
             holder.productName.setText(product.getProductName());
-            holder.count.setText(String.valueOf(product.getCount()));
-          //  holder.isDone.setText(String.valueOf(product.getStatus()));
+            holder.productDescription.setText(product.getDescription());
+           holder.count.setText(String.valueOf(product.getCount()));
+//            holder.isDone.setText(String.valueOf(product.getStatus()));
             holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
             if(product.getStatus().equals("Ignored")){
                 holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));

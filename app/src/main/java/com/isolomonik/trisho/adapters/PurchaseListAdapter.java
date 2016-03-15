@@ -3,16 +3,21 @@ package com.isolomonik.trisho.adapters;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
+import com.isolomonik.trisho.utils.GlobalVar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.RealmResults;
 
@@ -20,15 +25,29 @@ import io.realm.RealmResults;
 public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseHolder>{
 
     private Fragment context;
-    private final RealmResults<PurchaseModel> purchases;
+     final RealmResults<PurchaseModel> purchases;
+   // final ArrayList<PurchaseModel> purchases;
 
     class PurchaseHolder extends RecyclerView.ViewHolder {
         TextView purchaseName;
         TextView createdDateTime;
+        CheckBox chkBox;
         public PurchaseHolder(View itemView) {
             super(itemView);
             this.purchaseName = (TextView) itemView.findViewById(R.id.tvPurchaseName);
             this.createdDateTime = (TextView) itemView.findViewById(R.id.tvPurchaseDate);
+            chkBox= (CheckBox) itemView.findViewById(R.id.cbPurchaseDone);
+            chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Log.v(GlobalVar.MY_LOG, "Checked change " + purchases.get(getAdapterPosition()).getName());
+//                    if (isChecked) {
+//                        purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_DONE);
+//                    } else {
+//                        purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_ADD);
+//                    }
+                }
+            });
         }
     }
 
@@ -58,7 +77,8 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
         if (purchase != null) {
 
            holder.purchaseName.setText(purchase.getName());
-            holder.createdDateTime.setText(purchase.getCreatedDateTime().substring(0,10));
+           holder.createdDateTime.setText(purchase.getCreatedDateTime().substring(0, 10));
+           holder.chkBox.setChecked(purchase.getStatus().equals(GlobalVar.STATUS_DONE));
 
         }
     }

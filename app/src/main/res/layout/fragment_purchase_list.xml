@@ -36,15 +36,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shown"
-            android:id="@+id/textView3" />
-    </RelativeLayout>
-
 </LinearLayout>

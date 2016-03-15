@@ -32,9 +32,9 @@ public static String URL_API="http://solomon-001-site1.btempurl.com/";
     public static final int LOADER_PRODUCTS_ID = 8;
 
 
-    public static int STATUS_ADD=0;
+    public static String STATUS_ADD="Added";
     public static String STATUS_DONE="Done";
-    public static int STATUS_IGNOR=1;
+    public static String STATUS_IGNOR="Ignored";
 
 }
 

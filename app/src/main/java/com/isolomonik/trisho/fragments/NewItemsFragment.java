@@ -41,8 +41,7 @@ public class NewItemsFragment extends Fragment
     private RecommendedProductsAdapter adapter;
 
     public NewItemsFragment() {
-        // Required empty public constructor
-    }
+           }
 
 
     @Override
@@ -113,6 +112,7 @@ public class NewItemsFragment extends Fragment
             realm.beginTransaction();
             RealmResults<RecomendedProductModel> result = realm.where(RecomendedProductModel.class).findAll();
             realm.commitTransaction();
+          //  ArrayList
             adapter = new RecommendedProductsAdapter(this, result);
             recyclerView.setAdapter(adapter);
            }

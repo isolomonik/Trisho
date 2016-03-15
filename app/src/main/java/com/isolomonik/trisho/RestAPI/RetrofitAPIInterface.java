@@ -58,6 +58,10 @@ public interface RetrofitAPIInterface {
     @PUT("api/Purchase")
     Call<String[]> newPurchase(@Body PurchaseModel purchaseModel, @Query ("token") String token);
 
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @POST("api/Purchase")
+    Call<Boolean> editPurchase(@Body PurchaseModel purchaseModel, @Query ("token") String token);
+
     @DELETE("api/Login")
     Call<String> logout (@Query ("token") String token);
 }
