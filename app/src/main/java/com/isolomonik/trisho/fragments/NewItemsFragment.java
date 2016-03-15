@@ -74,6 +74,7 @@ public class NewItemsFragment extends Fragment
         // Получаем ссылку на элемент AutoCompleteTextView в разметке
         AutoCompleteTextView inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
         // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);
+        inputSearch.setThreshold(1);
         inputSearch.addTextChangedListener(new TextWatcher() {
                                                @Override
                                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
