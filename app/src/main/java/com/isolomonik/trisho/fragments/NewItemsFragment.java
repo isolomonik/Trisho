@@ -9,11 +9,17 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+//import android.widget.AutoCompleteTextView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.isolomonik.trisho.Loaders.RecommendedProductsLoader;
 import com.isolomonik.trisho.R;
@@ -30,8 +36,7 @@ import io.realm.RealmResults;
 public class NewItemsFragment extends Fragment
         implements
         //   AdapterCallBackInterface,
-        LoaderManager.LoaderCallbacks<List<RecomendedProductModel>>
-{
+        LoaderManager.LoaderCallbacks<List<RecomendedProductModel>> {
     private String guid;
     private String purchaseName;
 
@@ -41,17 +46,18 @@ public class NewItemsFragment extends Fragment
     private RecommendedProductsAdapter adapter;
 
     public NewItemsFragment() {
-           }
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-     View v=   inflater.inflate(R.layout.fragment_new_items, container, false);
-        if(getArguments() != null){
+        View v = inflater.inflate(R.layout.fragment_new_items, container, false);
+        if (getArguments() != null) {
             guid = getArguments().getString("guid");
-            purchaseName = getArguments().getString("purchaseName");}
+            purchaseName = getArguments().getString("purchaseName");
+        }
 
         Button btnCancel = (Button) v.findViewById(R.id.btnCancelSaveItems);
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +69,43 @@ public class NewItemsFragment extends Fragment
             }
 
         });
-      return  v;
-}
+
+
+        // Получаем ссылку на элемент AutoCompleteTextView в разметке
+        AutoCompleteTextView inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
+        // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+                                               @Override
+                                               public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                                                   Log.v(GlobalVar.MY_LOG, "insert new product");
+                                                   // adapter.getFilter().filter(cs);
+                                                   //getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NAMES_ID, bundle, DialogNewPurchaseFragment.this);
+
+                                               }
+
+                                               @Override
+                                               public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+
+                                               }
+
+                                               @Override
+                                               public void afterTextChanged(Editable arg0) {
+
+
+                                               }
+                                           }
+
+        );
+        // Получаем массив строк для автозаполнения
+        String[] products = {"Pizza", "Peper", "Murshmulo", "kjghfgfdfj", "kakao", "coffe"};
+        // Создаем адаптер для автозаполнения элемента AutoCompleteTextView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, products);
+        inputSearch.setAdapter(adapter);
+
+
+        return v;
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -76,6 +117,7 @@ public class NewItemsFragment extends Fragment
 
 
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -102,7 +144,7 @@ public class NewItemsFragment extends Fragment
         if ((data == null) || (realm == null)) {
             Log.v(GlobalVar.MY_LOG, "PurchaseItems is null");
             return;
-        }else {
+        } else {
             realm.beginTransaction();
             realm.clear(RecomendedProductModel.class);  // Clear the DB
             realm.copyToRealmOrUpdate(data);
@@ -112,12 +154,12 @@ public class NewItemsFragment extends Fragment
             realm.beginTransaction();
             RealmResults<RecomendedProductModel> result = realm.where(RecomendedProductModel.class).findAll();
             realm.commitTransaction();
-          //  ArrayList
+            //  ArrayList
             adapter = new RecommendedProductsAdapter(this, result);
             recyclerView.setAdapter(adapter);
-           }
-
         }
+
+    }
 
     @Override
     public void onLoaderReset(Loader<List<RecomendedProductModel>> loader) {

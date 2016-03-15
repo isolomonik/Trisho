@@ -14,9 +14,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvInsertNewProduct"
-            android:layout_gravity="center_vertical|left"
-            android:layout_weight="1"
-            android:hint="Insert product name" />
+            android:text=""
+            android:hint="Insert product name"
+            android:layout_weight="1" />
 
         <Button
             android:layout_width="wrap_content"
@@ -28,34 +28,20 @@
     </LinearLayout>
 
 
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0">
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/lvAddedItems"
-            android:layout_gravity="left|top"
-            android:choiceMode="multipleChoice"
-            android:layout_weight="1" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/lvRecomendedItems"
-            android:layout_gravity="left|top"
-            android:choiceMode="multipleChoice"
-            android:layout_weight="1" />
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:id="@+id/lvRecomendedItems"
+        android:layout_gravity="left|top"
+        android:choiceMode="multipleChoice"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1">
+        android:layout_weight="0">
 
         <Button
             android:layout_width="wrap_content"
