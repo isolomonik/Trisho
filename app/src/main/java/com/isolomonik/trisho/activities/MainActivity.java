@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
     PurchaseListFragment purchaseListFragment;
   //  NewUserFragment newUserFragment;
 
-    Realm realm;
+   private Realm realm;
 
 
     @Override

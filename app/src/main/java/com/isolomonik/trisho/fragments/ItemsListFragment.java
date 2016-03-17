@@ -34,9 +34,9 @@ public class ItemsListFragment extends Fragment implements
      //   AdapterCallBackInterface,
         LoaderManager.LoaderCallbacks<List<PurchaseItemModel>>
 {
-    Realm realm;
-    String guid;
-    String purchaseName;
+    private Realm realm;
+    private String guid;
+    private String purchaseName;
     private RecyclerView recyclerView;
     private PurchaseItemsAdapter adapter;
 
@@ -86,7 +86,7 @@ public class ItemsListFragment extends Fragment implements
         recyclerView = (RecyclerView) view.findViewById(R.id.lvItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        realm = Realm.getInstance(getContext());
+
 
 
     }
@@ -129,7 +129,7 @@ public class ItemsListFragment extends Fragment implements
         super.onStart();
         // realm = Realm.getDefaultInstance();
         try {
-            realm = Realm.getInstance(this.getContext());
+            realm = Realm.getDefaultInstance();
         }catch (Exception e){e.printStackTrace();}
 
     }

@@ -51,7 +51,7 @@ private EditText name;
 private EditText email;
 private EditText telephone;
     private EditText password;
-Realm realm;
+private  Realm realm;
 
     @Override
     public void onAttach(Context context) {
@@ -63,7 +63,7 @@ Realm realm;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        realm = Realm.getInstance(this.getContext());
+
         View v = inflater.inflate(R.layout.fragment_new_user, container, false);
         name=(EditText) v.findViewById(R.id.editTextName);
         email=(EditText) v.findViewById(R.id.editTextEmail);
@@ -128,4 +128,21 @@ Realm realm;
     public void onLoaderReset(Loader<String> loader) {
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            realm = Realm.getDefaultInstance();
+        }catch (Exception e){e.printStackTrace();}
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
+
+
 }

@@ -42,7 +42,7 @@ public class PurchaseListFragment extends Fragment implements
         AdapterCallBackInterface,
         LoaderManager.LoaderCallbacks<List<PurchaseModel>> {
 
-    Realm realm;
+    private Realm realm;
 
     private RecyclerView recyclerView;
     private PurchaseListAdapter adapter;
@@ -102,7 +102,7 @@ public class PurchaseListFragment extends Fragment implements
             }
         });
         recyclerView.setLayoutManager(layoutManager);
-        realm = Realm.getInstance(getContext());
+
      //  initAdapter();
 
     }
@@ -143,9 +143,8 @@ public class PurchaseListFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-       // realm = Realm.getDefaultInstance();
         try {
-            realm = Realm.getInstance(this.getContext());
+            realm = Realm.getDefaultInstance();
         }catch (Exception e){e.printStackTrace();}
 
     }

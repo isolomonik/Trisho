@@ -26,7 +26,7 @@ public class NewItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //  toolbar.setLogo(R.drawable.ic_10d);
 
-        getSupportActionBar().setTitle(R.string.labelProducts);
+        getSupportActionBar().setTitle("Add products");
         // getSupportActionBar().setHomeButtonEnabled(true);
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

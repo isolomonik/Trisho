@@ -51,10 +51,10 @@ public class RecommendedProductsAdapter extends RecyclerView.Adapter<Recommended
         if (product != null) {
 
             holder.productName.setText(product.getProductName());
-            if(product.getIsFeaturedProducts()){
+            if(!product.getIsFeaturedProducts()){
                 holder.productName.setBackgroundColor(Color.YELLOW);
-            }
-
+            } else { holder.productName.setBackgroundColor(Color.WHITE);}
+            holder.add.setChecked(product.getStatus()==1);
         }
     }
 

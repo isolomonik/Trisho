@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
     private AsyncTaskLoader<LoginModel> loginLoader;
     private AsyncTaskLoader<String> registerLoader;
 
-    Realm realm;
+    private Realm realm;
 
 
     @Override
@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        realm = Realm.getInstance(this.getContext());
+
         telephone = (EditText) v.findViewById(R.id.telephoneEdit);
         password = (EditText) v.findViewById(R.id.passwordEdit);
 
@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
         v.findViewById(R.id.btnNewUser).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-fragmentCallBackInterface.newUserSubmit();
+                fragmentCallBackInterface.newUserSubmit();
             }
         });
         return v;
@@ -142,6 +142,19 @@ getActivity().finish();
         GlobalVar.API_TOKEN="";
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            realm = Realm.getDefaultInstance();
+        }catch (Exception e){e.printStackTrace();}
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
 
 }

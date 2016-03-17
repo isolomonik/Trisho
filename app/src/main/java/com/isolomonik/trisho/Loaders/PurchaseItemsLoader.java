@@ -39,11 +39,11 @@ public class PurchaseItemsLoader extends AsyncTaskLoader<List<PurchaseItemModel>
         Call<List<PurchaseItemModel>> call = rest.purchaseItems(parameters);
         try{
             purchaseItems = call.execute().body();
-
+            Log.v("my_log", "loaded size:" + purchaseItems.size());
         }catch (IOException e){
             e.printStackTrace();
         }
-        Log.v("my_log", "loaded size:" + purchaseItems.size());
+
         return purchaseItems;
 
 

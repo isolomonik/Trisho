@@ -36,5 +36,5 @@
     <string name="etNewItemHint">Other product</string>
     <string name="btnOKNewItem">Add to purchase</string>
     <string name="addItem">Add products</string>
-    <string name="btnSavePurchase">SAVE</string>
+    <string name="btnSavePurchase">SAVE PURCHASE</string>
 </resources>

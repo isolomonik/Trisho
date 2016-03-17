@@ -23,24 +23,38 @@ import android.widget.EditText;
 
 import com.isolomonik.trisho.Loaders.RecommendedProductsLoader;
 import com.isolomonik.trisho.R;
+import com.isolomonik.trisho.RestAPI.APIFactory;
+import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
 import com.isolomonik.trisho.adapters.RecommendedProductsAdapter;
 import com.isolomonik.trisho.models.RecomendedProductModel;
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Filter;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class NewItemsFragment extends Fragment
         implements
         //   AdapterCallBackInterface,
-        LoaderManager.LoaderCallbacks<List<RecomendedProductModel>> {
+        LoaderManager.LoaderCallbacks<List<RecomendedProductModel>>
+        , Callback<String[]> {
     private String guid;
     private String purchaseName;
 
-    Realm realm;
+    AutoCompleteTextView inputSearch;
+    String[] products={""};
+    ArrayAdapter<String> adapterSearch;
+
+    private Realm realm;
 
     private RecyclerView recyclerView;
     private RecommendedProductsAdapter adapter;
@@ -72,7 +86,7 @@ public class NewItemsFragment extends Fragment
 
 
         // Получаем ссылку на элемент AutoCompleteTextView в разметке
-        AutoCompleteTextView inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
+         inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
         // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);
         inputSearch.setThreshold(1);
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -81,7 +95,29 @@ public class NewItemsFragment extends Fragment
                                                    Log.v(GlobalVar.MY_LOG, "insert new product");
                                                    // adapter.getFilter().filter(cs);
                                                    //getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NAMES_ID, bundle, DialogNewPurchaseFragment.this);
+                                                  if (cs!=null) {
+                                                      RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
+                                                      Map<String, String> parameters = new HashMap<String, String>();
+                                                      parameters.put("name", cs.toString());
+                                                      parameters.put("take", "50");
+                                                      parameters.put("skip", "0");
+                                                      parameters.put("token", GlobalVar.API_TOKEN);
+                                                      Call<String[]> call = rest.productsNames(parameters);
+                                                      try {
+                                                          call.enqueue(NewItemsFragment.this);
+                                                          if (products != null) {
+                                                              Log.v("my_log", "loaded poductsNames size:" + products.length);
 
+                                                              //onSuccess();
+                                                          } else {
+                                                              // onError();
+                                                          }
+
+                                                      } catch (Exception e) {
+                                                          e.printStackTrace();
+
+                                                      }
+                                                  }
                                                }
 
                                                @Override
@@ -99,12 +135,21 @@ public class NewItemsFragment extends Fragment
 
         );
         // Получаем массив строк для автозаполнения
-        String[] products = {"Pizza", "Peper", "Murshmulo", "kjghfgfdfj", "kakao", "coffe"};
+      // products = {"Pizza", "Peper", "Murshmulo", "kjghfgfdfj", "kakao", "coffe"};
         // Создаем адаптер для автозаполнения элемента AutoCompleteTextView
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, products);
-        inputSearch.setAdapter(adapter);
+        adapterSearch = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, products);
+        inputSearch.setAdapter(adapterSearch);
 
+        Button btnAdd = (Button) v.findViewById(R.id.btnSaveNewProduct);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+                                     @Override
+                                     public void onClick(View v) {
+                                     //    name = inputSearch.getText().toString();
 
+                                     }
+                                 }
+
+        );
         return v;
     }
 
@@ -114,7 +159,7 @@ public class NewItemsFragment extends Fragment
         recyclerView = (RecyclerView) view.findViewById(R.id.lvRecomendedItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        realm = Realm.getInstance(getContext());
+
 
 
     }
@@ -166,4 +211,40 @@ public class NewItemsFragment extends Fragment
     public void onLoaderReset(Loader<List<RecomendedProductModel>> loader) {
 
     }
+// -------- for Retrofit
+    @Override
+    public void onResponse(Call<String[]> call, Response<String[]> response) {
+        products=response.body();
+        if (products!=null) {
+            adapterSearch.notifyDataSetChanged();
+            adapterSearch = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, products);
+
+            inputSearch.setAdapter(adapterSearch);
+        }
+    }
+
+    @Override
+    public void onFailure(Call<String[]> call, Throwable t) {
+
+    }
+
+// --end for Retrofit
+
+//----------- for Realm
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            realm = Realm.getDefaultInstance();
+        }catch (Exception e){e.printStackTrace();}
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
+
+    //--end for Realm
 }

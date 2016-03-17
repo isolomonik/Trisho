@@ -36,5 +36,7 @@ public static String URL_API="http://solomon-001-site1.btempurl.com/";
     public static String STATUS_DONE="Done";
     public static String STATUS_IGNOR="Ignored";
 
+    public static final int STATUS_NEW=1;
+
 }
 

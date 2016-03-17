@@ -21,7 +21,9 @@ public class TrishoApp extends Application {
 
 
         RealmConfiguration config = new RealmConfiguration.Builder(this)
-          //      .deleteRealmIfMigrationNeeded()
+                .name("trisho.realm")
+                .schemaVersion(1)
+              //  .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
     }
