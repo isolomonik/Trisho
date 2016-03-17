@@ -1,6 +1,7 @@
 package com.isolomonik.trisho.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,21 +12,41 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.isolomonik.trisho.R;
+import com.isolomonik.trisho.RestAPI.APIFactory;
+import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
 import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseHolder>{
 
     private Fragment context;
-     final RealmResults<PurchaseModel> purchases;
+    // final RealmResults<PurchaseModel> purchases;
+    private final RealmList<PurchaseModel> purchases;
+    private Realm realm= Realm.getDefaultInstance();
+
+
+
    // final ArrayList<PurchaseModel> purchases;
 
     class PurchaseHolder extends RecyclerView.ViewHolder {
@@ -41,17 +62,42 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     Log.v(GlobalVar.MY_LOG, "Checked change " + purchases.get(getAdapterPosition()).getName());
-//                    if (isChecked) {
-//                        purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_DONE);
-//                    } else {
-//                        purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_ADD);
-//                    }
-                }
+                    realm.beginTransaction();
+                    if (isChecked) {
+                        purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_DONE);
+                    } else {
+                        purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_ADD);
+                    }
+                    realm.commitTransaction();
+                    changedModelToAPI(purchases.get(getAdapterPosition()));
+                  }
             });
+        }
+
+        private void changedModelToAPI(PurchaseModel model) {
+
+//            try {
+//                OkHttpClient client = new OkHttpClient();
+//                MediaType type = MediaType.parse("application/json; charset=utf-8");
+//                Gson gson = new GsonBuilder().create();
+//                String json = gson.toJson(model);
+//
+//                        RequestBody body = RequestBody.create(type, json);
+//                Request request = new Request.Builder()
+//                        .url(GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN)
+//                        .put(body)
+//                        .build();
+//
+//                client.newCall(request).execute();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
-    public PurchaseListAdapter(Fragment context, RealmResults<PurchaseModel> purchases) {
+   /// public PurchaseListAdapter(Fragment context, RealmResults<PurchaseModel> purchases) {
+    public PurchaseListAdapter(Fragment context, RealmList<PurchaseModel> purchases) {
         this.context = context;
         this.purchases = purchases;
     }

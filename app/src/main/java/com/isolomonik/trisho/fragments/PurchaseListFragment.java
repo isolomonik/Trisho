@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 
@@ -43,10 +44,12 @@ public class PurchaseListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<List<PurchaseModel>> {
 
     private Realm realm;
+    private RealmList<PurchaseModel> purchaseList = new RealmList<>();
+    private ArrayList<PurchaseModel> changedList=new ArrayList<>();
 
     private RecyclerView recyclerView;
     private PurchaseListAdapter adapter;
- //   private ArrayList<PurchaseModel> purchaseList = new ArrayList<>();
+
  private Button btnAddPurchase;
 
     public PurchaseListFragment() {
@@ -128,11 +131,16 @@ public class PurchaseListFragment extends Fragment implements
         realm.commitTransaction();
         Log.v(GlobalVar.MY_LOG, "to realm inserted" + realm.allObjects(PurchaseModel.class).size());
         realm.beginTransaction();
+      //  RealmList<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
         RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
         realm.commitTransaction();
-        adapter = new PurchaseListAdapter(this, result);
+
+        purchaseList.clear();
+        purchaseList.addAll(result);
+       // adapter = new PurchaseListAdapter(this, result);
+        adapter = new PurchaseListAdapter(this, purchaseList);
         recyclerView.setAdapter(adapter);
-        //   purchaseList.addAll(result);
+
     }
 
     @Override
@@ -145,6 +153,12 @@ public class PurchaseListFragment extends Fragment implements
         super.onStart();
         realm = Realm.getDefaultInstance();
 
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
     }
 
     @Override

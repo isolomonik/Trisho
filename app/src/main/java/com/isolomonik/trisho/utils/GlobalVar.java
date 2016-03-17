@@ -30,6 +30,8 @@ public static String URL_API="http://solomon-001-site1.btempurl.com/";
     public static final int LOADER_PURCHASE_NEW_ID = 6;
     public static final int LOADER_RECOMMENDED_PRODUCTS_ID = 7;
     public static final int LOADER_PRODUCTS_ID = 8;
+    public static final int LOADER_PURCHASE_EDIT = 9;
+
 
 
     public static String STATUS_ADD="Added";
