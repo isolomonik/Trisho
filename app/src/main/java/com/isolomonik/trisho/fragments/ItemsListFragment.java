@@ -127,16 +127,13 @@ public class ItemsListFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        // realm = Realm.getDefaultInstance();
-        try {
-            realm = Realm.getDefaultInstance();
-        }catch (Exception e){e.printStackTrace();}
+        realm = Realm.getDefaultInstance();
 
     }
 
     @Override
     public void onStop() {
-        super.onStop();
         realm.close();
+        super.onStop();
     }
 }

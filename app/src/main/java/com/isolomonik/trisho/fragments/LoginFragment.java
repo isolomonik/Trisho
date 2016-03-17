@@ -139,22 +139,21 @@ getActivity().finish();
     public void onLoaderReset(Loader<LoginModel> loader) {
 
         Log.d(GlobalVar.MY_LOG, "onLoaderReset");
-        GlobalVar.API_TOKEN="";
+     //   GlobalVar.API_TOKEN="";
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        try {
-            realm = Realm.getDefaultInstance();
-        }catch (Exception e){e.printStackTrace();}
+        realm = Realm.getDefaultInstance();
 
     }
 
     @Override
     public void onStop() {
+         realm.close();
         super.onStop();
-        realm.close();
     }
+
 
 }

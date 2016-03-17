@@ -132,16 +132,15 @@ private  Realm realm;
     @Override
     public void onStart() {
         super.onStart();
-        try {
-            realm = Realm.getDefaultInstance();
-        }catch (Exception e){e.printStackTrace();}
+       realm = Realm.getDefaultInstance();
 
     }
 
     @Override
     public void onStop() {
-        super.onStop();
         realm.close();
+        super.onStop();
+
     }
 
 

@@ -85,7 +85,7 @@ public class NewItemsFragment extends Fragment
         });
 
 
-        // Получаем ссылку на элемент AutoCompleteTextView в разметке
+
          inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
         // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);
         inputSearch.setThreshold(1);
@@ -134,9 +134,7 @@ public class NewItemsFragment extends Fragment
                                            }
 
         );
-        // Получаем массив строк для автозаполнения
-      // products = {"Pizza", "Peper", "Murshmulo", "kjghfgfdfj", "kakao", "coffe"};
-        // Создаем адаптер для автозаполнения элемента AutoCompleteTextView
+
         adapterSearch = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, products);
         inputSearch.setAdapter(adapterSearch);
 
@@ -159,6 +157,7 @@ public class NewItemsFragment extends Fragment
         recyclerView = (RecyclerView) view.findViewById(R.id.lvRecomendedItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+
 
 
 
@@ -234,16 +233,15 @@ public class NewItemsFragment extends Fragment
     @Override
     public void onStart() {
         super.onStart();
-        try {
-            realm = Realm.getDefaultInstance();
-        }catch (Exception e){e.printStackTrace();}
+         realm = Realm.getDefaultInstance();
+
 
     }
 
     @Override
     public void onStop() {
-        super.onStop();
         realm.close();
+        super.onStop();
     }
 
     //--end for Realm

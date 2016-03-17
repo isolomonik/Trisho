@@ -143,16 +143,15 @@ public class PurchaseListFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        try {
-            realm = Realm.getDefaultInstance();
-        }catch (Exception e){e.printStackTrace();}
+        realm = Realm.getDefaultInstance();
 
     }
 
     @Override
     public void onStop() {
-        super.onStop();
         realm.close();
+        super.onStop();
+
     }
 
     @Override
@@ -164,12 +163,5 @@ public class PurchaseListFragment extends Fragment implements
         startActivity(intent);
     }
 
-//void initAdapter(){
-//    realm.beginTransaction();
-//    RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
-//    realm.commitTransaction();
-//    adapter = new PurchaseListAdapter(this, result);
-//    recyclerView.setAdapter(adapter);
-//    //   purchaseList.addAll(result);
-//}
+
 }
