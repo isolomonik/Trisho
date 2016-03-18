@@ -12,6 +12,9 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+
+//----for REALM RECYCLERVIEW
+    maven { url "https://jitpack.io" }
 }
 
 
@@ -52,5 +55,12 @@ dependencies {
     //For Fabric.io
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
+    }
+    //----for REALM RECYCLERVIEW
+    compile 'com.github.thorbenprimke:realm-recyclerview:0.9.12'
+
+//------------ for advansedRecyclerView https://github.com/h6ah4i/android-advancedrecyclerview
+    compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.8.1@aar'){
+        transitive=true
     }
 }
