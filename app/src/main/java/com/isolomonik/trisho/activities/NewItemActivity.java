@@ -22,11 +22,10 @@ public class NewItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         purchaseGuid = intent.getStringExtra("guid");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         //  toolbar.setLogo(R.drawable.ic_10d);
 
-        getSupportActionBar().setTitle("Add products");
         // getSupportActionBar().setHomeButtonEnabled(true);
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -43,10 +42,10 @@ public class NewItemActivity extends AppCompatActivity {
 
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.main_menu, menu);
+//        return true;
+//    }
 }

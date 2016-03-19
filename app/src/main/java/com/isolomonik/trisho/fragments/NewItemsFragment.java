@@ -111,17 +111,6 @@ public class NewItemsFragment extends Fragment
             }
 
         });
-        Button btnCancel = (Button) v.findViewById(R.id.btnCancelSaveItems);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(GlobalVar.MY_LOG, "Dialog Purchase CANCEL pressed");
-                getActivity().onBackPressed();
-
-            }
-
-        });
-
 
         inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
         // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);

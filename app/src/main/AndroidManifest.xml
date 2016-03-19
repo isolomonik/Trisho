@@ -38,12 +38,6 @@
             android:name="io.fabric.ApiKey"
             android:value="45fd2be1f773506e85dc4ae20d7b88ce5bf8e4b4" />
 
-        <service android:name=".services.PurchaseEditService" >
-        </service>
-
-        <service android:name=".services.PurchaseItemsEditService" >
-        </service>
-
         <activity android:name=".activities.NewItemActivity" >
         </activity>
     </application>

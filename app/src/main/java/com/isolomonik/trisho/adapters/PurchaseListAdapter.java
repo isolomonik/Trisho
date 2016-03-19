@@ -25,7 +25,6 @@ import com.isolomonik.trisho.models.EditablePurchaseModel;
 import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperAdapter;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperViewHolder;
-import com.isolomonik.trisho.services.PurchaseEditService;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 

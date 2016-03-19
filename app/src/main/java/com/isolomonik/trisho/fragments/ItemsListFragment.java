@@ -24,7 +24,7 @@ import com.isolomonik.trisho.activities.NewItemActivity;
 import com.isolomonik.trisho.adapters.PurchaseItemsAdapter;
 import com.isolomonik.trisho.models.PurchaseItemModel;
 import com.isolomonik.trisho.recycler_helper.SimpleItemTouchHelperCallback;
-import com.isolomonik.trisho.services.PurchaseItemsEditService;
+
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 

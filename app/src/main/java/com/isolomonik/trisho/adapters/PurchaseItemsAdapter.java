@@ -23,7 +23,6 @@ import com.isolomonik.trisho.models.EditablePurchaseItemsModel;
 import com.isolomonik.trisho.models.PurchaseItemModel;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperAdapter;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperViewHolder;
-import com.isolomonik.trisho.services.PurchaseItemsEditService;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
@@ -141,6 +140,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         //  realm.beginTransaction();
         realm.beginTransaction();
         items.get(position).setStatus(GlobalVar.STATUS_IGNOR);
+        changedModelToAPI(items.get(position));
         PurchaseItemModel prev = items.remove(position);
         items.add(items.size(), prev);
         realm.commitTransaction();
