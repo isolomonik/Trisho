@@ -43,6 +43,10 @@ public interface RetrofitAPIInterface {
     Call<List<PurchaseItemModel>> purchaseItems(@QueryMap Map<String, String> parameters);
 
     @Headers("Content-Type: application/json")
+    @POST("api/PurchaseItem")
+    Call<Boolean> purchaseItemsEdit(@Body PurchaseItemModel purchaseItemModel, @QueryMap Map<String, String> parameters);
+
+    @Headers("Content-Type: application/json")
     @GET("api/RecommendedProducts")
     Call<List<RecomendedProductModel>> recommendedProducts(@QueryMap Map<String, String> parameters);
 

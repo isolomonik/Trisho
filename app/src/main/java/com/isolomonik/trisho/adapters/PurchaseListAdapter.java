@@ -1,6 +1,8 @@
 package com.isolomonik.trisho.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -12,23 +14,30 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.RestAPI.APIFactory;
 import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
 import com.isolomonik.trisho.models.PurchaseModel;
+import com.isolomonik.trisho.recycler_helper.ItemTouchHelperAdapter;
+import com.isolomonik.trisho.recycler_helper.ItemTouchHelperViewHolder;
+import com.isolomonik.trisho.services.PurchaseEditService;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -38,7 +47,9 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseHolder>{
+public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseHolder>
+        implements ItemTouchHelperAdapter
+{
 
     private Fragment context;
     // final RealmResults<PurchaseModel> purchases;
@@ -49,7 +60,9 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 
    // final ArrayList<PurchaseModel> purchases;
 
-    class PurchaseHolder extends RecyclerView.ViewHolder {
+    class PurchaseHolder extends RecyclerView.ViewHolder
+            implements ItemTouchHelperViewHolder
+    {
         TextView purchaseName;
         TextView createdDateTime;
         CheckBox chkBox;
@@ -58,55 +71,47 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
             this.purchaseName = (TextView) itemView.findViewById(R.id.tvPurchaseName);
             this.createdDateTime = (TextView) itemView.findViewById(R.id.tvPurchaseDate);
             chkBox= (CheckBox) itemView.findViewById(R.id.cbPurchaseDone);
-            chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            chkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onClick(View v) {
                     Log.v(GlobalVar.MY_LOG, "Checked change " + purchases.get(getAdapterPosition()).getName());
                     realm.beginTransaction();
-                    if (isChecked) {
+                    if (((CheckBox)v).isChecked()) {
                         purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_DONE);
                     } else {
                         purchases.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_ADD);
                     }
                     realm.commitTransaction();
                     changedModelToAPI(purchases.get(getAdapterPosition()));
-                  }
-            });
+                }
+            } );
+        }
+        @Override
+        public void onItemSelected() {
+            Log.v(GlobalVar.MY_LOG, "selected"+itemView.toString());
+                     itemView.setBackgroundColor(Color.LTGRAY);
         }
 
-        private void changedModelToAPI(PurchaseModel model) {
-
-//            try {
-//                OkHttpClient client = new OkHttpClient();
-//                MediaType type = MediaType.parse("application/json; charset=utf-8");
-//                Gson gson = new GsonBuilder().create();
-//                String json = gson.toJson(model);
-//
-//                        RequestBody body = RequestBody.create(type, json);
-//                Request request = new Request.Builder()
-//                        .url(GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN)
-//                        .put(body)
-//                        .build();
-//
-//                client.newCall(request).execute();
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
         }
     }
 
-   /// public PurchaseListAdapter(Fragment context, RealmResults<PurchaseModel> purchases) {
+
+
+    /// public PurchaseListAdapter(Fragment context, RealmResults<PurchaseModel> purchases) {
     public PurchaseListAdapter(Fragment context, RealmList<PurchaseModel> purchases) {
         this.context = context;
         this.purchases = purchases;
     }
-
+    @Override
     public PurchaseHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View rowView = inflater.inflate(R.layout.row_purchase, parent, false);
 
         final PurchaseHolder purchaseHolder = new PurchaseHolder(rowView);
+
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,15 +122,14 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
         });
         return purchaseHolder;
     }
-
-    public void onBindViewHolder(PurchaseHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(PurchaseHolder holder, final int position) {
         PurchaseModel purchase = purchases.get(position);
         if (purchase != null) {
 
            holder.purchaseName.setText(purchase.getName());
            holder.createdDateTime.setText(purchase.getCreatedDateTime().substring(0, 10));
            holder.chkBox.setChecked(purchase.getStatus().equals(GlobalVar.STATUS_DONE));
-
         }
     }
 
@@ -139,9 +143,42 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 //    public long getItemId(int position) {
 //        return position;
 //    }
+@Override
+public void onItemDismiss(int position) {
+  //  realm.beginTransaction();
+    purchases.remove(position);
+    notifyItemRemoved(position);
+  //  realm.commitTransaction();
+}
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        PurchaseModel prev = purchases.remove(fromPosition);
+        purchases.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
+    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
     }
+
+    private void changedModelToAPI(PurchaseModel purchaseModel) {
+        Gson gson = new GsonBuilder()
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaringClass().equals(RealmObject.class);
+                    }
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })
+                .create();
+        String jsonPurchaseModel = gson.toJson(purchaseModel);
+        Log.v(GlobalVar.MY_LOG, "create edit service "+jsonPurchaseModel);
+        Intent editService = new Intent(context.getActivity(), PurchaseEditService.class);
+        context.getActivity().startService(editService.putExtra("model", jsonPurchaseModel));
+
+}
 }

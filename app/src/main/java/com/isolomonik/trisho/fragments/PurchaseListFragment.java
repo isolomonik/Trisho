@@ -14,8 +14,10 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +28,7 @@ import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.activities.PurchaseItemsActivity;
 import com.isolomonik.trisho.adapters.PurchaseListAdapter;
 import com.isolomonik.trisho.models.PurchaseModel;
+import com.isolomonik.trisho.recycler_helper.SimpleItemTouchHelperCallback;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
@@ -35,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -49,6 +53,7 @@ public class PurchaseListFragment extends Fragment implements
 
     private RecyclerView recyclerView;
     private PurchaseListAdapter adapter;
+    private ItemTouchHelper itemTouchHelper;
 
  private Button btnAddPurchase;
 
@@ -94,6 +99,8 @@ public class PurchaseListFragment extends Fragment implements
         final SwipeRefreshLayout sLay=(SwipeRefreshLayout)view.findViewById(R.id.swipePurchase);
 //        sLay.setColorScheme(R.color.cardview_light_background);
 
+
+
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         sLay.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -105,6 +112,7 @@ public class PurchaseListFragment extends Fragment implements
             }
         });
         recyclerView.setLayoutManager(layoutManager);
+
 
      //  initAdapter();
 
@@ -125,11 +133,13 @@ public class PurchaseListFragment extends Fragment implements
             Log.v(GlobalVar.MY_LOG, "PurchaseList is null");
             return;
         }
+
         realm.beginTransaction();
         realm.clear(PurchaseModel.class);  // Clear the DB
         realm.copyToRealmOrUpdate(data);
         realm.commitTransaction();
         Log.v(GlobalVar.MY_LOG, "to realm inserted" + realm.allObjects(PurchaseModel.class).size());
+
         realm.beginTransaction();
       //  RealmList<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
         RealmResults<PurchaseModel> result = realm.where(PurchaseModel.class).findAll();
@@ -140,6 +150,10 @@ public class PurchaseListFragment extends Fragment implements
        // adapter = new PurchaseListAdapter(this, result);
         adapter = new PurchaseListAdapter(this, purchaseList);
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        itemTouchHelper = new ItemTouchHelper(callback);
+    //    itemTouchHelper.attachToRecyclerView(recyclerView);
 
     }
 
@@ -152,8 +166,8 @@ public class PurchaseListFragment extends Fragment implements
     public void onStart() {
         super.onStart();
         realm = Realm.getDefaultInstance();
-
-    }
+//
+   }
 
     @Override
     public void onPause() {
@@ -163,6 +177,7 @@ public class PurchaseListFragment extends Fragment implements
 
     @Override
     public void onStop() {
+
         realm.close();
         super.onStop();
 

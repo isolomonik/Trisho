@@ -10,6 +10,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,23 +23,29 @@ import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.activities.NewItemActivity;
 import com.isolomonik.trisho.adapters.PurchaseItemsAdapter;
 import com.isolomonik.trisho.models.PurchaseItemModel;
+import com.isolomonik.trisho.recycler_helper.SimpleItemTouchHelperCallback;
+import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 
 public class ItemsListFragment extends Fragment implements
-     //   AdapterCallBackInterface,
+        AdapterCallBackInterface,
         LoaderManager.LoaderCallbacks<List<PurchaseItemModel>>
 {
     private Realm realm;
     private String guid;
     private String purchaseName;
+    private RealmList<PurchaseItemModel> itemsList = new RealmList<>();
+
     private RecyclerView recyclerView;
     private PurchaseItemsAdapter adapter;
+    private ItemTouchHelper itemTouchHelper;
 
     public ItemsListFragment() {
     }
@@ -111,12 +118,20 @@ public class ItemsListFragment extends Fragment implements
         realm.copyToRealmOrUpdate(data);
         realm.commitTransaction();
         Log.v(GlobalVar.MY_LOG, "to realm inserted" + realm.allObjects(PurchaseItemModel.class).size());
+
         realm.beginTransaction();
         RealmResults<PurchaseItemModel> result = realm.where(PurchaseItemModel.class).findAll();
+        result.sort("status");
         realm.commitTransaction();
-        adapter = new PurchaseItemsAdapter(this, result);
+        itemsList.clear();
+        itemsList.addAll(result);
+        adapter = new PurchaseItemsAdapter(this, itemsList);
         recyclerView.setAdapter(adapter);
         //   purchaseList.addAll(result);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -135,5 +150,10 @@ public class ItemsListFragment extends Fragment implements
     public void onStop() {
         realm.close();
         super.onStop();
+    }
+
+    @Override
+    public void showItems(String guid, String name) {
+
     }
 }
