@@ -1,6 +1,7 @@
 package com.isolomonik.trisho.RestAPI;
 
 import com.isolomonik.trisho.models.LoginModel;
+import com.isolomonik.trisho.models.NewPurchaseItemsModel;
 import com.isolomonik.trisho.models.PurchaseItemModel;
 import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.models.RecomendedProductModel;
@@ -68,4 +69,9 @@ public interface RetrofitAPIInterface {
 
     @DELETE("api/Login")
     Call<String> logout (@Query ("token") String token);
+
+
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @PUT("api/PurchaseItem")
+    Call<Boolean> addItems(@Body NewPurchaseItemsModel purchaseModel, @Query ("token") String token);
 }

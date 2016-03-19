@@ -30,39 +30,33 @@ public class PurchaseEditService extends IntentService {
 
     public void onCreate() {
         super.onCreate();
-        Log.d(GlobalVar.MY_LOG, "onCreate");
+        Log.d(GlobalVar.MY_LOG, "create service PurchaseEdit");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Serializable jsonPurchaseModel = intent.getSerializableExtra("model");
-//        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
-//        Call<Boolean> call = rest.editPurchase(model,GlobalVar.API_TOKEN);
-//        try {
-//            Response resp=call.execute();
-//            response = (Boolean) resp.body();
-//            Log.v("my_log", "edit purchase" + response.toString());
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//
-//        }
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType type = MediaType.parse("application/json; charset=utf-8");
-        RequestBody body = RequestBody.create(type, jsonPurchaseModel.toString());
-        Request request = new Request.Builder()
-                .url(GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN)
-                .post(body)
-                .build();
-try{
-        client.newCall(request).execute();
-
-    } catch (Exception e) {
-        e.printStackTrace();
+//
+//        Log.d(GlobalVar.MY_LOG, "started service PurchaseEdit");
+//        OkHttpClient client = new OkHttpClient();
+//        MediaType type = MediaType.parse("application/json; charset=utf-8");
+//        RequestBody body = RequestBody.create(type, jsonPurchaseModel.toString());
+//        Request request = new Request.Builder()
+//                .url(GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN)
+//                .post(body)
+//                .build();
+//try{
+//        client.newCall(request).execute();
+//
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//    }
+//        Log.d(GlobalVar.MY_LOG, "onHandleIntent start: " + jsonPurchaseModel);
+//
     }
-        Log.d(GlobalVar.MY_LOG, "onHandleIntent start: " + jsonPurchaseModel);
 
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(GlobalVar.MY_LOG, "Destroy service Purchase edit");
     }
 }

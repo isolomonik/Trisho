@@ -14,26 +14,47 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.isolomonik.trisho.R;
+import com.isolomonik.trisho.models.EditablePurchaseItemsModel;
 import com.isolomonik.trisho.models.PurchaseItemModel;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperAdapter;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperViewHolder;
 import com.isolomonik.trisho.services.PurchaseItemsEditService;
+import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URLEncoder;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdapter.ItemHolder>
-        implements ItemTouchHelperAdapter
-{
+        implements ItemTouchHelperAdapter, Callback {
 
 
     private Fragment context;
 
     private Realm realm= Realm.getDefaultInstance();
     private RealmList<PurchaseItemModel> items;
+    private String purchaseGuid;
+
+
 
     class ItemHolder extends RecyclerView.ViewHolder
             implements ItemTouchHelperViewHolder
@@ -59,7 +80,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
                         items.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_ADD);
                     }
                     realm.commitTransaction();
-                    //  changedModelToAPI(items.get(getAdapterPosition()));
+                    changedModelToAPI(items.get(getAdapterPosition()));
                 }
             });
         }
@@ -77,9 +98,10 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
     }
 
 
-    public PurchaseItemsAdapter(Fragment context, RealmList<PurchaseItemModel> items) {
+    public PurchaseItemsAdapter(Fragment context, RealmList<PurchaseItemModel> items, String purchaseGuid) {
         this.context = context;
         this.items = items;
+        this.purchaseGuid=purchaseGuid;
 
         //this.items.sort("status");
     }
@@ -103,7 +125,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
             if(product.getStatus().equals("Ignored")){
                 holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
-            }
+            }else {holder.productName.setTextColor(context.getResources().getColor(R.color.primary_text));}
 
         }
     }
@@ -123,7 +145,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         items.add(items.size(), prev);
         realm.commitTransaction();
         notifyItemRemoved(position);
-        notifyDataSetChanged();
+
         //  realm.commitTransaction();
     }
     @Override
@@ -134,10 +156,37 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
     }
 
     private void changedModelToAPI(PurchaseItemModel purchaseItemModel) {
-Log.v(GlobalVar.MY_LOG, "change item "+purchaseItemModel.toString());
+Log.v(GlobalVar.MY_LOG, "change item " + purchaseItemModel.toString());
 
-        Intent editService = new Intent(context.getActivity(), PurchaseItemsEditService.class);
-        context.getActivity().startService(editService.putExtra("model", purchaseItemModel));
+        EditablePurchaseItemsModel model=new EditablePurchaseItemsModel(purchaseItemModel);
+
+
+        try {
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(model);
+            OkHttpClient client = new OkHttpClient();
+            MediaType type = MediaType.parse("application/json; charset=utf-8");
+            RequestBody body = RequestBody.create(type, json);
+            Request request = new Request.Builder()
+                    .url(GlobalVar.URL_API + "api/PurchaseItem?token=" + GlobalVar.API_TOKEN+"&purchaseGuid="+purchaseGuid)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(this);
+            Log.v(GlobalVar.MY_LOG,json );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+  }
+    @Override
+    public void onFailure(Call call, IOException e) {
+        Log.v(GlobalVar.MY_LOG,"failed" );
     }
 
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
+        Log.v(GlobalVar.MY_LOG, "saved" );
+    }
 }

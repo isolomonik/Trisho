@@ -24,6 +24,7 @@ import com.isolomonik.trisho.activities.NewItemActivity;
 import com.isolomonik.trisho.adapters.PurchaseItemsAdapter;
 import com.isolomonik.trisho.models.PurchaseItemModel;
 import com.isolomonik.trisho.recycler_helper.SimpleItemTouchHelperCallback;
+import com.isolomonik.trisho.services.PurchaseItemsEditService;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
@@ -58,6 +59,13 @@ public class ItemsListFragment extends Fragment implements
         if(getArguments() != null){
             guid = getArguments().getString("guid");
             purchaseName = getArguments().getString("purchaseName");}
+
+//        Bundle bundle = new Bundle();
+//        bundle.putString("guid", guid);
+//        Log.v(GlobalVar.MY_LOG, bundle.toString());
+//        getLoaderManager().initLoader(GlobalVar.LOADER_PURCHASE_ITEMS_ID, bundle, this);
+
+
         ((TextView) v.findViewById(R.id.tvPurchaseName)).setText(purchaseName);
         Button btnAdd= (Button) v.findViewById(R.id.btnAddItem);
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +87,12 @@ public class ItemsListFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Bundle bundle = new Bundle();
         bundle.putString("guid", guid);
         Log.v(GlobalVar.MY_LOG, bundle.toString());
@@ -125,7 +139,7 @@ public class ItemsListFragment extends Fragment implements
         realm.commitTransaction();
         itemsList.clear();
         itemsList.addAll(result);
-        adapter = new PurchaseItemsAdapter(this, itemsList);
+        adapter = new PurchaseItemsAdapter(this, itemsList, guid);
         recyclerView.setAdapter(adapter);
         //   purchaseList.addAll(result);
 
@@ -153,7 +167,9 @@ public class ItemsListFragment extends Fragment implements
     }
 
     @Override
-    public void showItems(String guid, String name) {
+    public void showItems(String itemGuid, String purchaseGuid) {
+//        Intent editService = new Intent(getActivity(), PurchaseItemsEditService.class);
+//        getActivity().startService(editService.putExtra("itemGuid", itemGuid).putExtra("PurchaseGuid", purchaseGuid ));
 
     }
 }

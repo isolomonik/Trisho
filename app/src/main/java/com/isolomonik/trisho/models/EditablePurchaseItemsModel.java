@@ -1,21 +1,21 @@
 package com.isolomonik.trisho.models;
 
-
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+public class EditablePurchaseItemsModel {
 
-public class PurchaseItemModel  extends RealmObject
-implements Serializable
+    public EditablePurchaseItemsModel(PurchaseItemModel model) {
+        this.productGuid=model.getProductGuid();
+        this.productName=model.getProductName();
+        this.description=model.getDescription();
+        this.count=model.getCount();
+        this.status=model.getStatus();
+    }
 
-{
+    @SerializedName("ProductGuid")
 
- @SerializedName("ProductGuid")
-@PrimaryKey
-private String productGuid;
+    private String productGuid;
 
     @SerializedName("ProductName")
     private String productName="";
@@ -68,7 +68,6 @@ private String productGuid;
     public void setStatus(String status) {
         this.status = status;
     }
-
 
 
 }

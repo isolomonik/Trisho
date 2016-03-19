@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.RestAPI.APIFactory;
 import com.isolomonik.trisho.RestAPI.RetrofitAPIInterface;
+import com.isolomonik.trisho.models.EditablePurchaseModel;
 import com.isolomonik.trisho.models.PurchaseModel;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperAdapter;
 import com.isolomonik.trisho.recycler_helper.ItemTouchHelperViewHolder;
@@ -39,6 +40,7 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,8 +50,7 @@ import retrofit2.Response;
 
 
 public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseHolder>
-        implements ItemTouchHelperAdapter
-{
+        implements ItemTouchHelperAdapter, Callback {
 
     private Fragment context;
     // final RealmResults<PurchaseModel> purchases;
@@ -58,7 +59,8 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 
 
 
-   // final ArrayList<PurchaseModel> purchases;
+
+    // final ArrayList<PurchaseModel> purchases;
 
     class PurchaseHolder extends RecyclerView.ViewHolder
             implements ItemTouchHelperViewHolder
@@ -163,22 +165,41 @@ public void onItemDismiss(int position) {
     }
 
     private void changedModelToAPI(PurchaseModel purchaseModel) {
-        Gson gson = new GsonBuilder()
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getDeclaringClass().equals(RealmObject.class);
-                    }
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        return false;
-                    }
-                })
-                .create();
-        String jsonPurchaseModel = gson.toJson(purchaseModel);
-        Log.v(GlobalVar.MY_LOG, "create edit service "+jsonPurchaseModel);
-        Intent editService = new Intent(context.getActivity(), PurchaseEditService.class);
-        context.getActivity().startService(editService.putExtra("model", jsonPurchaseModel));
+
+        EditablePurchaseModel model=new EditablePurchaseModel(purchaseModel);
+
+
+        try {
+            Gson gson = new GsonBuilder().create();
+            String json = gson.toJson(model);
+            OkHttpClient client = new OkHttpClient();
+            MediaType type = MediaType.parse("application/json; charset=utf-8");
+            RequestBody body = RequestBody.create(type, json);
+            Request request = new Request.Builder()
+                    .url(GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(this);
+            Log.v(GlobalVar.MY_LOG,json );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        Intent editService = new Intent(context.getContext(), PurchaseEditService.class);
+//        editService.putExtra("purchaseGuid", purchaseModel.getGuid());
+//        context.getContext().startService(editService);
 
 }
+
+    @Override
+    public void onFailure(okhttp3.Call call, IOException e) {
+
+    }
+
+    @Override
+    public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+
+    }
+
 }

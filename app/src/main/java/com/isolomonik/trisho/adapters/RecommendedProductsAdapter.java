@@ -12,30 +12,40 @@ import android.widget.TextView;
 
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.models.RecomendedProductModel;
+import com.isolomonik.trisho.utils.AdapterCallBackInterface;
 import com.isolomonik.trisho.utils.GlobalVar;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class RecommendedProductsAdapter extends RecyclerView.Adapter<RecommendedProductsAdapter.ItemHolder> {
 
 
     private Fragment context;
-    private RealmResults<RecomendedProductModel> items;
+    private RealmList<RecomendedProductModel> items;
 
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView productName;
         CheckBox add;
         public ItemHolder(View itemView) {
             super(itemView);
-            this.productName = (TextView) itemView.findViewById(R.id.tvRecommendedProduct);
-            this.add = (CheckBox) itemView.findViewById(R.id.cbAddRecommended);
+            productName = (TextView) itemView.findViewById(R.id.tvRecommendedProduct);
+            add = (CheckBox) itemView.findViewById(R.id.cbAddRecommended);
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AdapterCallBackInterface myInterface = (AdapterCallBackInterface) context;
+                    myInterface.showItems( items.get(getAdapterPosition()).getProductGuid(), String.valueOf(items.get(getAdapterPosition()).getCount()));
+                }
+            });
+
         }
     }
 
-    public RecommendedProductsAdapter(Fragment context, RealmResults<RecomendedProductModel> items) {
+    public RecommendedProductsAdapter(Fragment context, RealmList<RecomendedProductModel> items) {
         this.context = context;
         this.items = items;
-        this.items.sort("isFeaturedProducts");
+      //  this.items..sort("isFeaturedProducts");
     }
 
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {

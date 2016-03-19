@@ -55,7 +55,8 @@ public class PurchaseListFragment extends Fragment implements
     private PurchaseListAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
 
- private Button btnAddPurchase;
+    private Button btnAddPurchase;
+    private  SwipeRefreshLayout sLay;
 
     public PurchaseListFragment() {
 
@@ -96,17 +97,16 @@ public class PurchaseListFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final SwipeRefreshLayout sLay=(SwipeRefreshLayout)view.findViewById(R.id.swipePurchase);
-//        sLay.setColorScheme(R.color.cardview_light_background);
-
-
+        sLay=(SwipeRefreshLayout)view.findViewById(R.id.swipePurchase);
+//
 
         recyclerView = (RecyclerView) view.findViewById(R.id.listView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         sLay.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                sLay.setRefreshing(true);
+                getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_LIST_ID, null, PurchaseListFragment.this);
                 // Refresh items
                 Log.v(GlobalVar.MY_LOG, "PurchaseList is updated");
             }
@@ -133,7 +133,7 @@ public class PurchaseListFragment extends Fragment implements
             Log.v(GlobalVar.MY_LOG, "PurchaseList is null");
             return;
         }
-
+        sLay.setRefreshing(false);
         realm.beginTransaction();
         realm.clear(PurchaseModel.class);  // Clear the DB
         realm.copyToRealmOrUpdate(data);

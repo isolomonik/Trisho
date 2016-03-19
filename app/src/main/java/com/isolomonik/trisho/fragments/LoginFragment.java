@@ -78,9 +78,6 @@ public class LoginFragment extends Fragment implements LoaderManager.LoaderCallb
             //    testHTTP();
             //    testOKHttp();
 
-
-
-
             startLoginLoader();
             }
         });
