@@ -153,7 +153,7 @@ public class PurchaseListFragment extends Fragment implements
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
-    //    itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
     }
 

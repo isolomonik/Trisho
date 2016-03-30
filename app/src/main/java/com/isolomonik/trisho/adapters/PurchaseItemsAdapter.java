@@ -1,8 +1,10 @@
 package com.isolomonik.trisho.adapters;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -105,9 +107,25 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         //this.items.sort("status");
     }
 
-    public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View rowView = inflater.inflate(R.layout.row_items, parent, false);
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
+                builder.setTitle("Add discription")
+                        .setCancelable(false)
+                        .setNegativeButton("SAVE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
 
         final ItemHolder itemsHolder = new ItemHolder(rowView);
         return itemsHolder;

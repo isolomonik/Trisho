@@ -146,11 +146,15 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 //    }
 @Override
 public void onItemDismiss(int position) {
-  //  realm.beginTransaction();
+    realm.beginTransaction();
+    deletedModelToAPI(purchases.get(position));
     purchases.remove(position);
     notifyItemRemoved(position);
-  //  realm.commitTransaction();
+    realm.commitTransaction();
 }
+
+
+
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
         PurchaseModel prev = purchases.remove(fromPosition);
@@ -166,8 +170,6 @@ public void onItemDismiss(int position) {
     private void changedModelToAPI(PurchaseModel purchaseModel) {
 
         EditablePurchaseModel model=new EditablePurchaseModel(purchaseModel);
-
-
         try {
             Gson gson = new GsonBuilder().create();
             String json = gson.toJson(model);
@@ -190,6 +192,21 @@ public void onItemDismiss(int position) {
 //        context.getContext().startService(editService);
 
 }
+
+    private void deletedModelToAPI(PurchaseModel purchaseModel) {
+          try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN+"&purchaseGuid="+purchaseModel.getGuid())
+                    .delete()
+                    .build();
+
+            client.newCall(request).enqueue(this);
+            Log.v(GlobalVar.MY_LOG,"deleted "+ GlobalVar.URL_API + "api/Purchase?token=" + GlobalVar.API_TOKEN+"&purchaseGuid="+purchaseModel.getGuid());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onFailure(okhttp3.Call call, IOException e) {

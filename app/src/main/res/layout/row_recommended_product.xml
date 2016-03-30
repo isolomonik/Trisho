@@ -12,5 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recommended product"
-        android:id="@+id/tvRecommendedProduct" />
+        android:id="@+id/tvRecommendedProduct"
+        android:layout_weight="1" />
+
+    <EditText
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/etRecommendedCount"
+        android:textAlignment="center" />
 </LinearLayout>

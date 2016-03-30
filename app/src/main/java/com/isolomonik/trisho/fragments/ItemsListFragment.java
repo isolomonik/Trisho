@@ -96,7 +96,7 @@ public class ItemsListFragment extends Fragment implements
         Bundle bundle = new Bundle();
         bundle.putString("guid", guid);
         Log.v(GlobalVar.MY_LOG, bundle.toString());
-        getLoaderManager().initLoader(GlobalVar.LOADER_PURCHASE_ITEMS_ID, bundle, this);
+        getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_ITEMS_ID, bundle, this);
     }
 
     @Override
