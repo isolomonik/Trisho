@@ -149,8 +149,8 @@ public void onItemDismiss(int position) {
     realm.beginTransaction();
     deletedModelToAPI(purchases.get(position));
     purchases.remove(position);
-    notifyItemRemoved(position);
     realm.commitTransaction();
+    notifyItemRemoved(position);
 }
 
 

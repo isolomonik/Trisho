@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.R;
@@ -27,6 +28,7 @@ public class RecommendedProductsAdapter extends RecyclerView.Adapter<Recommended
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView productName;
         CheckBox add;
+        EditText count;
         public ItemHolder(View itemView) {
             super(itemView);
             productName = (TextView) itemView.findViewById(R.id.tvRecommendedProduct);
@@ -38,6 +40,7 @@ public class RecommendedProductsAdapter extends RecyclerView.Adapter<Recommended
                     myInterface.showItems( items.get(getAdapterPosition()).getProductGuid(), String.valueOf(items.get(getAdapterPosition()).getCount()));
                 }
             });
+            count =(EditText) itemView.findViewById(R.id.etRecommendedCount);
 
         }
     }
@@ -65,6 +68,7 @@ public class RecommendedProductsAdapter extends RecyclerView.Adapter<Recommended
                 holder.productName.setBackgroundColor(Color.YELLOW);
             } else { holder.productName.setBackgroundColor(Color.WHITE);}
             holder.add.setChecked(product.getStatus()==1);
+            holder.count.setText(String.valueOf(product.getCount()));
         }
     }
 

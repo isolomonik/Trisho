@@ -55,11 +55,11 @@ public class LoginLoader extends AsyncTaskLoader<LoginModel> {
         Call<LoginModel> call = rest.loginToken(login);
 
           user = call.execute().body();
-
+            Log.v("my_log", "loaded token" + user.getToken());
         }catch (Exception e){
             e.printStackTrace();
         }
-        Log.v("my_log", "loaded token" + user.getToken());
+
         return user;
 
        // OKHttp();
