@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 //import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView;
@@ -176,6 +177,9 @@ public class NewItemsFragment extends Fragment
                                           customRecyclerView.setVisibility(View.VISIBLE);
                                           inputSearch.clearFocus();
                                           btnSave.requestFocus();
+                                          getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
                                       }
                                   }
         );

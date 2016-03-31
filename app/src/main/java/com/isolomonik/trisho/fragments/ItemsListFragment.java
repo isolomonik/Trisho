@@ -159,6 +159,8 @@ public class ItemsListFragment extends Fragment implements
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        sLay.setRefreshing(false);
     }
 
     @Override
