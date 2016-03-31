@@ -67,13 +67,14 @@ public class NewItemsFragment extends Fragment
     private String guid;
     private String purchaseName;
     private Button btnAdd;
+    private Button btnSave;
 
-    AutoCompleteTextView inputSearch;
-    String[] products = {""};
-    ArrayAdapter<String> adapterSearch;
+    private AutoCompleteTextView inputSearch;
+    private String[] products = {""};
+    private ArrayAdapter<String> adapterSearch;
 
-    NewPurchaseItemsModel model;
-    List<CustomProducts> customProductsList = new LinkedList<>();
+    private NewPurchaseItemsModel model;
+    private List<CustomProducts> customProductsList = new LinkedList<>();
 
     private Realm realm;
 
@@ -86,7 +87,7 @@ public class NewItemsFragment extends Fragment
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
@@ -100,7 +101,7 @@ public class NewItemsFragment extends Fragment
         model = new NewPurchaseItemsModel();
         model.setPurchaseGuid(guid);
 
-        Button btnSave = (Button) v.findViewById(R.id.btnOKItems);
+        btnSave = (Button) v.findViewById(R.id.btnOKItems);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +112,7 @@ public class NewItemsFragment extends Fragment
             }
 
         });
-
+        btnSave.requestFocus();
         inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
         // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);
         inputSearch.setThreshold(1);
@@ -173,6 +174,8 @@ public class NewItemsFragment extends Fragment
                                           inputSearch.setText("");
                                           btnAdd.setEnabled(false);
                                           customRecyclerView.setVisibility(View.VISIBLE);
+                                          inputSearch.clearFocus();
+                                          btnSave.requestFocus();
                                       }
                                   }
         );
@@ -183,6 +186,7 @@ public class NewItemsFragment extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        inputSearch.clearFocus();
         recyclerView = (RecyclerView) view.findViewById(R.id.lvRecomendedItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -303,7 +307,7 @@ public class NewItemsFragment extends Fragment
 
         try {
             Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
+          //          .setPrettyPrinting()
                     .create();
             String json = gson.toJson(model);
             OkHttpClient client = new OkHttpClient();

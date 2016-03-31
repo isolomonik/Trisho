@@ -8,14 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cv"
-        android:layout_weight="0.04">
+        android:layout_weight="0.05"
+        android:padding="5dp">
 
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.07">
+            android:layout_weight="0.05">
 
             <TextView
                 android:layout_width="wrap_content"

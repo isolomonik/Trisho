@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -42,11 +43,14 @@ public class ItemsListFragment extends Fragment implements
     private Realm realm;
     private String guid;
     private String purchaseName;
+    Bundle bundle = new Bundle();
+
     private RealmList<PurchaseItemModel> itemsList = new RealmList<>();
 
     private RecyclerView recyclerView;
     private PurchaseItemsAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
+    private SwipeRefreshLayout sLay;
 
     public ItemsListFragment() {
     }
@@ -93,7 +97,7 @@ public class ItemsListFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Bundle bundle = new Bundle();
+
         bundle.putString("guid", guid);
         Log.v(GlobalVar.MY_LOG, bundle.toString());
         getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_ITEMS_ID, bundle, this);
@@ -107,7 +111,16 @@ public class ItemsListFragment extends Fragment implements
         recyclerView = (RecyclerView) view.findViewById(R.id.lvItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
+        sLay=(SwipeRefreshLayout)view.findViewById(R.id.swipeItems);
+        sLay.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                sLay.setRefreshing(true);
+                getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_ITEMS_ID, bundle, ItemsListFragment.this);
+                // Refresh items
+                Log.v(GlobalVar.MY_LOG, "ItemList is updated");
+            }
+        });
 
 
     }

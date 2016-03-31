@@ -110,15 +110,27 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
     public ItemHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View rowView = inflater.inflate(R.layout.row_items, parent, false);
+        final ItemHolder itemsHolder = new ItemHolder(rowView);
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                builder.setTitle("Add discription")
+                final EditText description=new EditText(parent.getContext());
+                PurchaseItemModel item= items.get(itemsHolder.getAdapterPosition());
+                description.setText(item.getDescription());
+                builder.setTitle("Add discription:")
                         .setCancelable(false)
-                        .setNegativeButton("SAVE",
+                        .setView(description)
+                        .setPositiveButton("SAVE",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+                                        PurchaseItemModel item= items.get(itemsHolder.getAdapterPosition());
+                                        realm.beginTransaction();
+                                        item.setDescription(description.getText().toString());
+                                        realm.commitTransaction();
+                                        changedModelToAPI(item);
+                                        Log.v(GlobalVar.MY_LOG, "added item discription: "+description.getText().toString());
+                                        notifyDataSetChanged();
                                         dialog.dismiss();
                                     }
                                 });
@@ -127,7 +139,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             }
         });
 
-        final ItemHolder itemsHolder = new ItemHolder(rowView);
+
         return itemsHolder;
     }
 
@@ -141,8 +153,12 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 //            holder.isDone.setText(String.valueOf(product.getStatus()));
             holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
             if(product.getStatus().equals("Ignored")){
+                holder.count.setVisibility(View.INVISIBLE);
+                holder.isDone.setVisibility(View.INVISIBLE);
                 holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
-            }else {holder.productName.setTextColor(context.getResources().getColor(R.color.primary_text));}
+            }else {holder.productName.setTextColor(context.getResources().getColor(R.color.primary_text));
+                holder.count.setVisibility(View.VISIBLE);
+                holder.isDone.setVisibility(View.VISIBLE);}
 
         }
     }
@@ -163,7 +179,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         items.add(items.size(), prev);
         realm.commitTransaction();
         notifyItemRemoved(position);
-
+notifyDataSetChanged();
         //  realm.commitTransaction();
     }
     @Override
@@ -171,6 +187,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         PurchaseItemModel prev = items.remove(fromPosition);
         items.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
         notifyItemMoved(fromPosition, toPosition);
+        notifyDataSetChanged();
     }
 
     private void changedModelToAPI(PurchaseItemModel purchaseItemModel) {

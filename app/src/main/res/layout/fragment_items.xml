@@ -38,6 +38,11 @@
 
     </RelativeLayout>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeItems"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,5 +50,7 @@
         android:layout_gravity="left|top"
         android:choiceMode="singleChoice"
         android:layout_weight="1" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
