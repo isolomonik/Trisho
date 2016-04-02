@@ -54,10 +54,17 @@
                 android:inputType="numberDecimal"
                 android:ems="10"
                 android:id="@+id/etCount"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btnCountPicker"
+                android:layout_toStartOf="@+id/btnCountPicker" />
+
+            <Button
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:id="@+id/btnCountPicker"
+                android:layout_alignBottom="@+id/chbDone"
                 android:layout_toLeftOf="@+id/chbDone"
-                android:layout_toStartOf="@+id/chbDone"
-                android:layout_marginTop="5dp" />
+                android:layout_toStartOf="@+id/chbDone" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

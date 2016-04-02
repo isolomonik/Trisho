@@ -6,15 +6,19 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -59,16 +63,74 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
     class ItemHolder extends RecyclerView.ViewHolder
             implements ItemTouchHelperViewHolder
+        , NumberPicker.OnValueChangeListener
     {
         TextView productName;
         TextView productDescription;
         EditText count;
         CheckBox isDone;
-        public ItemHolder(View itemView) {
+        Button countPicker;
+        public ItemHolder(final View itemView) {
             super(itemView);
             this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
             this.productDescription = (TextView) itemView.findViewById(R.id.tvItemDescription);
             this.count = (EditText) itemView.findViewById(R.id.etCount);
+            count.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    PurchaseItemModel item= items.get(getAdapterPosition());
+                    realm.beginTransaction();
+                    try {
+                        item.setCount(Double.parseDouble(s.toString()));
+                    } catch( Exception e) { }
+                    realm.commitTransaction();
+                    changedModelToAPI(item);
+                    Log.v(GlobalVar.MY_LOG, "changed item count: "+s.toString());
+                }
+            });
+            countPicker = (Button) itemView.findViewById(R.id.btnCountPicker);
+            countPicker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+                    final NumberPicker np= new NumberPicker(itemView.getContext());
+                    np.setMinValue(0);
+                    np.setMaxValue(100);
+                    try {
+                        np.setValue(Integer.parseInt(count.getText().toString()));
+                    } catch (Exception e){
+                        np.setValue(1);
+                    }
+
+                    builder.setCancelable(false)
+                            .setView(np)
+                            .setPositiveButton("SAVE",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            PurchaseItemModel item= items.get(getAdapterPosition());
+                                            realm.beginTransaction();
+                                            item.setCount(np.getValue());
+                                            realm.commitTransaction();
+                                            changedModelToAPI(item);
+                                            Log.v(GlobalVar.MY_LOG, "changed item count: "+np.getValue());
+                                            notifyDataSetChanged();
+                                            dialog.dismiss();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
             this.isDone = (CheckBox) itemView.findViewById(R.id.chbDone);
             this.isDone.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,6 +157,12 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         @Override
         public void onItemClear() {
             itemView.setBackgroundColor(0);
+        }
+
+       // ---------- for NumberPicker
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
         }
     }
 
