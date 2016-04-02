@@ -75,31 +75,58 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
             this.productDescription = (TextView) itemView.findViewById(R.id.tvItemDescription);
             this.count = (EditText) itemView.findViewById(R.id.etCount);
-            count.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            count.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+//                    final NumberPicker np= new NumberPicker(itemView.getContext());
+//                    np.setMinValue(0);
+//                    np.setMaxValue(100);
+//                    try {
+//                       // np.setValue(Integer.parseInt(count.getText().toString()));
+//                    } catch (Exception e){
+//                        np.setValue(1);
+//                    }
+//
+//                    builder.setCancelable(false)
+//                            .setView(np)
+//                            .setPositiveButton("SAVE",
+//                                    new DialogInterface.OnClickListener() {
+//                                        public void onClick(DialogInterface dialog, int id) {
+//                                            PurchaseItemModel item= items.get(getAdapterPosition());
+//                                            realm.beginTransaction();
+//                                            item.setCount(np.getValue());
+//                                            realm.commitTransaction();
+//                                            changedModelToAPI(item);
+//                                            Log.v(GlobalVar.MY_LOG, "changed item count: "+np.getValue());
+//                                            notifyDataSetChanged();
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+//                    AlertDialog alert = builder.create();
+//                    alert.show();
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                    PurchaseItemModel item= items.get(getAdapterPosition());
+//                    realm.beginTransaction();
+//                    try {
+//                        item.setCount(Double.parseDouble(s.toString()));
+//                    } catch( Exception e) { }
+//                    realm.commitTransaction();
+//                    changedModelToAPI(item);
+//                    Log.v(GlobalVar.MY_LOG, "changed item count: "+s.toString());
+//                }
+//            });
+//            countPicker = (Button) itemView.findViewById(R.id.btnCountPicker);
 
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    PurchaseItemModel item= items.get(getAdapterPosition());
-                    realm.beginTransaction();
-                    try {
-                        item.setCount(Double.parseDouble(s.toString()));
-                    } catch( Exception e) { }
-                    realm.commitTransaction();
-                    changedModelToAPI(item);
-                    Log.v(GlobalVar.MY_LOG, "changed item count: "+s.toString());
-                }
-            });
-            countPicker = (Button) itemView.findViewById(R.id.btnCountPicker);
-            countPicker.setOnClickListener(new View.OnClickListener() {
+            count.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
@@ -112,7 +139,8 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
                         np.setValue(1);
                     }
 
-                    builder.setCancelable(false)
+                    builder
+                            //.setCancelable(false)
                             .setView(np)
                             .setPositiveButton("SAVE",
                                     new DialogInterface.OnClickListener() {
@@ -223,10 +251,13 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             if(product.getStatus().equals("Ignored")){
                 holder.count.setVisibility(View.INVISIBLE);
                 holder.isDone.setVisibility(View.INVISIBLE);
+             //   holder.countPicker.setVisibility(View.INVISIBLE);
                 holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
             }else {holder.productName.setTextColor(context.getResources().getColor(R.color.primary_text));
                 holder.count.setVisibility(View.VISIBLE);
-                holder.isDone.setVisibility(View.VISIBLE);}
+                holder.isDone.setVisibility(View.VISIBLE);
+             //   holder.countPicker.setVisibility(View.VISIBLE);
+                }
 
         }
     }
