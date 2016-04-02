@@ -12,15 +12,18 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 //import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 //import com.fasterxml.jackson.databindG.ObjectMapper;
 import com.google.gson.ExclusionStrategy;
@@ -67,7 +70,7 @@ public class NewItemsFragment extends Fragment
         , Callback<String[]>, okhttp3.Callback {
     private String guid;
     private String purchaseName;
-    private Button btnAdd;
+ //   private Button btnAdd;
     private Button btnSave;
 
     private AutoCompleteTextView inputSearch;
@@ -121,8 +124,7 @@ public class NewItemsFragment extends Fragment
                                                @Override
                                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                                                    Log.v(GlobalVar.MY_LOG, "insert new product");
-                                                   btnAdd.setEnabled(true);
-                                                   // adapter.getFilter().filter(cs);
+                                                  // adapter.getFilter().filter(cs);
                                                    //getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NAMES_ID, bundle, DialogNewPurchaseFragment.this);
                                                    if (cs != null) {
                                                        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
@@ -155,34 +157,29 @@ public class NewItemsFragment extends Fragment
 
                                                @Override
                                                public void afterTextChanged(Editable arg0) {
+                                                   Log.v(GlobalVar.MY_LOG, "afterTextChanged "+arg0.toString());
                                                }
                                            }
 
         );
-
+        inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId== EditorInfo.IME_ACTION_DONE){
+                    String newName = v.getText().toString();
+                    CustomProducts customProducts = new CustomProducts(newName, 0);
+                    model.getCustomProductses().add(customProducts);
+                    customProductsList.add(customProducts);
+                    customRecyclerView.setAdapter(new CustomProductsAdapter(NewItemsFragment.this, customProductsList));
+                    v.setText("");
+                    customRecyclerView.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
         adapterSearch = new ArrayAdapter<String>(this.getContext(), R.layout.support_simple_spinner_dropdown_item, products);
         inputSearch.setAdapter(adapterSearch);
 
-        btnAdd = (Button) v.findViewById(R.id.btnSaveNewProduct);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          String newName = inputSearch.getText().toString();
-                                          CustomProducts customProducts = new CustomProducts(newName, 0);
-                                          model.getCustomProductses().add(customProducts);
-                                          customProductsList.add(customProducts);
-                                          customRecyclerView.setAdapter(new CustomProductsAdapter(NewItemsFragment.this, customProductsList));
-                                          inputSearch.setText("");
-                                          btnAdd.setEnabled(false);
-                                          customRecyclerView.setVisibility(View.VISIBLE);
-                                          inputSearch.clearFocus();
-                                          btnSave.requestFocus();
-                                          getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-
-                                      }
-                                  }
-        );
         return v;
     }
 

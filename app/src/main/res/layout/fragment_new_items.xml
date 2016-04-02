@@ -29,14 +29,6 @@
             android:singleLine="true"
              />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ADD"
-            android:id="@+id/btnSaveNewProduct"
-            android:layout_gravity="right"
-            android:enabled="false" />
-
     </LinearLayout>
 
     <TextView
@@ -96,8 +88,7 @@
             android:layout_gravity="left"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
+           />
 
     </LinearLayout>
 </LinearLayout>

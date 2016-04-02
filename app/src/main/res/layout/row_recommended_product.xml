@@ -22,5 +22,6 @@
         android:text="0"
         android:id="@+id/etRecommendedCount"
         android:textAlignment="center"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:visibility="invisible" />
 </LinearLayout>
