@@ -67,14 +67,14 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
     {
         TextView productName;
         TextView productDescription;
-        EditText count;
+        TextView count;
         CheckBox isDone;
         Button countPicker;
         public ItemHolder(final View itemView) {
             super(itemView);
             this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
             this.productDescription = (TextView) itemView.findViewById(R.id.tvItemDescription);
-            this.count = (EditText) itemView.findViewById(R.id.etCount);
+            this.count = (TextView) itemView.findViewById(R.id.etCount);
 //            count.addTextChangedListener(new TextWatcher() {
 //                @Override
 //                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
