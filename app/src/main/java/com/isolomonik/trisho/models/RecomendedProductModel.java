@@ -21,6 +21,28 @@ public class RecomendedProductModel extends RealmObject {
     @SerializedName("Matches")
     private int matches;
 
+    @SerializedName("PrevMatches")
+    private int prevMatches;
+
+    public int getFeaturedMatches() {
+        return featuredMatches;
+    }
+
+    public void setFeaturedMatches(int featuredMatches) {
+        this.featuredMatches = featuredMatches;
+    }
+
+    public int getPrevMatches() {
+        return prevMatches;
+    }
+
+    public void setPrevMatches(int prevMatches) {
+        this.prevMatches = prevMatches;
+    }
+
+    @SerializedName("FeaturedMatches")
+    private int featuredMatches;
+
     @SerializedName("Count")
     private double count;
 
