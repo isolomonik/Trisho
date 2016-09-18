@@ -114,7 +114,7 @@ public class NewItemsFragment extends Fragment
             public void onClick(View v) {
                 Log.d(GlobalVar.MY_LOG, "New items save pressed");
                 saveItems();
-                getActivity().finish();
+    //            getActivity().finish();
 
             }
 
@@ -319,7 +319,8 @@ recyclerView.requestFocus();
 
     @Override
     public  void onPause(){
-        saveItems();
+       // saveItems();
+        super.onPause();
     }
 
     @Override
@@ -374,6 +375,6 @@ recyclerView.requestFocus();
     @Override
     public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
         Log.v(GlobalVar.MY_LOG,"items added to purchase " );
-//        getActivity().finish();
+        getActivity().finish();
     }
 }
