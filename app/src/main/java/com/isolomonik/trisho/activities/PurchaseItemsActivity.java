@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.fragments.ItemsListFragment;
@@ -27,8 +28,8 @@ public class PurchaseItemsActivity extends AppCompatActivity {
         //  toolbar.setLogo(R.drawable.ic_10d);
 
         getSupportActionBar().setTitle(R.string.labelProducts);
-       // getSupportActionBar().setHomeButtonEnabled(true);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      //  getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         productFragment=new ItemsListFragment();
         if (savedInstanceState == null) {
@@ -47,4 +48,21 @@ public class PurchaseItemsActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+
+
 }

@@ -248,16 +248,25 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
            holder.count.setText(String.valueOf(product.getCount()));
 //            holder.isDone.setText(String.valueOf(product.getStatus()));
             holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
-            if(product.getStatus().equals("Ignored")){
-                holder.count.setVisibility(View.INVISIBLE);
+            switch(product.getStatus()) {
+                case "Ignored":
+                    holder.count.setVisibility(View.INVISIBLE);
                 holder.isDone.setVisibility(View.INVISIBLE);
              //   holder.countPicker.setVisibility(View.INVISIBLE);
                 holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
-            }else {holder.productName.setTextColor(context.getResources().getColor(R.color.primary_text));
+                    break;
+                case "Done":
+                holder.productName.setTextColor(Color.BLACK);
                 holder.count.setVisibility(View.VISIBLE);
                 holder.isDone.setVisibility(View.VISIBLE);
-             //   holder.countPicker.setVisibility(View.VISIBLE);
-                }
+                    break;
+                default:
+                    holder.productName.setTextColor(Color.RED);
+                    holder.count.setVisibility(View.VISIBLE);
+                    holder.isDone.setVisibility(View.VISIBLE);
+                    break;
+            }
+
 
         }
     }

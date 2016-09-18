@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/cv"
         android:layout_weight="0.05"
-        android:padding="5dp">
+        android:padding="8dp"
+        android:touchscreenBlocksFocus="false">
 
 
 
@@ -27,15 +28,14 @@
                 android:textColor="@color/primary_text" />
 
             <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:id="@+id/chbDone"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginEnd="20dp" />
 
 
              <TextView
@@ -58,7 +58,8 @@
                 android:singleLine="true"
                 android:imeOptions="actionDone"
                 android:layout_toLeftOf="@+id/chbDone"
-                android:layout_toStartOf="@+id/chbDone" />
+                android:layout_toStartOf="@+id/chbDone"
+                android:textSize="20dp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
