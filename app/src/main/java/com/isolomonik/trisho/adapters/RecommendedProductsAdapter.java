@@ -14,29 +14,36 @@ import android.widget.TextView;
 import com.isolomonik.trisho.R;
 import com.isolomonik.trisho.models.RecomendedProductModel;
 import com.isolomonik.trisho.utils.AdapterCallBackInterface;
-import com.isolomonik.trisho.utils.GlobalVar;
 
-import io.realm.RealmList;
-import io.realm.RealmResults;
+import java.util.List;
+
+import io.realm.Realm;
 
 public class RecommendedProductsAdapter extends RecyclerView.Adapter<RecommendedProductsAdapter.ItemHolder> {
 
 
     private Fragment context;
-    private RealmList<RecomendedProductModel> items;
+    private Realm realm= Realm.getDefaultInstance();
+    //private RealmList<RecomendedProductModel> items;
+    private List<RecomendedProductModel> items;
 
     class ItemHolder extends RecyclerView.ViewHolder {
         TextView productName;
-        CheckBox add;
+        CheckBox added;
         EditText count;
         public ItemHolder(View itemView) {
             super(itemView);
             productName = (TextView) itemView.findViewById(R.id.tvRecommendedProduct);
-            add = (CheckBox) itemView.findViewById(R.id.cbAddRecommended);
-            add.setOnClickListener(new View.OnClickListener() {
+            added = (CheckBox) itemView.findViewById(R.id.cbAddRecommended);
+            added.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AdapterCallBackInterface myInterface = (AdapterCallBackInterface) context;
+                    realm.beginTransaction();
+                    if (items.get(getAdapterPosition()).getStatus()==1){
+                        items.get(getAdapterPosition()).setStatus(0);}
+                    else {items.get(getAdapterPosition()).setStatus(1);}
+                    realm.commitTransaction();
                     myInterface.showItems( items.get(getAdapterPosition()).getProductGuid(), String.valueOf(items.get(getAdapterPosition()).getCount()));
                 }
             });
@@ -45,7 +52,8 @@ public class RecommendedProductsAdapter extends RecyclerView.Adapter<Recommended
         }
     }
 
-    public RecommendedProductsAdapter(Fragment context, RealmList<RecomendedProductModel> items) {
+    //public RecommendedProductsAdapter(Fragment context, RealmList<RecomendedProductModel> items) {
+    public RecommendedProductsAdapter(Fragment context, List<RecomendedProductModel> items) {
         this.context = context;
         this.items = items;
       //  this.items..sort("isFeaturedProducts");
@@ -65,9 +73,9 @@ public class RecommendedProductsAdapter extends RecyclerView.Adapter<Recommended
 
             holder.productName.setText(product.getProductName());
             if(!product.getIsFeaturedProducts()){
-                holder.productName.setBackgroundColor(Color.YELLOW);
-            } else { holder.productName.setBackgroundColor(Color.WHITE);}
-            holder.add.setChecked(product.getStatus()==1);
+                holder.productName.setTextColor(Color.RED);
+            } else { holder.productName.setTextColor(Color.BLACK);}
+            holder.added.setChecked(product.getStatus()==1);
             holder.count.setText(String.valueOf(product.getCount()));
         }
     }

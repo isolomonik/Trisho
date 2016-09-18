@@ -7,6 +7,7 @@ import io.realm.annotations.PrimaryKey;
 
 
 public class RecomendedProductModel extends RealmObject {
+
     @SerializedName("ProductGuid")
     @PrimaryKey
     private String productGuid;
@@ -24,7 +25,9 @@ public class RecomendedProductModel extends RealmObject {
     @SerializedName("PrevMatches")
     private int prevMatches;
 
+
     public int getFeaturedMatches() {
+
         return featuredMatches;
     }
 

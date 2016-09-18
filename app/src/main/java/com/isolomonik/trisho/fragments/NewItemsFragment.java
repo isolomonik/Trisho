@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 //import com.fasterxml.jackson.databindG.ObjectMapper;
@@ -70,7 +71,7 @@ public class NewItemsFragment extends Fragment
         , Callback<String[]>, okhttp3.Callback {
     private String guid;
     private String purchaseName;
- //   private Button btnAdd;
+    private ImageButton ibSearchOK;
     private Button btnSave;
 
     private AutoCompleteTextView inputSearch;
@@ -79,6 +80,8 @@ public class NewItemsFragment extends Fragment
 
     private NewPurchaseItemsModel model;
     private List<CustomProducts> customProductsList = new LinkedList<>();
+    private List<RecomendedProductModel> list = new LinkedList<>();
+   // private RealmList<RecomendedProductModel> list= new RealmList<>();
 
     private Realm realm;
 
@@ -116,17 +119,32 @@ public class NewItemsFragment extends Fragment
             }
 
         });
-        btnSave.requestFocus();
+    //    btnSave.requestFocus();
+
+        ibSearchOK = (ImageButton) v.findViewById(R.id.ibSearchOK);
+        ibSearchOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(GlobalVar.MY_LOG, "New product save pressed");
+
+
+            }
+
+        });
+
         inputSearch = (AutoCompleteTextView) v.findViewById(R.id.tvInsertNewProduct);
         // EditText inputSearch = (EditText) v.findViewById(R.id.tvInsertNewProduct);
         inputSearch.setThreshold(1);
         inputSearch.addTextChangedListener(new TextWatcher() {
                                                @Override
                                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                                                   btnSave.setVisibility(View.INVISIBLE);
                                                    Log.v(GlobalVar.MY_LOG, "insert new product");
+
                                                   // adapter.getFilter().filter(cs);
                                                    //getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NAMES_ID, bundle, DialogNewPurchaseFragment.this);
                                                    if (cs != null) {
+                                                   //    ibSearchOK.setImageResource(@android:drawable/ic_menu_search);
                                                        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
                                                        Map<String, String> parameters = new HashMap<String, String>();
                                                        parameters.put("name", cs.toString());
@@ -168,12 +186,25 @@ public class NewItemsFragment extends Fragment
                 if(actionId== EditorInfo.IME_ACTION_DONE){
                     String newName = v.getText().toString();
                     CustomProducts customProducts = new CustomProducts(newName, 0);
+                    RecomendedProductModel customProd=new RecomendedProductModel();
+                    customProd.setProductName(newName);
+                    customProd.setStatus(1);
                     model.getCustomProductses().add(customProducts);
                     customProductsList.add(customProducts);
-                    customRecyclerView.setAdapter(new CustomProductsAdapter(NewItemsFragment.this, customProductsList));
+                    realm.beginTransaction();
+                    list.add(0, customProd);
+                    realm.commitTransaction();
+
+            //        customRecyclerView.setAdapter(new CustomProductsAdapter(NewItemsFragment.this, customProductsList));
                     v.setText("");
-                    customRecyclerView.setVisibility(View.VISIBLE);
+            //        list.add(0,customProd);
+            //        customRecyclerView.setVisibility(View.VISIBLE);
+
+                    adapter = new RecommendedProductsAdapter(NewItemsFragment.this, list);
+                    recyclerView.setAdapter(adapter);
+
                 }
+                btnSave.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -188,14 +219,15 @@ public class NewItemsFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inputSearch.clearFocus();
+       // btnSave.requestFocus();
         recyclerView = (RecyclerView) view.findViewById(R.id.lvRecomendedItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+recyclerView.requestFocus();
 
-
-        customRecyclerView = (RecyclerView) view.findViewById(R.id.lvNewProducts);
-        customRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        customRecyclerView.setAdapter(new CustomProductsAdapter(this, customProductsList));
-        customRecyclerView.setVisibility(View.INVISIBLE);
+//        customRecyclerView = (RecyclerView) view.findViewById(R.id.lvNewProducts);
+//        customRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        customRecyclerView.setAdapter(new CustomProductsAdapter(this, customProductsList));
+//        customRecyclerView.setVisibility(View.INVISIBLE);
 
     }
 
@@ -235,7 +267,7 @@ public class NewItemsFragment extends Fragment
             realm.beginTransaction();
             RealmResults<RecomendedProductModel> result = realm.where(RecomendedProductModel.class).findAll();
             result.sort("isFeaturedProducts");
-            RealmList<RecomendedProductModel> list = new RealmList<>();
+            // RealmList<RecomendedProductModel> list = new RealmList<>();
             list.addAll(result);
             realm.commitTransaction();
             //  ArrayList
@@ -272,6 +304,7 @@ public class NewItemsFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
+        btnSave.requestFocus();
 
     }
 
@@ -280,12 +313,13 @@ public class NewItemsFragment extends Fragment
     public void onStart() {
         super.onStart();
         realm = Realm.getDefaultInstance();
-
+        btnSave.requestFocus();
 
     }
 
     @Override
     public void onStop() {
+  //      saveItems();
         realm.close();
         super.onStop();
     }

@@ -7,27 +7,27 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="110dp"
-        android:layout_gravity="left|top"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_width="0px"
-            android:layout_height="0px" />
+        android:layout_height="60dp"
+        android:layout_gravity="left|top">
 
         <AutoCompleteTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/tvInsertNewProduct"
             android:text=""
             android:hint="Insert product name"
             android:dropDownWidth="300dp"
-            android:layout_weight="1"
             android:imeOptions="actionDone"
             android:singleLine="true"
+            android:layout_weight="1"
              />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/ibSearchOK"
+            android:layout_weight="0.05"
+            android:src="@android:drawable/ic_menu_search" />
 
     </LinearLayout>
 
@@ -36,41 +36,24 @@
         android:layout_height="20dp"
         android:text="Recommended products"
         android:id="@+id/tvLabelRecommended"
-        android:textColor="@android:color/holo_blue_dark" />
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="@dimen/design_tab_text_size" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="213dp"
-        android:id="@+id/cvRecommendedItems">
+        android:layout_height="wrap_content"
+        android:id="@+id/cvRecommendedItems"
+        android:layout_weight="1">
 
         <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lvRecomendedItems"
         android:choiceMode="multipleChoice"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:focusable="true" />
 
-    </android.support.v7.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:text="Added other products"
-        android:id="@+id/tvNewProducts"
-        android:textColor="@android:color/holo_blue_dark" />
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cvOtherItems"
-        android:layout_weight="8.00">
-
-        <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:choiceMode="multipleChoice"
-        android:id="@+id/lvNewProducts"
-        android:layout_weight="1" />
     </android.support.v7.widget.CardView>
 
     <LinearLayout
@@ -88,7 +71,8 @@
             android:layout_gravity="left"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-           />
+            android:focusable="true"
+             />
 
     </LinearLayout>
 </LinearLayout>
