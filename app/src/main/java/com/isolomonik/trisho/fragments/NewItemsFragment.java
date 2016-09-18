@@ -114,7 +114,7 @@ public class NewItemsFragment extends Fragment
             public void onClick(View v) {
                 Log.d(GlobalVar.MY_LOG, "New items save pressed");
                 saveItems();
-
+                getActivity().finish();
 
             }
 
@@ -200,8 +200,8 @@ public class NewItemsFragment extends Fragment
             //        list.add(0,customProd);
             //        customRecyclerView.setVisibility(View.VISIBLE);
 
-                    adapter = new RecommendedProductsAdapter(NewItemsFragment.this, list);
-                    recyclerView.setAdapter(adapter);
+                    //adapter = new RecommendedProductsAdapter(NewItemsFragment.this, list);
+                    recyclerView.setAdapter(new RecommendedProductsAdapter(NewItemsFragment.this, list));
 
                 }
                 btnSave.setVisibility(View.VISIBLE);
@@ -318,8 +318,13 @@ recyclerView.requestFocus();
     }
 
     @Override
+    public  void onPause(){
+        saveItems();
+    }
+
+    @Override
     public void onStop() {
-  //      saveItems();
+
         realm.close();
         super.onStop();
     }
@@ -369,6 +374,6 @@ recyclerView.requestFocus();
     @Override
     public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
         Log.v(GlobalVar.MY_LOG,"items added to purchase " );
-        getActivity().finish();
+//        getActivity().finish();
     }
 }
