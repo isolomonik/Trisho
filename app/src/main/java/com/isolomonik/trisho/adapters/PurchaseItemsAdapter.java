@@ -331,5 +331,6 @@ Log.v(GlobalVar.MY_LOG, "change item " + purchaseItemModel.toString());
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         Log.v(GlobalVar.MY_LOG, "saved" );
+      //  notifyDataSetChanged();
     }
 }
