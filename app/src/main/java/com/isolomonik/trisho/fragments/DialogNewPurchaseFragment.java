@@ -84,7 +84,7 @@ public class DialogNewPurchaseFragment extends DialogFragment implements
         btnOK.setOnClickListener(new View.OnClickListener() {
                                      @Override
                                      public void onClick(View v) {
-                                         Log.d(GlobalVar.MY_LOG, "Dialog Purchase OK pressed");
+                                         Log.i(GlobalVar.MY_LOG, "Dialog Purchase OK pressed");
                                          name = inputSearch.getText().toString();
                                          bundle.putString("name", name);
                                          //      getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NEW_ID, bundle, DialogNewPurchaseFragment.this);
@@ -99,7 +99,7 @@ public class DialogNewPurchaseFragment extends DialogFragment implements
         btnCancel.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
-                                             Log.d(GlobalVar.MY_LOG, "Dialog Purchase CANCEL pressed");
+                                             Log.i(GlobalVar.MY_LOG, "Dialog Purchase CANCEL pressed");
                                              dismiss();
                                          }
                                      }
@@ -137,7 +137,7 @@ public class DialogNewPurchaseFragment extends DialogFragment implements
 
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        Log.d(GlobalVar.MY_LOG, "Dialog Purchase: onDismiss");
+        Log.i(GlobalVar.MY_LOG, "Dialog Purchase: onDismiss");
     }
 
     @Override
@@ -148,7 +148,7 @@ public class DialogNewPurchaseFragment extends DialogFragment implements
 
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-        Log.d(GlobalVar.MY_LOG, "Dialog Purchase: onCancel");
+        Log.i(GlobalVar.MY_LOG, "Dialog Purchase: onCancel");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.isolomonik.trisho.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 //import android.app.Fragment;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 //import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView;
@@ -112,7 +114,7 @@ public class NewItemsFragment extends Fragment
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(GlobalVar.MY_LOG, "New items save pressed");
+                Log.i(GlobalVar.MY_LOG, "New items save pressed");
                 saveItems();
     //            getActivity().finish();
 
@@ -125,7 +127,12 @@ public class NewItemsFragment extends Fragment
         ibSearchOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(GlobalVar.MY_LOG, "New product save pressed");
+                Log.i(GlobalVar.MY_LOG, "New product save pressed");
+                addFromSearch(inputSearch);
+                inputSearch.clearFocus();
+                recyclerView.requestFocus();
+                final InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
 
 
             }
@@ -138,17 +145,18 @@ public class NewItemsFragment extends Fragment
         inputSearch.addTextChangedListener(new TextWatcher() {
                                                @Override
                                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                                                   btnSave.setVisibility(View.INVISIBLE);
+                                                 //  btnSave.setVisibility(View.INVISIBLE);
                                                    Log.v(GlobalVar.MY_LOG, "insert new product");
 
                                                   // adapter.getFilter().filter(cs);
                                                    //getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NAMES_ID, bundle, DialogNewPurchaseFragment.this);
                                                    if (cs != null) {
                                                    //    ibSearchOK.setImageResource(@android:drawable/ic_menu_search);
+
                                                        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
                                                        Map<String, String> parameters = new HashMap<String, String>();
                                                        parameters.put("name", cs.toString());
-                                                       parameters.put("take", "50");
+                                                       parameters.put("take", "150");
                                                        parameters.put("skip", "0");
                                                        parameters.put("token", GlobalVar.API_TOKEN);
                                                        Call<String[]> call = rest.productsNames(parameters);
@@ -184,27 +192,10 @@ public class NewItemsFragment extends Fragment
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId== EditorInfo.IME_ACTION_DONE){
-                    String newName = v.getText().toString();
-                    CustomProducts customProducts = new CustomProducts(newName, 0);
-                    RecomendedProductModel customProd=new RecomendedProductModel();
-                    customProd.setProductName(newName);
-                    customProd.setStatus(1);
-                    model.getCustomProductses().add(customProducts);
-                    customProductsList.add(customProducts);
-                    realm.beginTransaction();
-                    list.add(0, customProd);
-                    realm.commitTransaction();
-
-            //        customRecyclerView.setAdapter(new CustomProductsAdapter(NewItemsFragment.this, customProductsList));
-                    v.setText("");
-            //        list.add(0,customProd);
-            //        customRecyclerView.setVisibility(View.VISIBLE);
-
-                    //adapter = new RecommendedProductsAdapter(NewItemsFragment.this, list);
-                    recyclerView.setAdapter(new RecommendedProductsAdapter(NewItemsFragment.this, list));
+                    addFromSearch(v);
 
                 }
-                btnSave.setVisibility(View.VISIBLE);
+             //   btnSave.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -341,6 +332,32 @@ recyclerView.requestFocus();
     }
 
     //-------end for adapter
+
+
+
+    private void addFromSearch (TextView v){
+        String newName = v.getText().toString();
+        if (!newName.equals("")) {
+            CustomProducts customProducts = new CustomProducts(newName, 0);
+            RecomendedProductModel customProd = new RecomendedProductModel();
+            customProd.setProductName(newName);
+            customProd.setStatus(1);
+            model.getCustomProductses().add(customProducts);
+            customProductsList.add(customProducts);
+            realm.beginTransaction();
+            list.add(0, customProd);
+            realm.commitTransaction();
+
+            //        customRecyclerView.setAdapter(new CustomProductsAdapter(NewItemsFragment.this, customProductsList));
+            v.setText("");
+            //        list.add(0,customProd);
+            //        customRecyclerView.setVisibility(View.VISIBLE);
+
+            //adapter = new RecommendedProductsAdapter(NewItemsFragment.this, list);
+            recyclerView.setAdapter(new RecommendedProductsAdapter(NewItemsFragment.this, list));
+        }
+    }
+
 
 
     private void saveItems() {

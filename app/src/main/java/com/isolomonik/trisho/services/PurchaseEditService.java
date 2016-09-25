@@ -30,14 +30,14 @@ public class PurchaseEditService extends IntentService {
 
     public void onCreate() {
         super.onCreate();
-        Log.d(GlobalVar.MY_LOG, "create service PurchaseEdit");
+        Log.i(GlobalVar.MY_LOG, "create service PurchaseEdit");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
 
 //
-//        Log.d(GlobalVar.MY_LOG, "started service PurchaseEdit");
+//        Log.i(GlobalVar.MY_LOG, "started service PurchaseEdit");
 //        OkHttpClient client = new OkHttpClient();
 //        MediaType type = MediaType.parse("application/json; charset=utf-8");
 //        RequestBody body = RequestBody.create(type, jsonPurchaseModel.toString());
@@ -51,12 +51,12 @@ public class PurchaseEditService extends IntentService {
 //    } catch (Exception e) {
 //        e.printStackTrace();
 //    }
-//        Log.d(GlobalVar.MY_LOG, "onHandleIntent start: " + jsonPurchaseModel);
+//        Log.i(GlobalVar.MY_LOG, "onHandleIntent start: " + jsonPurchaseModel);
 //
     }
 
     public void onDestroy() {
         super.onDestroy();
-        Log.d(GlobalVar.MY_LOG, "Destroy service Purchase edit");
+        Log.i(GlobalVar.MY_LOG, "Destroy service Purchase edit");
     }
 }

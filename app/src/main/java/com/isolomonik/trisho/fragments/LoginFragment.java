@@ -110,7 +110,7 @@ return new LoginLoader(getActivity(), args);
     }
 
     public void onLoadFinished(Loader<LoginModel> loader, LoginModel data) {
-        Log.d(GlobalVar.MY_LOG, data.getToken());
+        Log.i(GlobalVar.MY_LOG, data.getToken());
         // TODO: 24.02.16    token=null
         GlobalVar.API_TOKEN = data.getToken();
 
@@ -135,7 +135,7 @@ getActivity().finish();
 
     public void onLoaderReset(Loader<LoginModel> loader) {
 
-        Log.d(GlobalVar.MY_LOG, "onLoaderReset");
+        Log.i(GlobalVar.MY_LOG, "onLoaderReset");
      //   GlobalVar.API_TOKEN="";
     }
 

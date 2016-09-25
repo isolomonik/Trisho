@@ -35,7 +35,7 @@ public class LoginLoader extends AsyncTaskLoader<LoginModel> {
 
     public LoginLoader(Context context, Bundle args) {
         super(context);
-        Log.d(GlobalVar.MY_LOG, hashCode() + " create LoginAsyncLoader");
+        Log.i(GlobalVar.MY_LOG, hashCode() + " create LoginAsyncLoader");
         if (args != null) {
             telephone = args.getString("Telephone");
             passw = args.getString("Password");
@@ -45,7 +45,7 @@ public class LoginLoader extends AsyncTaskLoader<LoginModel> {
 
     @Override
     public LoginModel loadInBackground() {
-        Log.d(GlobalVar.MY_LOG, hashCode() + " login loading start");
+        Log.i(GlobalVar.MY_LOG, hashCode() + " login loading start");
 
         try{
         RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);

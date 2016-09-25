@@ -20,6 +20,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,18 +28,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.NewUserActivity" >
+        <activity android:name=".activities.NewUserActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.PurchaseListActivity" >
+        <activity android:name=".activities.PurchaseListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.PurchaseItemsActivity" >
+        <activity android:name=".activities.PurchaseItemsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="45fd2be1f773506e85dc4ae20d7b88ce5bf8e4b4" />
 
-        <activity android:name=".activities.NewItemActivity" >
+        <activity android:name=".activities.NewItemActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -120,7 +120,7 @@ public class PurchaseListFragment extends Fragment implements
 
     @Override
     public AsyncTaskLoader<List<PurchaseModel>> onCreateLoader(int id, Bundle args) {
-
+        sLay.setRefreshing(true);
         AsyncTaskLoader<List<PurchaseModel>> listLoader = new PurchaseListLoader(getActivity(), args);
         return listLoader;
     }
@@ -133,7 +133,7 @@ public class PurchaseListFragment extends Fragment implements
             Log.v(GlobalVar.MY_LOG, "PurchaseList is null");
             return;
         }
-        sLay.setRefreshing(false);
+
         realm.beginTransaction();
         realm.clear(PurchaseModel.class);  // Clear the DB
         realm.copyToRealmOrUpdate(data);
@@ -150,7 +150,7 @@ public class PurchaseListFragment extends Fragment implements
        // adapter = new PurchaseListAdapter(this, result);
         adapter = new PurchaseListAdapter(this, purchaseList);
         recyclerView.setAdapter(adapter);
-
+        sLay.setRefreshing(false);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);

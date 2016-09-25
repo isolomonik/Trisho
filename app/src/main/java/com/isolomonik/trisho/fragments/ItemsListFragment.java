@@ -127,6 +127,7 @@ public class ItemsListFragment extends Fragment implements
 
     @Override
     public Loader<List<PurchaseItemModel>> onCreateLoader(int id, Bundle args) {
+        sLay.setRefreshing(true);
         AsyncTaskLoader<List<PurchaseItemModel>> itemsLoader = new PurchaseItemsLoader(getActivity(), args);
         return itemsLoader;
     }

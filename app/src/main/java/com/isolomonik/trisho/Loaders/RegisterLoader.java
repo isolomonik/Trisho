@@ -34,7 +34,7 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
 
     public RegisterLoader(Context context, Bundle args) {
         super(context);
-        Log.d(GlobalVar.MY_LOG, hashCode() + " create RegisterAsyncLoader");
+        Log.i(GlobalVar.MY_LOG, hashCode() + " create RegisterAsyncLoader");
         if (args != null) {
             name = args.getString("Name");
             email = args.getString("Email");
@@ -46,7 +46,7 @@ public class RegisterLoader extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
 
-        Log.d(GlobalVar.MY_LOG, hashCode() + " register load start");
+        Log.i(GlobalVar.MY_LOG, hashCode() + " register load start");
 
 
         MediaType mt = MediaType.parse("application/json; charset=utf-8");

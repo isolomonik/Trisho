@@ -97,7 +97,7 @@ private  Realm realm;
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
 
-        Log.d(GlobalVar.MY_LOG, data);
+        Log.i(GlobalVar.MY_LOG, data);
         GlobalVar.API_TOKEN = data;
 
         RegisterModel  model = new RegisterModel();
