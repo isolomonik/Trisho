@@ -155,6 +155,7 @@ public class NewItemsFragment extends Fragment
                                                    //getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_NAMES_ID, bundle, DialogNewPurchaseFragment.this);
                                                    if (cs != null) {
                                                    //    ibSearchOK.setImageResource(@android:drawable/ic_menu_search);
+                                                       ibSearchOK.setImageResource(R.drawable.ic_ok);
 
                                                        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
                                                        Map<String, String> parameters = new HashMap<String, String>();
@@ -177,6 +178,9 @@ public class NewItemsFragment extends Fragment
                                                            e.printStackTrace();
 
                                                        }
+                                                   }
+                                                   else {
+                                                       ibSearchOK.setImageResource(R.drawable.search_ico48);
                                                    }
                                                }
 
@@ -314,7 +318,7 @@ recyclerView.requestFocus();
 
     @Override
     public  void onPause(){
-       // saveItems();
+        saveItems();
         super.onPause();
     }
 
@@ -356,6 +360,8 @@ recyclerView.requestFocus();
             v.setText("");
             //        list.add(0,customProd);
             //        customRecyclerView.setVisibility(View.VISIBLE);
+
+            ibSearchOK.setImageResource(R.drawable.search_ico48);
 
             //adapter = new RecommendedProductsAdapter(NewItemsFragment.this, list);
             recyclerView.setAdapter(new RecommendedProductsAdapter(NewItemsFragment.this, list));
