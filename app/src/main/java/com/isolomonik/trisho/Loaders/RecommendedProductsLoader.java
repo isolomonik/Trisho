@@ -32,7 +32,7 @@ public class RecommendedProductsLoader extends AsyncTaskLoader<List<RecomendedPr
         RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("purchaseGuid", guid);
-        parameters.put("take", "300");
+        parameters.put("take", "500");
         parameters.put("skip", "0");
         parameters.put("token", GlobalVar.API_TOKEN);
         Call<List<RecomendedProductModel>> call = rest.recommendedProducts(parameters);

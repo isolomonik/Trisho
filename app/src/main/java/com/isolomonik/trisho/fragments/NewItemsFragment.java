@@ -159,7 +159,7 @@ public class NewItemsFragment extends Fragment
                                                        RetrofitAPIInterface rest = APIFactory.getAPI(GlobalVar.URL_API);
                                                        Map<String, String> parameters = new HashMap<String, String>();
                                                        parameters.put("name", cs.toString());
-                                                       parameters.put("take", "150");
+                                                       parameters.put("take", "200");
                                                        parameters.put("skip", "0");
                                                        parameters.put("token", GlobalVar.API_TOKEN);
                                                        Call<String[]> call = rest.productsNames(parameters);
