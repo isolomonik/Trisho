@@ -26,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 //import com.fasterxml.jackson.databindG.ObjectMapper;
@@ -75,6 +76,7 @@ public class NewItemsFragment extends Fragment
     private String purchaseName;
     private ImageButton ibSearchOK;
     private Button btnSave;
+  private ProgressBar pbRecom;
 
     private AutoCompleteTextView inputSearch;
     private String[] products = {""};
@@ -110,6 +112,7 @@ public class NewItemsFragment extends Fragment
         model = new NewPurchaseItemsModel();
         model.setPurchaseGuid(guid);
 
+        pbRecom = (ProgressBar) v.findViewById(R.id.pbRec);
         btnSave = (Button) v.findViewById(R.id.btnOKItems);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +214,7 @@ public class NewItemsFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         inputSearch.clearFocus();
        // btnSave.requestFocus();
+        pbRecom.setVisibility(View.VISIBLE);
         recyclerView = (RecyclerView) view.findViewById(R.id.lvRecomendedItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 recyclerView.requestFocus();
@@ -265,7 +269,7 @@ recyclerView.requestFocus();
             adapter = new RecommendedProductsAdapter(this, list);
             recyclerView.setAdapter(adapter);
         }
-
+ // pbRecom.setVisibility(View.INVISIBLE);
     }
 
     @Override

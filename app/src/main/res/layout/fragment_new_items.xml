@@ -39,22 +39,36 @@
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="@dimen/design_tab_text_size" />
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cvRecommendedItems"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lvRecomendedItems"
-        android:choiceMode="multipleChoice"
-        android:layout_weight="1"
-            android:focusableInTouchMode="true"
-            android:focusable="true" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvRecommendedItems"
+            android:layout_weight="1">
 
-    </android.support.v7.widget.CardView>
+            <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lvRecomendedItems"
+            android:choiceMode="multipleChoice"
+            android:layout_weight="1"
+                android:focusableInTouchMode="true"
+                android:focusable="true" />
+
+        </android.support.v7.widget.CardView>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pbRec"
+            android:layout_gravity="center_horizontal|top"
+            android:visibility="visible" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:orientation="horizontal"

@@ -100,6 +100,7 @@ public class ItemsListFragment extends Fragment implements
 
         bundle.putString("guid", guid);
         Log.v(GlobalVar.MY_LOG, bundle.toString());
+        sLay.setRefreshing(true);
         getLoaderManager().restartLoader(GlobalVar.LOADER_PURCHASE_ITEMS_ID, bundle, this);
     }
 
