@@ -55,21 +55,20 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
     private Fragment context;
 
-    private Realm realm= Realm.getDefaultInstance();
+    private Realm realm = Realm.getDefaultInstance();
     private RealmList<PurchaseItemModel> items;
     private String purchaseGuid;
 
 
-
     class ItemHolder extends RecyclerView.ViewHolder
             implements ItemTouchHelperViewHolder
-        , NumberPicker.OnValueChangeListener
-    {
+            , NumberPicker.OnValueChangeListener {
         TextView productName;
         TextView productDescription;
         TextView count;
         CheckBox isDone;
         Button countPicker;
+
         public ItemHolder(final View itemView) {
             super(itemView);
             this.productName = (TextView) itemView.findViewById(R.id.tvItemName);
@@ -130,12 +129,12 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-                    final NumberPicker np= new NumberPicker(itemView.getContext());
+                    final NumberPicker np = new NumberPicker(itemView.getContext());
                     np.setMinValue(0);
                     np.setMaxValue(100);
                     try {
                         np.setValue(Integer.parseInt(count.getText().toString()));
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         np.setValue(1);
                     }
 
@@ -145,12 +144,12 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
                             .setPositiveButton("SAVE",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            PurchaseItemModel item= items.get(getAdapterPosition());
+                                            PurchaseItemModel item = items.get(getAdapterPosition());
                                             realm.beginTransaction();
                                             item.setCount(np.getValue());
                                             realm.commitTransaction();
                                             changedModelToAPI(item);
-                                            Log.v(GlobalVar.MY_LOG, "changed item count: "+np.getValue());
+                                            Log.v(GlobalVar.MY_LOG, "changed item count: " + np.getValue());
                                             notifyDataSetChanged();
                                             dialog.dismiss();
                                         }
@@ -163,9 +162,9 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             this.isDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.v(GlobalVar.MY_LOG, "Checked change " + items.get(getAdapterPosition()).getProductName() );
+                    Log.v(GlobalVar.MY_LOG, "Checked change " + items.get(getAdapterPosition()).getProductName());
                     realm.beginTransaction();
-                    if (((CheckBox)v).isChecked()) {
+                    if (((CheckBox) v).isChecked()) {
                         items.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_DONE);
                     } else {
                         items.get(getAdapterPosition()).setStatus(GlobalVar.STATUS_ADD);
@@ -187,7 +186,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             itemView.setBackgroundColor(0);
         }
 
-       // ---------- for NumberPicker
+        // ---------- for NumberPicker
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
@@ -198,7 +197,7 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
     public PurchaseItemsAdapter(Fragment context, RealmList<PurchaseItemModel> items, String purchaseGuid) {
         this.context = context;
         this.items = items;
-        this.purchaseGuid=purchaseGuid;
+        this.purchaseGuid = purchaseGuid;
 
         //this.items.sort("status");
     }
@@ -211,21 +210,27 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                final EditText description=new EditText(parent.getContext());
-                PurchaseItemModel item= items.get(itemsHolder.getAdapterPosition());
+                final EditText description = new EditText(parent.getContext());
+                PurchaseItemModel item = items.get(itemsHolder.getAdapterPosition());
                 description.setText(item.getDescription());
                 builder.setTitle("Add discription:")
                         .setCancelable(false)
                         .setView(description)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                        )
                         .setPositiveButton("SAVE",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        PurchaseItemModel item= items.get(itemsHolder.getAdapterPosition());
+                                        PurchaseItemModel item = items.get(itemsHolder.getAdapterPosition());
                                         realm.beginTransaction();
                                         item.setDescription(description.getText().toString());
                                         realm.commitTransaction();
                                         changedModelToAPI(item);
-                                        Log.v(GlobalVar.MY_LOG, "added item discription: "+description.getText().toString());
+                                        Log.v(GlobalVar.MY_LOG, "added item discription: " + description.getText().toString());
                                         notifyDataSetChanged();
                                         dialog.dismiss();
                                     }
@@ -245,20 +250,20 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
 
             holder.productName.setText(product.getProductName());
             holder.productDescription.setText(product.getDescription());
-           holder.count.setText(String.valueOf(product.getCount()));
+            holder.count.setText(String.valueOf(product.getCount()));
 //            holder.isDone.setText(String.valueOf(product.getStatus()));
             holder.isDone.setChecked(product.getStatus().equals(GlobalVar.STATUS_DONE));
-            switch(product.getStatus()) {
+            switch (product.getStatus()) {
                 case "Ignored":
                     holder.count.setVisibility(View.INVISIBLE);
-                holder.isDone.setVisibility(View.INVISIBLE);
-             //   holder.countPicker.setVisibility(View.INVISIBLE);
-                holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
+                    holder.isDone.setVisibility(View.INVISIBLE);
+                    //   holder.countPicker.setVisibility(View.INVISIBLE);
+                    holder.productName.setTextColor(context.getResources().getColor(R.color.secondary_text));
                     break;
                 case "Done":
-                holder.productName.setTextColor(Color.BLACK);
-                holder.count.setVisibility(View.VISIBLE);
-                holder.isDone.setVisibility(View.VISIBLE);
+                    holder.productName.setTextColor(Color.BLACK);
+                    holder.count.setVisibility(View.VISIBLE);
+                    holder.isDone.setVisibility(View.VISIBLE);
                     break;
                 default:
                     holder.productName.setTextColor(Color.RED);
@@ -287,9 +292,10 @@ public class PurchaseItemsAdapter extends RecyclerView.Adapter<PurchaseItemsAdap
         items.add(items.size(), prev);
         realm.commitTransaction();
         notifyItemRemoved(position);
-notifyDataSetChanged();
+        notifyDataSetChanged();
         //  realm.commitTransaction();
     }
+
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
         PurchaseItemModel prev = items.remove(fromPosition);
@@ -299,9 +305,9 @@ notifyDataSetChanged();
     }
 
     private void changedModelToAPI(PurchaseItemModel purchaseItemModel) {
-Log.v(GlobalVar.MY_LOG, "change item " + purchaseItemModel.toString());
+        Log.v(GlobalVar.MY_LOG, "change item " + purchaseItemModel.toString());
 
-        EditablePurchaseItemsModel model=new EditablePurchaseItemsModel(purchaseItemModel);
+        EditablePurchaseItemsModel model = new EditablePurchaseItemsModel(purchaseItemModel);
 
 
         try {
@@ -311,26 +317,27 @@ Log.v(GlobalVar.MY_LOG, "change item " + purchaseItemModel.toString());
             MediaType type = MediaType.parse("application/json; charset=utf-8");
             RequestBody body = RequestBody.create(type, json);
             Request request = new Request.Builder()
-                    .url(GlobalVar.URL_API + "api/PurchaseItem?token=" + GlobalVar.API_TOKEN+"&purchaseGuid="+purchaseGuid)
+                    .url(GlobalVar.URL_API + "api/PurchaseItem?token=" + GlobalVar.API_TOKEN + "&purchaseGuid=" + purchaseGuid)
                     .post(body)
                     .build();
 
             client.newCall(request).enqueue(this);
-            Log.v(GlobalVar.MY_LOG,json );
+            Log.v(GlobalVar.MY_LOG, json);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-  }
+    }
+
     @Override
     public void onFailure(Call call, IOException e) {
-        Log.v(GlobalVar.MY_LOG,"failed" );
+        Log.v(GlobalVar.MY_LOG, "failed");
     }
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        Log.v(GlobalVar.MY_LOG, "saved" );
-      //  notifyDataSetChanged();
+        Log.v(GlobalVar.MY_LOG, "saved");
+        //  notifyDataSetChanged();
     }
 }

@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements FragmentCallBackI
             case android.R.id.home:
                 onBackPressed();
                 return true;
+        //    case android.R.id.logout:
+
             default:
                 return super.onOptionsItemSelected(item);
 

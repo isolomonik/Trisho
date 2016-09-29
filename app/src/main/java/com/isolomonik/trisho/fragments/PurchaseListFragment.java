@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.Loaders.PurchaseListLoader;
@@ -57,6 +58,7 @@ public class PurchaseListFragment extends Fragment implements
 
     private Button btnAddPurchase;
     private  SwipeRefreshLayout sLay;
+    ProgressBar pbList;
 
     public PurchaseListFragment() {
 
@@ -82,6 +84,8 @@ public class PurchaseListFragment extends Fragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_purchase_list, container, false);
+
+        pbList =(ProgressBar) v.findViewById(R.id.pbListPurch);
         btnAddPurchase =(Button) v.findViewById(R.id.btnAddPurchase);
         btnAddPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +158,8 @@ public class PurchaseListFragment extends Fragment implements
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        pbList.setVisibility(View.INVISIBLE);
 
     }
 

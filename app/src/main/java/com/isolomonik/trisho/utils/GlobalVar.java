@@ -1,8 +1,16 @@
 package com.isolomonik.trisho.utils;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+
+import com.isolomonik.trisho.activities.MainActivity;
+import com.isolomonik.trisho.models.LoginModel;
+
+import io.realm.Realm;
 
 public class GlobalVar {
 
@@ -14,6 +22,22 @@ public class GlobalVar {
         NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
         return activeNetworkInfo != null;
     }
+
+
+    public static void Logout (Context context){
+        API_TOKEN="";
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.clear(LoginModel.class);
+        realm.commitTransaction();
+        Log.v(GlobalVar.MY_LOG, "loginModel saved in realm");
+        realm.close();
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+        //finish();
+
+
+    };
 
 public static String API_TOKEN="";
 public static String API_TELEPHONE="";

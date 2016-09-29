@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.isolomonik.trisho.Loaders.PurchaseItemsLoader;
@@ -51,6 +52,7 @@ public class ItemsListFragment extends Fragment implements
     private PurchaseItemsAdapter adapter;
     private ItemTouchHelper itemTouchHelper;
     private SwipeRefreshLayout sLay;
+    private ProgressBar pbItems;
 
     public ItemsListFragment() {
     }
@@ -107,7 +109,7 @@ public class ItemsListFragment extends Fragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        pbItems=(ProgressBar) view.findViewById(R.id.pbItems);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.lvItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -163,6 +165,8 @@ public class ItemsListFragment extends Fragment implements
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         sLay.setRefreshing(false);
+        pbItems.setVisibility(View.INVISIBLE);
+        sLay.setVisibility(View.VISIBLE);
     }
 
     @Override
