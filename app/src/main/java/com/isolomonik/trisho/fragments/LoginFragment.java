@@ -3,16 +3,19 @@ package com.isolomonik.trisho.fragments;
 //import android.content.AsyncTaskLoader;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.isolomonik.trisho.Loaders.RegisterLoader;
 import com.isolomonik.trisho.R;
@@ -110,27 +113,41 @@ return new LoginLoader(getActivity(), args);
     }
 
     public void onLoadFinished(Loader<LoginModel> loader, LoginModel data) {
-        Log.i(GlobalVar.MY_LOG, data.getToken());
-        // TODO: 24.02.16    token=null
-        GlobalVar.API_TOKEN = data.getToken();
+        if (data.getToken()!=null) {
+            Log.i(GlobalVar.MY_LOG, data.getToken());
+            GlobalVar.API_TOKEN = data.getToken();
 
-      LoginModel  loginModel = new LoginModel();
-        loginModel.setTelephone(telephone.getText().toString());
-        loginModel.setPassword(password.getText().toString());
-        loginModel.setUserName(data.getUserName());
-        loginModel.setToken(data.getToken());
-        loginModel.setUserGuid(data.getUserGuid());
+            LoginModel loginModel = new LoginModel();
+            loginModel.setTelephone(telephone.getText().toString());
+            loginModel.setPassword(password.getText().toString());
+            loginModel.setUserName(data.getUserName());
+            loginModel.setToken(data.getToken());
+            loginModel.setUserGuid(data.getUserGuid());
 
 
-        realm.beginTransaction();
-        realm.clear(LoginModel.class);
-        realm.copyToRealmOrUpdate(loginModel);
-        realm.commitTransaction();
-        Log.v(GlobalVar.MY_LOG, "loginModel saved in realm");
+            realm.beginTransaction();
+            realm.clear(LoginModel.class);
+            realm.copyToRealmOrUpdate(loginModel);
+            realm.commitTransaction();
+            Log.v(GlobalVar.MY_LOG, "loginModel saved in realm");
 
-getActivity().finish();
-        fragmentCallBackInterface.loginSubmit();
-
+            getActivity().finish();
+            fragmentCallBackInterface.loginSubmit();
+        }
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+            builder.setTitle("Не удалось! Возможно, имя, пароль указаны не верно")
+                    .setCancelable(false)
+                    //.setView("Не удалось подключиться. Возможно, имя, пароль указаны не верно")
+                    .setPositiveButton("Ок",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+                    }
     }
 
     public void onLoaderReset(Loader<LoginModel> loader) {

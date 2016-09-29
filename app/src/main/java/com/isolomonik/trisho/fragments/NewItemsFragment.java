@@ -119,7 +119,7 @@ public class NewItemsFragment extends Fragment
             public void onClick(View v) {
                 Log.i(GlobalVar.MY_LOG, "New items save pressed");
                 saveItems();
-    //            getActivity().finish();
+                getActivity().finish();
 
             }
 
@@ -191,6 +191,7 @@ public class NewItemsFragment extends Fragment
                                                @Override
                                                public void afterTextChanged(Editable arg0) {
                                                    Log.v(GlobalVar.MY_LOG, "afterTextChanged "+arg0.toString());
+                                                   if (arg0.length()==0){ ibSearchOK.setImageResource(R.drawable.search_ico48);}
                                                }
                                            }
 
@@ -218,7 +219,7 @@ public class NewItemsFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         inputSearch.clearFocus();
        // btnSave.requestFocus();
-        pbRecom.setVisibility(View.VISIBLE);
+       // pbRecom.setVisibility(View.VISIBLE);
         recyclerView = (RecyclerView) view.findViewById(R.id.lvRecomendedItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 recyclerView.requestFocus();
@@ -251,8 +252,6 @@ recyclerView.requestFocus();
     @Override
     public void onLoadFinished(Loader<List<RecomendedProductModel>> loader, List<RecomendedProductModel> data) {
         Log.v(GlobalVar.MY_LOG, "Purchase items load finished");
-
-
         if ((data == null) || (realm == null)) {
             Log.v(GlobalVar.MY_LOG, "PurchaseItems is null");
             return;
@@ -273,7 +272,8 @@ recyclerView.requestFocus();
             adapter = new RecommendedProductsAdapter(this, list);
             recyclerView.setAdapter(adapter);
         }
- // pbRecom.setVisibility(View.INVISIBLE);
+  pbRecom.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -402,6 +402,6 @@ recyclerView.requestFocus();
     @Override
     public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
         Log.v(GlobalVar.MY_LOG,"items added to purchase " );
-        getActivity().finish();
+   //     getActivity().finish();
     }
 }
